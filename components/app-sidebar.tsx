@@ -16,7 +16,7 @@ import Image from 'next/image';
 const data = {
   navMain: [
     {
-      title: 'Website',
+      title: 'Home',
       url: '/',
       icon: Home,
       isActive: true,
