@@ -36,6 +36,21 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
+const chartData = [
+  { updateTime: 'Jan', pnl: 75 },
+  { updateTime: 'Feb', pnl: 80 },
+  { updateTime: 'Mar', pnl: 85 },
+  { updateTime: 'Apr', pnl: 90 },
+  { updateTime: 'May', pnl: 92 },
+  { updateTime: 'Jun', pnl: 88 },
+  { updateTime: 'Jul', pnl: 85 },
+  { updateTime: 'Aug', pnl: 80 },
+  { updateTime: 'Sep', pnl: 78 },
+  { updateTime: 'Oct', pnl: 82 },
+  { updateTime: 'Nov', pnl: 90 },
+  { updateTime: 'Dec', pnl: 95 },
+];
+
 export default function Dashboard() {
   const [sayStaked, setSayStaked] = useState('0');
   const { address, chainId } = useAccount();
@@ -172,49 +187,47 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {dashboardHistory.length > 0 && (
-        <Card className='bg-gradient w-full max-w-lg rounded-2xl text-primary'>
-          <CardHeader>
-            <CardTitle>Line Chart</CardTitle>
-            <CardDescription>
-              {formatMonthYear(firstData!.updateTime)} -{' '}
-              {formatMonthYear(latestData!.updateTime)}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={chartConfig}>
-              <LineChart
-                accessibilityLayer
-                data={dashboardHistory}
-                margin={{
-                  left: 12,
-                  right: 12,
-                }}
-              >
-                <CartesianGrid vertical={false} />
-                <XAxis
-                  dataKey='updateTime'
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                  tickFormatter={(value) => value.slice(0, 3)}
-                />
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent hideLabel />}
-                />
-                <Line
-                  dataKey='pnl'
-                  type='natural'
-                  stroke='var(--color-pnl)'
-                  strokeWidth={2}
-                  dot={false}
-                />
-              </LineChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
-      )}
+      <Card className='bg-gradient w-full max-w-lg rounded-2xl text-primary'>
+        <CardHeader>
+          <CardTitle>Line Chart</CardTitle>
+          <CardDescription>
+            {formatMonthYear(firstData?.updateTime ?? new Date().toString())} -{' '}
+            {formatMonthYear(latestData?.updateTime ?? new Date().toString())}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={chartConfig}>
+            <LineChart
+              accessibilityLayer
+              data={dashboardHistory.length ? dashboardHistory : chartData}
+              margin={{
+                left: 12,
+                right: 12,
+              }}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey='updateTime'
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(value) => value.slice(0, 3)}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
+              />
+              <Line
+                dataKey='pnl'
+                type='natural'
+                stroke='var(--color-pnl)'
+                strokeWidth={2}
+                dot={false}
+              />
+            </LineChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
     </div>
   );
 }
