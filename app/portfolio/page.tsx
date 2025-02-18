@@ -162,7 +162,7 @@ export default function Wallet() {
           <AlertCircle className='h-4 w-4' />
           <AlertTitle>Warning</AlertTitle>
           <AlertDescription>
-            Your funds will remain locked until the next epoch on March 3rd.
+            Your funds will remain locked until the next epoch on March 16th.
           </AlertDescription>
         </Alert>
         <div className='my-6 w-full max-w-[400px] rounded-3xl shadow-[0_0_15px_#4CFAC7]'>

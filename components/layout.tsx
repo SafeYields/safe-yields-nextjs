@@ -43,7 +43,7 @@ const PickNetwork = () => {
           <ChevronRight className='rotate-90' />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className='w-44 rounded-xl bg-[#4CFAC7]/5 shadow-[0_0_8px_#4CFAC7]'>
+      <DropdownMenuContent className='w-44 rounded-xl shadow-[0_0_8px_#4CFAC7]'>
         <DropdownMenuLabel>Networks</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={network} onValueChange={setNetwork}>
