@@ -9,7 +9,13 @@
     "lint": "next lint",
     "typechain": "typechain --target ethers-v6 --out-dir services/blockchain/types/ 'services/blockchain/constants/abis/*.json'",
     "format": "prettier --check --ignore-path .gitignore .",
-    "format:fix": "prettier --write --ignore-path .gitignore ."
+    "format:fix": "prettier --write --ignore-path .gitignore .",
+    "db:migrate": "drizzle-kit migrate",
+    "db:drop": "drizzle-kit drop",
+    "db:pull": "drizzle-kit introspect",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:check": "drizzle-kit check"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.1.9",
@@ -19,6 +25,7 @@
     "@hookform/resolvers": "^3.10.0",
     "@legendapp/state": "^2.1.15",
     "@neondatabase/serverless": "^0.10.4",
+    "@next/env": "^15.1.7",
     "@openzeppelin/merkle-tree": "^1.0.7",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-alert-dialog": "^1.1.6",
@@ -91,6 +98,7 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@types/ws": "^8.5.14",
+    "drizzle-kit": "^0.30.4",
     "eslint": "^9",
     "eslint-config-next": "15.1.0",
     "eslint-config-prettier": "^10.0.1",
@@ -98,6 +106,7 @@
     "prettier": "3.5.1",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.19.2",
     "typechain": "^8.3.2",
     "typescript": "^5"
   }
