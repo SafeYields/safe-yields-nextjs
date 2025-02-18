@@ -1,21 +1,18 @@
 steps:
-  # Step 1: Build Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [
-      'build',
-      '--build-arg',
-      'NEXT_PUBLIC_PROJECT_ID=${_NEXT_PUBLIC_PROJECT_ID}',
-      '--build-arg',
-      'OPENAI_API_KEY=${_OPENAI_API_KEY}',
-      '--build-arg',
-      'DATABASE_URL=${_DATABASE_URL}',
-      '--build-arg',
-      'TAVILY_API_KEY=${_TAVILY_API_KEY}',
-      '.'
-    ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build',
+    '--build-arg',
+    'NEXT_PUBLIC_PROJECT_ID=${_NEXT_PUBLIC_PROJECT_ID}',
+    '--build-arg',
+    'OPENAI_API_KEY=${_OPENAI_API_KEY}',
+    '--build-arg',
+    'DATABASE_URL=${_DATABASE_URL}',
+    '--build-arg',
+    'TAVILY_API_KEY=${_TAVILY_API_KEY}',
+    '.'
+  ]
 
-
-# Optional: Specify substitutions for dynamic values
 substitutions:
   _SERVICE: $SERVICE
   _PROJECT_ID: $PROJECT_ID
