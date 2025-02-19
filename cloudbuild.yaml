@@ -1,8 +1,8 @@
 steps:
-  # Step 1: Build Docker image
-  - name: 'gcr.io/cloud-builders/docker'
+  - name: gcr.io/cloud-builders/docker
     args: [
       'build',
+      '--no-cache',
       '--build-arg',
       'NEXT_PUBLIC_PROJECT_ID=${_NEXT_PUBLIC_PROJECT_ID}',
       '--build-arg',
@@ -12,14 +12,15 @@ steps:
       '--build-arg',
       'TAVILY_API_KEY=${_TAVILY_API_KEY}',
       '-t',
-      'europe-west3-docker.pkg.dev/${_PROJECT_ID}/${_SERVICE}/${_TAG}',
+      '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
       '.'
-    ]
-
-  # Step 2: Push Docker image to Container Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'europe-west3-docker.pkg.dev/${_PROJECT_ID}/${_SERVICE}/${_TAG}']
-
+    id: Build
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - >-
+        $_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
+    id: Push
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     args:
       - run
@@ -28,23 +29,32 @@ steps:
       - $_SERVICE_NAME
       - '--platform=managed'
       - >-
-        --image=europe-west3-docker.pkg.dev/${_PROJECT_ID}/${_SERVICE}/${_TAG}
+        --image=$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
       - >-
         --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID
-      - '--region=europe-west3'
+      - '--region=$_DEPLOY_REGION'
       - '--quiet'
     id: Deploy
     entrypoint: gcloud
-
+images:
+  - >-
+    $_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
 options:
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
-
-# Optional: Specify substitutions for dynamic values
+  substitutionOption: ALLOW_LOOSE
+  logging: CLOUD_LOGGING_ONLY
 substitutions:
-  _SERVICE: $SERVICE
-  _PROJECT_ID: $PROJECT_ID
+  _AR_REPOSITORY: cloud-run-source-deploy
+  _AR_PROJECT_ID: safeyields-ai
+  _PLATFORM: managed
+  _SERVICE_NAME: safe-yields-nextjs
+  _DEPLOY_REGION: europe-west1
+  _TRIGGER_ID: 2f47d3dc-b3fc-429a-9a07-ff523e625074
+  _AR_HOSTNAME: europe-west1-docker.pkg.dev
   _NEXT_PUBLIC_PROJECT_ID: $NEXT_PUBLIC_PROJECT_ID
   _OPENAI_API_KEY: $OPENAI_API_KEY
   _DATABASE_URL: $DATABASE_URL
   _TAVILY_API_KEY: $TAVILY_API_KEY
-  _TAG: 'latest'
+tags:
+  - gcp-cloud-build-deploy-cloud-run
+  - gcp-cloud-build-deploy-cloud-run-managed
+  - safe-yields-nextjs
