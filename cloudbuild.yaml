@@ -20,6 +20,22 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'europe-west3-docker.pkg.dev/${_PROJECT_ID}/${_SERVICE}/${_TAG}']
 
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    args:
+      - run
+      - services
+      - update
+      - $_SERVICE_NAME
+      - '--platform=managed'
+      - >-
+        --image=europe-west3-docker.pkg.dev/${_PROJECT_ID}/${_SERVICE}/${_TAG}
+      - >-
+        --labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID
+      - '--region=europe-west3'
+      - '--quiet'
+    id: Deploy
+    entrypoint: gcloud
+
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
 
