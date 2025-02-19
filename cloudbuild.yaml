@@ -12,7 +12,7 @@ steps:
       '--build-arg',
       'TAVILY_API_KEY=${_TAVILY_API_KEY}',
       '-t',
-      '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA'
+      '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA',
       '.'
     ]
     id: Build
