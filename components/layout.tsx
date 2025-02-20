@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from './ui/sidebar';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const PickNetwork = () => {
   const [network, setNetwork] = useState<string | undefined>('Arbitrum');
@@ -91,9 +92,9 @@ export default function Layout({
   const { address } = useAccount();
   const { usdcBalance } = useGetTokenBalances(address!, 1);
   console.log(usdcBalance, 'usdc bal');
-
+  const isMobile = useIsMobile()
   return (
-    <SidebarProvider defaultOpen={false}>
+    <SidebarProvider defaultOpen={isMobile ? false: true}>
       <AppSidebar />
       <SidebarInset>
         <header className='flex h-28 shrink-0 items-center gap-2'>
