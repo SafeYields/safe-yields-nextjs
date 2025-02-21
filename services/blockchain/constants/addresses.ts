@@ -7,7 +7,7 @@ export const addresses = {
     sayAirdrop: '0xd8A431dD22478158f174448fC9d435348cc8316a',
   },
   747: {
-    emmaVault: '0x12285e4C23776E7A7501C043D282572A3EAd6E02',
+    emmaVault: '0x80a7660824Ee5abdD347fBF0aCFB0373785F2660',
     usdc: '0xF1815bd50389c46847f0Bda824eC8da914045D14',
     sayStaker: '',
     vesting: '',
