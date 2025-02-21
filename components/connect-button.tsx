@@ -4,7 +4,7 @@ import { Button } from './ui/button';
 export default function ConnectButton() {
   return (
     <RainbowKitConnectButton.Custom>
-      {({ account, chain, openAccountModal, openConnectModal, mounted }) => {
+      {({ account, chain, openConnectModal, openChainModal, mounted }) => {
         const ready = mounted;
         const connected = ready && account && chain;
 
@@ -23,7 +23,7 @@ export default function ConnectButton() {
         return (
           <div className='flex items-center space-x-2'>
             <Button
-              onClick={openAccountModal}
+              onClick={openChainModal}
               type='button'
               className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105'
             >
