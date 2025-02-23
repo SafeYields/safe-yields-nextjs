@@ -1,20 +1,20 @@
 'use client';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
-import { ethers } from 'ethers';
-import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contracts';
-import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
-import { useAccount } from 'wagmi';
-import { getAllowance, approveSpending } from '@/services/blockchain/common';
-import { trimDecimalPlaces } from '@/lib/utils';
-import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/hooks/use-toast';
+import { trimDecimalPlaces } from '@/lib/utils';
+import { approveSpending, getAllowance } from '@/services/blockchain/common';
+import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
+import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contracts';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { ethers } from 'ethers';
 import { AlertCircle, Loader2 } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useState } from 'react';
+import { useAccount } from 'wagmi';
 
 export default function Wallet() {
   const { toast } = useToast();

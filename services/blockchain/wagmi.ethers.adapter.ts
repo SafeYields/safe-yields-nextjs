@@ -1,12 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-nocheck
 import {
+  BrowserProvider,
   FallbackProvider,
   JsonRpcProvider,
-  BrowserProvider,
   JsonRpcSigner,
 } from 'ethers';
-import type { Chain, Client, Transport, Account } from 'viem';
+import type { Account, Chain, Client, Transport } from 'viem';
 
 export function clientToProvider(client: Client<Transport, Chain>) {
   const { chain, transport } = client;

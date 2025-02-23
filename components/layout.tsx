@@ -1,12 +1,12 @@
 'use client';
 import useGetTokenBalances from '@/hooks/use-get-token-blances';
-import { switchChain } from '@wagmi/core';
+import { chain$, chainData } from '@/lib/store';
+import { use$ } from '@legendapp/state/react';
 import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
-import { ReactNode, useCallback, useState } from 'react';
+import { ReactNode } from 'react';
 import { useAccount } from 'wagmi';
 import { arbitrum, flowMainnet } from 'wagmi/chains';
-import { config } from '../app/providers';
 import { AppSidebar } from './app-sidebar';
 import ConnectButton from './connect-button';
 import { Button } from './ui/button';
@@ -20,22 +20,19 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from './ui/sidebar';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 const PickNetwork = () => {
-  const [network, setNetwork] = useState<string | undefined>('Arbitrum');
-  const src = useCallback(
-    () => (network == 'Arbitrum' ? '/images/arbitrum.svg' : '/images/flow.svg'),
-    [network],
-  );
+  const chain = use$(chain$.chainId);
+  const data = chainData(chain);
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105'>
-          {network ? (
+          {data ? (
             <>
-              <Image src={src()} width='16' height='16' alt='chain logo' />
-              {network}
+              <Image src={data.src} width='16' height='16' alt='chain logo' />
+              {data.name}
             </>
           ) : (
             'Choose Network'
@@ -47,13 +44,12 @@ const PickNetwork = () => {
       <DropdownMenuContent className='w-44 rounded-xl shadow-[0_0_8px_#4CFAC7]'>
         <DropdownMenuLabel>Networks</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={network} onValueChange={setNetwork}>
+        <DropdownMenuRadioGroup>
           <DropdownMenuRadioItem
             value='Arbitrum'
             className='flex justify-between hover:scale-95 focus:bg-[#4CFAC7]/20'
-            onSelect={async () => {
-              setNetwork('Arbitrum');
-              await switchChain(config, { chainId: arbitrum.id });
+            onSelect={() => {
+              chain$.setChainId(arbitrum.id);
             }}
           >
             <span>Arbitrum</span>
@@ -67,9 +63,8 @@ const PickNetwork = () => {
           <DropdownMenuRadioItem
             value='Flow EVM'
             className='flex justify-between hover:scale-95 focus:bg-[#4CFAC7]/20'
-            onSelect={async () => {
-              setNetwork('Flow EVM');
-              await switchChain(config, { chainId: flowMainnet.id });
+            onSelect={() => {
+              chain$.setChainId(flowMainnet.id);
             }}
           >
             <span>Flow EVM</span>
@@ -91,10 +86,9 @@ export default function Layout({
 }: Readonly<{ children: ReactNode }>) {
   const { address } = useAccount();
   const { usdcBalance } = useGetTokenBalances(address!, 1);
-  console.log(usdcBalance, 'usdc bal');
-  const isMobile = useIsMobile()
+
   return (
-    <SidebarProvider defaultOpen={isMobile ? false: true}>
+    <SidebarProvider defaultOpen={false}>
       <AppSidebar />
       <SidebarInset>
         <header className='flex h-28 shrink-0 items-center gap-2'>

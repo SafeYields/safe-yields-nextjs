@@ -1,28 +1,28 @@
 'use client';
 
-import { PropsWithChildren, useEffect, useState, type FC } from 'react';
-import { CircleXIcon, FileIcon, PaperclipIcon } from 'lucide-react';
+import { TooltipIconButton } from '@/components/assistant-ui/tooltip-icon-button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
-  AttachmentPrimitive,
-  ComposerPrimitive,
-  MessagePrimitive,
-  useAttachment,
-} from '@assistant-ui/react';
-import { useShallow } from 'zustand/shallow';
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { TooltipIconButton } from '@/components/assistant-ui/tooltip-icon-button';
+  AttachmentPrimitive,
+  ComposerPrimitive,
+  MessagePrimitive,
+  useAttachment,
+} from '@assistant-ui/react';
 import { TooltipProvider } from '@radix-ui/react-tooltip';
+import { CircleXIcon, FileIcon, PaperclipIcon } from 'lucide-react';
+import { PropsWithChildren, useEffect, useState, type FC } from 'react';
+import { useShallow } from 'zustand/shallow';
 
 const useFileSrc = (file: File | undefined) => {
   const [src, setSrc] = useState<string | undefined>(undefined);

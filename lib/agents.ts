@@ -1,8 +1,8 @@
+import { tavily } from '@tavily/core';
+import { tool } from 'ai';
 import { z } from 'zod';
 import { createResource } from './actions/resources';
 import { findRelevantContent } from './ai/embedding';
-import { tool } from 'ai';
-import { tavily } from '@tavily/core';
 
 const AddResourceSchema = z.object({
   content: z

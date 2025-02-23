@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import {
   ActionBarPrimitive,
   BranchPickerPrimitive,
@@ -5,7 +6,6 @@ import {
   MessagePrimitive,
   ThreadPrimitive,
 } from '@assistant-ui/react';
-import type { FC } from 'react';
 import {
   ArrowDownIcon,
   AudioLinesIcon,
@@ -18,19 +18,19 @@ import {
   SendHorizontalIcon,
   StopCircleIcon,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import type { FC } from 'react';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { MarkdownText } from '@/components/assistant-ui/markdown-text';
 import { TooltipIconButton } from '@/components/assistant-ui/tooltip-icon-button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { ScrollBar } from '@/components/ui/scroll-area';
+import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
 import {
   ComposerAddAttachment,
   ComposerAttachments,
   UserMessageAttachments,
 } from './attachment';
-import { ScrollBar } from '@/components/ui/scroll-area';
-import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
 
 export const Thread: FC = () => {
   return (

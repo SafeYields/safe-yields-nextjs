@@ -1,10 +1,4 @@
 'use client';
-import { usePathname } from 'next/navigation';
-import { ChevronRight, type LucideIcon } from 'lucide-react';
-import { FaDiscord, FaGithub } from 'react-icons/fa';
-import { FaXTwitter } from 'react-icons/fa6';
-import clsx from 'clsx';
-import Link from 'next/link';
 import {
   Collapsible,
   CollapsibleContent,
@@ -21,7 +15,13 @@ import {
   SidebarMenuSubItem,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import clsx from 'clsx';
+import { ChevronRight, type LucideIcon } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { FaDiscord, FaGithub } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 
 type NavItem = {
   title: string;

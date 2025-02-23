@@ -1,9 +1,8 @@
 'use client';
-import { useEffect, useState } from 'react';
 import { USDC_CONTRACT } from '@/constants/contracts/contracts';
-import { ethers } from 'ethers';
-import { Contract } from 'ethers';
 import useEthersProvider from '@/services/blockchain/hooks/useEthersProvider';
+import { Contract, ethers } from 'ethers';
+import { useEffect, useState } from 'react';
 
 export default function useGetTokenBalances(address: string, txUpdate: number) {
   const provider = useEthersProvider();

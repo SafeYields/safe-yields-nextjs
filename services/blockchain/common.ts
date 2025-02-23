@@ -1,7 +1,7 @@
-import { ethers } from 'ethers';
 import { StandardMerkleTree } from '@openzeppelin/merkle-tree';
-import { Erc20Abi } from './types';
+import { ethers } from 'ethers';
 import airdrop from './constants/airdrop.json';
+import { Erc20Abi } from './types';
 
 export const getAllowance = async (
   contract: Erc20Abi,

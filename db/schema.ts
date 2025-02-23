@@ -1,4 +1,6 @@
+import { nanoid } from '@/lib/utils';
 import { generateId } from 'ai';
+import { sql } from 'drizzle-orm';
 import {
   index,
   pgTable,
@@ -7,8 +9,6 @@ import {
   varchar,
   vector,
 } from 'drizzle-orm/pg-core';
-import { nanoid } from '@/lib/utils';
-import { sql } from 'drizzle-orm';
 import { createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 

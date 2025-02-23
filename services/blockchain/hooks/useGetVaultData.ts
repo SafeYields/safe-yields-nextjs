@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SupportedChain } from '../constants/addresses';
 import { useSafeYieldsContract } from '../safeyields.contracts';
 

@@ -1,20 +1,21 @@
 steps:
   - name: gcr.io/cloud-builders/docker
-    args: [
-      'build',
-      '--no-cache',
-      '--build-arg',
-      'NEXT_PUBLIC_PROJECT_ID=${_NEXT_PUBLIC_PROJECT_ID}',
-      '--build-arg',
-      'OPENAI_API_KEY=${_OPENAI_API_KEY}',
-      '--build-arg',
-      'DATABASE_URL=${_DATABASE_URL}',
-      '--build-arg',
-      'TAVILY_API_KEY=${_TAVILY_API_KEY}',
-      '-t',
-      '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA',
-      '.'
-    ]
+    args:
+      [
+        'build',
+        '--no-cache',
+        '--build-arg',
+        'NEXT_PUBLIC_PROJECT_ID=${_NEXT_PUBLIC_PROJECT_ID}',
+        '--build-arg',
+        'OPENAI_API_KEY=${_OPENAI_API_KEY}',
+        '--build-arg',
+        'DATABASE_URL=${_DATABASE_URL}',
+        '--build-arg',
+        'TAVILY_API_KEY=${_TAVILY_API_KEY}',
+        '-t',
+        '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA',
+        '.',
+      ]
     id: Build
   - name: gcr.io/cloud-builders/docker
     args:

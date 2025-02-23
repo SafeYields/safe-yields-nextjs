@@ -1,19 +1,19 @@
-import { useMemo } from 'react';
 import { ContractRunner } from 'ethers';
+import { useMemo } from 'react';
+import { useAccount } from 'wagmi';
 import {
   addresses,
   SupportedChain,
   supportedChains,
 } from './constants/addresses';
-import { useAccount } from 'wagmi';
+import useEthersProvider from './hooks/useEthersProvider';
 import {
   EmmaVaultAbi__factory,
   Erc20Abi__factory,
+  SayAirdrop__factory,
   SayStakerAbi__factory,
   SayVestingAbi__factory,
-  SayAirdrop__factory,
 } from './types';
-import useEthersProvider from './hooks/useEthersProvider';
 
 export const useSafeYieldsContract = (optionalRunner?: ContractRunner) => {
   const { chainId } = useAccount();

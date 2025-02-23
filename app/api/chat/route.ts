@@ -1,12 +1,12 @@
-import { streamText } from 'ai';
-import { openai } from '@ai-sdk/openai';
 import {
   addResource,
-  getInformation,
-  getDate,
   buildPortfolio,
+  getDate,
+  getInformation,
   tavilyWebSearch,
 } from '@/lib/agents';
+import { openai } from '@ai-sdk/openai';
+import { streamText } from 'ai';
 
 export const maxDuration = 30;
 

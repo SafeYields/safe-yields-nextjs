@@ -2,10 +2,10 @@
 
 import { db } from '@/db/drizzle';
 import {
+  embeddings as embeddingsTable,
   insertResourceSchema,
   NewResourceParams,
   resources,
-  embeddings as embeddingsTable,
 } from '@/db/schema';
 import { generateEmbeddings } from '../ai/embedding';
 

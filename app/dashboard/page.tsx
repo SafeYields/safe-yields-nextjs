@@ -160,7 +160,9 @@ export default function Dashboard() {
           </div>
           <div className='flex flex-col gap-2'>
             <span className='text-sm font-medium text-white'>Average APY</span>
-            <span className='text-xl font-bold'>{dashboardData?.apy?.toFixed(2) || apy.toFixed(2)}%</span>
+            <span className='text-xl font-bold'>
+              {dashboardData?.apy?.toFixed(2) || apy.toFixed(2)}%
+            </span>
           </div>
         </div>
         <div className='p-card flex h-32 min-w-48 flex-row items-center gap-4 rounded-3xl border border-[#4CFAC7] bg-card px-4 text-[#4CFAC7]'>

@@ -10,8 +10,8 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { Bot, Home, LayoutDashboard } from 'lucide-react';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const data = {
   navMain: [

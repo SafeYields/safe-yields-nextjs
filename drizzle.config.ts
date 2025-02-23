@@ -1,6 +1,5 @@
-import './envConfig.ts'
 import { defineConfig } from 'drizzle-kit';
-
+import './envConfig.ts';
 
 export default defineConfig({
   out: './drizzle',

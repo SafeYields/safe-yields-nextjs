@@ -1,19 +1,17 @@
 'use client';
 
+import { Thread } from '@/components/assistant-ui/thread';
+import { ThreadList } from '@/components/assistant-ui/thread-list';
+import { Button } from '@/components/ui/button';
 import {
   AssistantRuntimeProvider,
+  CompositeAttachmentAdapter,
+  SimpleImageAttachmentAdapter,
+  SimpleTextAttachmentAdapter,
   WebSpeechSynthesisAdapter,
   makeAssistantToolUI,
 } from '@assistant-ui/react';
 import { useChatRuntime } from '@assistant-ui/react-ai-sdk';
-import { Thread } from '@/components/assistant-ui/thread';
-import { ThreadList } from '@/components/assistant-ui/thread-list';
-import {
-  CompositeAttachmentAdapter,
-  SimpleImageAttachmentAdapter,
-  SimpleTextAttachmentAdapter,
-} from '@assistant-ui/react';
-import { Button } from '@/components/ui/button';
 
 const BuildPortfolioToolUI = makeAssistantToolUI({
   toolName: 'buildPortfolio',
