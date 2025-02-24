@@ -1,13 +1,7 @@
-// import ConnectButton from "./buttons/ConnectButton";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-// import PrimaryButton from "./buttons/PrimaryButton"
 import { Button } from './ui/button';
-// import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 
 const TopNav = () => {
-  // const { isConnected, address } = useWeb3ModalAccount();
-  /* const { address } = useAccount()
-    const { usdcBalance } = useGetTokenBalances(address!, 1) */
   return (
     <nav className='fixed left-0 right-0 top-0 z-20 mt-8 h-auto px-4 py-4 md:ml-[22rem]'>
       <div className='flex flex-col items-end justify-end space-x-6 space-y-2 pr-20'>

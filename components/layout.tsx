@@ -24,7 +24,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from './ui/sidebar';
 const PickNetwork = () => {
   const chain = use$(chain$.chainId);
   const data = chainData(chain);
-  
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -86,7 +86,7 @@ export default function Layout({
 }: Readonly<{ children: ReactNode }>) {
   const { address } = useAccount();
   const { usdcBalance } = useGetTokenBalances(address!, 1);
-
+  const chainId = use$(chain$.chainId);
   return (
     <SidebarProvider defaultOpen={false}>
       <AppSidebar />
@@ -99,7 +99,8 @@ export default function Layout({
               <div className='flex flex-col items-center gap-2'>
                 <ConnectButton />
                 <span className="font-['Space Grotesk'] text-sm font-normal text-white/70">
-                  Your balance: {usdcBalance} USDC
+                  Your balance: {usdcBalance}{' '}
+                  {chainId == arbitrum.id ? 'USDC' : 'stgUSDC'}
                 </span>
               </div>
             </div>
