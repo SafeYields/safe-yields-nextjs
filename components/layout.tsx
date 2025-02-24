@@ -100,7 +100,7 @@ export default function Layout({
               <div className='flex flex-col items-center gap-2'>
                 <ConnectButton />
                 <span className="font-['Space Grotesk'] text-sm font-normal text-white/70">
-                  Your balance: {usdcBalance}{' '}
+                  Your balance: {usdcBalance.toFixed(2)}{' '}
                   {chainId == arbitrum.id ? 'USDC' : 'stgUSDC'}
                 </span>
               </div>
