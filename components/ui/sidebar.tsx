@@ -269,12 +269,9 @@ Sidebar.displayName = 'Sidebar';
 
 const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
-  React.ComponentProps<typeof Button> & { onlyShowWhen?: 'open' | 'closed' }
->(({ className, onClick, onlyShowWhen, ...props }, ref) => {
+  React.ComponentProps<typeof Button>
+>(({ className, onClick, ...props }, ref) => {
   const { toggleSidebar, open } = useSidebar();
-
-  if (onlyShowWhen === 'open' && !open) return null;
-  if (onlyShowWhen === 'closed' && open) return null;
 
   return (
     <Button

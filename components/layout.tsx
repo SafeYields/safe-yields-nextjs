@@ -1,5 +1,6 @@
 'use client';
 import useGetTokenBalances from '@/hooks/use-get-token-blances';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { chain$, chainData } from '@/lib/store';
 import { use$ } from '@legendapp/state/react';
 import { ChevronRight } from 'lucide-react';
@@ -86,14 +87,14 @@ export default function Layout({
 }: Readonly<{ children: ReactNode }>) {
   const { address, chainId } = useAccount();
   const { usdcBalance } = useGetTokenBalances(address!, 1);
-
+  const isMobile = useIsMobile();
   return (
-    <SidebarProvider defaultOpen={false}>
+    <SidebarProvider defaultOpen={!isMobile}>
       <AppSidebar />
       <SidebarInset>
         <header className='flex h-28 shrink-0 items-center gap-2'>
           <div className='flex w-full items-center gap-2 px-4'>
-            <SidebarTrigger onlyShowWhen='closed' />
+            <SidebarTrigger />
             <div className='ml-auto mt-2 flex flex-row items-start md:flex-row'>
               {address ? <PickNetwork /> : null}
               <div className='flex flex-col items-center gap-2'>

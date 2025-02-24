@@ -119,10 +119,7 @@ export function NavMain({ items }: { items: NavItem[] }) {
       <SidebarMenu className='flex h-full flex-col'>
         <div className='mt-auto'>
           <SidebarMenuItem className='mb-8 ml-6 pl-6'>
-            <SidebarTrigger
-              onlyShowWhen='open'
-              className='h-[33px] w-[33px] rounded-full text-black'
-            />
+            <SidebarTrigger className='h-[33px] w-[33px] rounded-full text-black' />
           </SidebarMenuItem>
 
           <div className='mb-16 ml-6 mr-6 flex flex-1 flex-row items-center justify-between gap-2 pl-6 pr-6'>
