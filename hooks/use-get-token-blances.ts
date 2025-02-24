@@ -1,12 +1,12 @@
 'use client';
 import useEthersProvider from '@/services/blockchain/hooks/useEthersProvider';
-import { Contract, ethers } from 'ethers';
-import { useEffect, useState } from 'react';
 import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contracts';
+import { ethers } from 'ethers';
+import { useEffect, useState } from 'react';
 
 export default function useGetTokenBalances(address: string, txUpdate: number) {
   const provider = useEthersProvider();
-  const {usdc} = useSafeYieldsContract();
+  const { usdc } = useSafeYieldsContract();
 
   const [usdcBalance, setUsdcBalance] = useState(0);
   const [safeBalance, setSafeBalance] = useState(0);
@@ -20,7 +20,6 @@ export default function useGetTokenBalances(address: string, txUpdate: number) {
         // const SAFE_CONTRACT_ = SAFE_CONTRACT.connect(provider) as Contract;
 
         const usdcBalance_ = await usdc.balanceOf(address);
-        console.log(usdcBalance_);
         setUsdcBalance(Number(ethers.formatUnits(usdcBalance_, 6)));
       } catch (err) {}
     };

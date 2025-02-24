@@ -86,7 +86,7 @@ export default function Layout({
 }: Readonly<{ children: ReactNode }>) {
   const { address, chainId } = useAccount();
   const { usdcBalance } = useGetTokenBalances(address!, 1);
-  // const chainId = use$(chain$.chainId);
+
   return (
     <SidebarProvider defaultOpen={false}>
       <AppSidebar />
