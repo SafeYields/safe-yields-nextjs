@@ -84,9 +84,9 @@ const PickNetwork = () => {
 export default function Layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
   const { usdcBalance } = useGetTokenBalances(address!, 1);
-  const chainId = use$(chain$.chainId);
+  // const chainId = use$(chain$.chainId);
   return (
     <SidebarProvider defaultOpen={false}>
       <AppSidebar />
