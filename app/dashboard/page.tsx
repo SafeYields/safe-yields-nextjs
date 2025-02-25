@@ -68,7 +68,7 @@ export default function Dashboard() {
   const latestData = dashboardHistory[dashboardHistory.length - 1] as
     | TradingHistory
     | undefined;
-  console.log('latest data: ', latestData);
+  // console.log('latest data: ', latestData);
 
   const apy = useMemo(
     () => calculateAPYFromHistory(dashboardHistory),
@@ -76,6 +76,7 @@ export default function Dashboard() {
   );
 
   const { userEquity, userPnl } = useGetVaultData(chainId, address, latestData);
+  // console.log('user equity: ', userEquity, 'user pnl: ', userPnl);
 
   useEffect(() => {
     //NB staking only on arbitrum
