@@ -27,22 +27,21 @@ export const useGetVaultData = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Promise.allSettled([userSharesRequest, totalShares, vaultUsdcBalanceRequest]).then(
       (results: any) => {
-        const parsedUserShare = +ethers.formatUnits(results[0].value);
-        const parsedTotalShares = +ethers.formatUnits(results[1].value);
-        const vaultUsdcBalance = +ethers.formatUnits(results[2].value);
+        const parsedUserShare = +ethers.formatUnits(results[0].value, 6);
+        const parsedTotalShares = +ethers.formatUnits(results[1].value, 6);
+        const vaultUsdcBalance = +ethers.formatUnits(results[2].value, 6);
 
+       
         // if (!performanceData) {
         //   setVaultData({...vaultData, vaultUdcBalance: vaultUsdcBalance.toFixed(3)});
         //   return;
         // }
-        const totalEquity = parseFloat(performanceData.equity || '0') + vaultUsdcBalance;
+        const totalEquity = parseFloat(performanceData?.equity || '0') + vaultUsdcBalance;
         const userEquity =
-          (parsedUserShare * totalEquity ) / parsedTotalShares;
+          (parsedUserShare * totalEquity) / parsedTotalShares;
         
-        const userPnl =
-          ((+performanceData.pnl + +performanceData.unrealizedPnl) *
-            parsedUserShare) /
-          parsedTotalShares;
+        const totalPnl = parseFloat(performanceData?.pnl || '0') + parseFloat(performanceData?.unrealizedPnl || '0');
+        const userPnl = (totalPnl * parsedUserShare) / parsedTotalShares;
 
         setVaultData({
           userShares: parsedUserShare.toFixed(3),
