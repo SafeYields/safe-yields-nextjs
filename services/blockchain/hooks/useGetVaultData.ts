@@ -40,10 +40,8 @@ export const useGetVaultData = (
         const userEquity =
           (parsedUserShare * totalEquity) / parsedTotalShares;
         
-        const userPnl =
-          ((+performanceData?.pnl + +performanceData?.unrealizedPnl) *
-            parsedUserShare) /
-          parsedTotalShares;
+        const totalPnl = parseFloat(performanceData?.pnl || '0') + parseFloat(performanceData?.unrealizedPnl || '0');
+        const userPnl = (totalPnl * parsedUserShare) / parsedTotalShares;
 
         setVaultData({
           userShares: parsedUserShare.toFixed(3),
