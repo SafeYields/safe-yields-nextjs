@@ -9,7 +9,7 @@ import { arbitrum, flowMainnet } from 'wagmi/chains';
 export const config = getDefaultConfig({
   appName: 'SafeYields',
   projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
-  chains: [arbitrum, flowMainnet],
+  chains: [flowMainnet, arbitrum],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 const queryClient = new QueryClient();

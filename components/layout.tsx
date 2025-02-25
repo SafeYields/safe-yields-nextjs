@@ -47,21 +47,6 @@ const PickNetwork = () => {
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup>
           <DropdownMenuRadioItem
-            value='Arbitrum'
-            className='flex justify-between hover:scale-95 focus:bg-[#4CFAC7]/20'
-            onSelect={() => {
-              chain$.setChainId(arbitrum.id);
-            }}
-          >
-            <span>Arbitrum</span>
-            <Image
-              src='/images/arbitrum.svg'
-              width='16'
-              height='16'
-              alt='arbitrum chain logo'
-            />
-          </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem
             value='Flow EVM'
             className='flex justify-between hover:scale-95 focus:bg-[#4CFAC7]/20'
             onSelect={() => {
@@ -74,6 +59,21 @@ const PickNetwork = () => {
               width='16'
               height='16'
               alt='flow chain logo'
+            />
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem
+            value='Arbitrum'
+            className='flex justify-between hover:scale-95 focus:bg-[#4CFAC7]/20'
+            onSelect={() => {
+              chain$.setChainId(arbitrum.id);
+            }}
+          >
+            <span>Arbitrum</span>
+            <Image
+              src='/images/arbitrum.svg'
+              width='16'
+              height='16'
+              alt='arbitrum chain logo'
             />
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
