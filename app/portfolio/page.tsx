@@ -79,7 +79,7 @@ export default function Wallet() {
         );
         console.log('approval hash: ', txHash);
         toast({
-          title: 'Request cancelled',
+          title: 'Request approved',
         });
       } catch (error) {
         console.error('error approving spending: ', error);
