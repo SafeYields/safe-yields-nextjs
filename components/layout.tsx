@@ -1,12 +1,12 @@
 'use client';
 import useGetTokenBalances from '@/hooks/use-get-token-blances';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { chain$, chainData } from '@/lib/store';
+import { account$, chainData } from '@/lib/store';
 import { use$ } from '@legendapp/state/react';
 import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import { ReactNode } from 'react';
-import { useAccount } from 'wagmi';
+import { useSwitchChain } from 'wagmi';
 import { arbitrum, flowMainnet } from 'wagmi/chains';
 import { AppSidebar } from './app-sidebar';
 import ConnectButton from './connect-button';
@@ -23,8 +23,9 @@ import {
 import { SidebarInset, SidebarProvider, SidebarTrigger } from './ui/sidebar';
 
 const PickNetwork = () => {
-  const chain = use$(chain$.chainId);
-  const data = chainData(chain);
+  const account = use$(account$);
+  const data = chainData(account.chainId);
+  const { switchChain } = useSwitchChain();
 
   return (
     <DropdownMenu>
@@ -45,12 +46,12 @@ const PickNetwork = () => {
       <DropdownMenuContent className='w-44 rounded-xl shadow-[0_0_8px_#4CFAC7]'>
         <DropdownMenuLabel>Networks</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup>
+        <DropdownMenuRadioGroup value={account.chainId?.toString()}>
           <DropdownMenuRadioItem
-            value='Flow EVM'
+            value={flowMainnet.id.toString()}
             className='flex justify-between hover:scale-95 focus:bg-[#4CFAC7]/20'
             onSelect={() => {
-              chain$.setChainId(flowMainnet.id);
+              switchChain({ chainId: flowMainnet.id });
             }}
           >
             <span>Flow EVM</span>
@@ -62,10 +63,10 @@ const PickNetwork = () => {
             />
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem
-            value='Arbitrum'
+            value={arbitrum.id.toString()}
             className='flex justify-between hover:scale-95 focus:bg-[#4CFAC7]/20'
             onSelect={() => {
-              chain$.setChainId(arbitrum.id);
+              switchChain({ chainId: arbitrum.id });
             }}
           >
             <span>Arbitrum</span>
@@ -85,9 +86,11 @@ const PickNetwork = () => {
 export default function Layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  const { address, chainId } = useAccount();
+  const { address, chainId } = use$(account$.get());
+  console.log(address);
   const { usdcBalance } = useGetTokenBalances(address!, 1);
   const isMobile = useIsMobile();
+
   return (
     <SidebarProvider defaultOpen={!isMobile}>
       <AppSidebar />

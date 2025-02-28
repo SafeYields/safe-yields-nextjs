@@ -1,12 +1,11 @@
 import { config } from '@/app/providers';
-import { toast } from '@/hooks/use-toast';
 import { observable } from '@legendapp/state';
 import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/local-storage';
 import { syncObservable } from '@legendapp/state/sync';
-import { getChainId, switchChain } from '@wagmi/core';
+import { getAccount, watchAccount } from '@wagmi/core';
 import { arbitrum, flowMainnet } from 'wagmi/chains';
 
-const chains: Record<TChain, { name: string; src: string }> = {
+const chains: Record<number, { name: string; src: string }> = {
   [arbitrum.id]: {
     name: 'Arbitrum',
     src: '/images/arbitrum.svg',
@@ -17,36 +16,24 @@ const chains: Record<TChain, { name: string; src: string }> = {
   },
 };
 
-type TChain = 42_161 | 747;
-
-interface IChainStore {
-  chainId: TChain | undefined;
-  setChainId: (chain: TChain) => void;
-}
-
-export function chainData(chain: TChain | undefined) {
+export function chainData(chain: number | undefined) {
   if (chain) {
     return chains[chain];
   }
   return undefined;
 }
 
-export const chain$ = observable<IChainStore>({
-  chainId: getChainId(config),
-  setChainId: async (chain) => {
-    switchChain(config, { chainId: chain })
-      .then(() => chain$.chainId.set(chain))
-      .catch(() =>
-        toast({
-          title: 'Sorry. Failed to change network',
-        }),
-      );
+export const account$ = observable(getAccount(config));
+
+watchAccount(config, {
+  onChange(account) {
+    account$.assign(account);
   },
 });
 
-syncObservable(chain$, {
+syncObservable(account$, {
   persist: {
-    name: 'chainId',
+    name: 'account',
     plugin: ObservablePersistLocalStorage,
   },
 });
