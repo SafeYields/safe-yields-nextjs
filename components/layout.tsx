@@ -1,16 +1,19 @@
 'use client';
-import useGetTokenBalances from '@/hooks/use-get-token-blances';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { Button } from '@/components/ui/button';
+import {
+  Navbar,
+  NavbarCenter,
+  NavbarLeft,
+  NavbarRight,
+} from '@/components/ui/navbar';
 import { account$, chainData } from '@/lib/store';
 import { use$ } from '@legendapp/state/react';
 import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ReactNode } from 'react';
 import { useSwitchChain } from 'wagmi';
 import { arbitrum, flowMainnet } from 'wagmi/chains';
-import { AppSidebar } from './app-sidebar';
-import ConnectButton from './connect-button';
-import { Button } from './ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,7 +23,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { SidebarInset, SidebarProvider, SidebarTrigger } from './ui/sidebar';
+import Navigation from './ui/navigation';
 
 const PickNetwork = () => {
   const account = use$(account$);
@@ -86,34 +89,34 @@ const PickNetwork = () => {
 export default function Layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  const { address, chainId } = use$(account$.get());
-  console.log(address);
-  const { usdcBalance } = useGetTokenBalances(address!, 1);
-  const isMobile = useIsMobile();
-
   return (
-    <SidebarProvider defaultOpen={!isMobile}>
-      <AppSidebar />
-      <SidebarInset>
-        <header className='flex h-28 shrink-0 items-center gap-2'>
-          <div className='flex w-full items-center gap-2 px-4'>
-            <SidebarTrigger />
-            <div className='ml-auto mt-2 flex flex-row items-start md:flex-row'>
-              {address && <PickNetwork />}
-              <div className='flex flex-col items-center gap-2'>
-                <ConnectButton />
-                {address && (
-                  <span className="font-['Space Grotesk'] text-sm font-normal text-white/70">
-                    Your balance: {usdcBalance.toFixed(2)}{' '}
-                    {chainId == arbitrum.id ? 'USDC' : 'stgUSDC'}
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
-        </header>
-        <div className='flex flex-1 flex-col gap-4 p-4 pt-0'>{children}</div>
-      </SidebarInset>
-    </SidebarProvider>
+    <>
+      <header className='sticky top-0 z-50 -mb-4 px-4 pb-4 shadow'>
+        <div className='absolute left-0 h-24 w-full bg-background/15'></div>
+        <div className='relative mx-auto max-w-container'>
+          <Navbar>
+            <NavbarLeft>
+              <Link href='https://www.safeyields.io'>
+                <Image
+                  src='/images/safeYieldsLogo.png'
+                  alt=''
+                  width='180'
+                  height='180'
+                />
+              </Link>
+            </NavbarLeft>
+            <NavbarCenter>
+              <Navigation />
+            </NavbarCenter>
+            <NavbarRight>
+              <PickNetwork />
+            </NavbarRight>
+          </Navbar>
+        </div>
+      </header>
+      <div className='flex flex-1 flex-col gap-4 p-4 pt-0 h-full'>
+        {children}
+      </div>
+    </>
   );
 }

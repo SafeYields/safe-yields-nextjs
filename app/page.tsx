@@ -1,11 +1,21 @@
+import Image from 'next/image';
+
 export default function Home() {
   return (
-    <div className='my-8 flex h-full w-full flex-col items-center space-y-5 font-poppins'>
-      <p className='text-4xl font-bold text-white'>Welcome to</p>
-      <h1 className='text-6xl font-bold text-[#4CFAC7]'>SafeYieldsAI</h1>
-      <p className='flex flex-col text-xl text-white/80'>
-        <span>A DeFi ecosystem for AI-driven portfolio management</span>
-      </p>
-    </div>
+    <>
+      <div className='flex items-start justify-start mt-16 px-16 relative'>
+        <h3 className='scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0 max-w-md'>
+          Emma AI guides you through selecting optimal yield strategies for{' '}
+          <span className='text-[#4CFAC7]'>sustainable growth</span>
+        </h3>
+        <Image
+          src='/images/hero.png'
+          width='695'
+          height='692'
+          alt='safeyields character'
+          className='inline-block absolute left-55'
+        />
+      </div>
+    </>
   );
 }
