@@ -1,7 +1,8 @@
 'use client';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToastAction } from '@/components/ui/toast';
@@ -14,9 +15,34 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { useState } from 'react';
+import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
 import { useAccount } from 'wagmi';
 
-export default function Wallet() {
+
+const chartConfig = {
+  pnl: {
+    label: 'Pnl',
+    color: 'hsla(162, 95%, 64%, 1)',
+  },
+} satisfies ChartConfig;
+
+const chartData = [
+  { updateTime: 'Jan', pnl: 75 },
+  { updateTime: 'Feb', pnl: 80 },
+  { updateTime: 'Mar', pnl: 85 },
+  { updateTime: 'Apr', pnl: 90 },
+  { updateTime: 'May', pnl: 92 },
+  { updateTime: 'Jun', pnl: 88 },
+  { updateTime: 'Jul', pnl: 85 },
+  { updateTime: 'Aug', pnl: 80 },
+  { updateTime: 'Sep', pnl: 78 },
+  { updateTime: 'Oct', pnl: 82 },
+  { updateTime: 'Nov', pnl: 90 },
+  { updateTime: 'Dec', pnl: 95 },
+];
+
+
+export default function Vaults() {
   const { toast } = useToast();
   const { openConnectModal } = useConnectModal();
   const { address } = useAccount();
@@ -306,7 +332,48 @@ export default function Wallet() {
             </div>
           </div>
         </TabsContent>
-        <TabsContent value='chart'>Hello</TabsContent>
+        <TabsContent value='chart'>
+      <Card className='bg-gradient w-3/4 rounded-2xl text-primary bg-chart mx-auto'>
+        <CardHeader>
+          <CardTitle></CardTitle>
+          <CardDescription>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={chartConfig}>
+            <LineChart
+              accessibilityLayer
+              data={chartData}
+              margin={{
+                left: 12,
+                right: 12,
+              }}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey='updateTime'
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(value) => value.slice(0, 3)}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
+              />
+              <Line
+                dataKey='pnl'
+                type='natural'
+                stroke='var(--color-pnl)'
+                strokeWidth={2}
+                dot={false}
+              />
+            </LineChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
+          
+        </TabsContent>
       </Tabs>
     </div>
   );
