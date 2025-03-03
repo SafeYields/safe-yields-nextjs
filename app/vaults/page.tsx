@@ -1,8 +1,19 @@
 'use client';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToastAction } from '@/components/ui/toast';
@@ -17,7 +28,6 @@ import { AlertCircle, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
 import { useAccount } from 'wagmi';
-
 
 const chartConfig = {
   pnl: {
@@ -40,7 +50,6 @@ const chartData = [
   { updateTime: 'Nov', pnl: 90 },
   { updateTime: 'Dec', pnl: 95 },
 ];
-
 
 export default function Vaults() {
   const { toast } = useToast();
@@ -289,29 +298,28 @@ export default function Vaults() {
           </p>
           <ul className='my-6 ml-6 list-disc [&>li]:mt-2'>
             <li>
-              <span className='font-bold pr-2'>Automatic Adjustments:</span>
-              Responds dynamically to market changes to ensure optimal
-              positioning.
+              <span className='font-bold'>Automatic Adjustments:</span> Responds
+              dynamically to market changes to ensure optimal positioning.
             </li>
             <li>
-              <span className='font-bold pr-2'>Data-Driven Decisions:</span>
-              Uses real-time market data for enhanced decision-making on entries
-              and exits.
+              <span className='font-bold'>Data-Driven Decisions:</span> Uses
+              real-time market data for enhanced decision-making on entries and
+              exits.
             </li>
             <li>
-              <span className='font-bold pr-2'>Enhanced Risk Management:</span>
+              <span className='font-bold'>Enhanced Risk Management:</span>{' '}
               Employs stringent risk controls to mitigate exposure and enhance
               security.
             </li>
           </ul>
           <p className='leading-7 [&:not(:first-child)]:mt-6'>
             his strategy integrates advanced trading techniques with
-            straightforward execution, providing a reliable tool for
-            <span className='text-[#99f] font-bold px-2'>
+            straightforward execution, providing a reliable tool for{' '}
+            <span className='text-[#99f] font-bold '>
               diversifying your portfolio
-            </span>
-            and
-            <span className='text-[#99f] font-bold px-2'>
+            </span>{' '}
+            and{' '}
+            <span className='text-[#99f] font-bold'>
               achieving consistent returns.
             </span>
           </p>
@@ -333,46 +341,44 @@ export default function Vaults() {
           </div>
         </TabsContent>
         <TabsContent value='chart'>
-      <Card className='bg-gradient w-3/4 rounded-2xl text-primary bg-chart mx-auto'>
-        <CardHeader>
-          <CardTitle></CardTitle>
-          <CardDescription>
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig}>
-            <LineChart
-              accessibilityLayer
-              data={chartData}
-              margin={{
-                left: 12,
-                right: 12,
-              }}
-            >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey='updateTime'
-                tickLine={false}
-                axisLine={false}
-                tickMargin={8}
-                tickFormatter={(value) => value.slice(0, 3)}
-              />
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
-              />
-              <Line
-                dataKey='pnl'
-                type='natural'
-                stroke='var(--color-pnl)'
-                strokeWidth={2}
-                dot={false}
-              />
-            </LineChart>
-          </ChartContainer>
-        </CardContent>
-      </Card>
-          
+          <Card className='bg-gradient w-3/4 rounded-2xl text-primary bg-chart mx-auto'>
+            <CardHeader>
+              <CardTitle></CardTitle>
+              <CardDescription></CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer config={chartConfig}>
+                <LineChart
+                  accessibilityLayer
+                  data={chartData}
+                  margin={{
+                    left: 12,
+                    right: 12,
+                  }}
+                >
+                  <CartesianGrid vertical={false} />
+                  <XAxis
+                    dataKey='updateTime'
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    tickFormatter={(value) => value.slice(0, 3)}
+                  />
+                  <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent hideLabel />}
+                  />
+                  <Line
+                    dataKey='pnl'
+                    type='natural'
+                    stroke='var(--color-pnl)'
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                </LineChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>
