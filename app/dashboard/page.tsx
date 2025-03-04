@@ -13,6 +13,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+import { ToastAction } from '@/components/ui/toast';
+import { useToast } from '@/hooks/use-toast';
 import { calculateAPYFromHistory, formatMonthYear } from '@/lib/utils';
 import { useGetDashboardData } from '@/services/api/hooks/useGetDashboardData';
 import {
@@ -21,10 +23,11 @@ import {
 } from '@/services/blockchain/common';
 import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
 import { useGetVaultData } from '@/services/blockchain/hooks/useGetVaultData';
+import { useUserMerkleProof } from '@/services/blockchain/hooks/useUserMerkleProof';
 import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contracts';
 import { TradingHistory } from '@/types/dashboard.types';
 import { ethers, ZeroAddress } from 'ethers';
-import { DollarSign } from 'lucide-react';
+import { DollarSign, Loader2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
 import { useAccount } from 'wagmi';
@@ -52,8 +55,11 @@ const chartData = [
 ];
 
 export default function Dashboard() {
+  const { toast } = useToast();
   const [sayStaked, setSayStaked] = useState('0');
   const { address, chainId } = useAccount();
+  const [loader, setLoader] = useState(false);
+
   const signer = useEthersSigner();
 
   const { sayStaker, sayAirdrop } = useSafeYieldsContract(signer);
@@ -78,6 +84,11 @@ export default function Dashboard() {
   const { userEquity, userPnl } = useGetVaultData(chainId, address, latestData);
   // console.log('user equity: ', userEquity, 'user pnl: ', userPnl);
 
+  const { merkleProof } = useUserMerkleProof(address!);
+
+  const isAirdropEligible =
+    Array.isArray(merkleProof?.proof) && merkleProof?.proof.length > 0;
+
   useEffect(() => {
     //NB staking only on arbitrum
     if (!address || chainId !== 42161) return;
@@ -95,16 +106,13 @@ export default function Dashboard() {
   const handleClaimAirdrop = async () => {
     if (!address) return;
     const data = getMerkleProof(address);
-    console.log('user: ', address, 'proof: ', data);
-    if (!data.proof.length) {
-      console.log('user not eligible for airdrop');
-    }
+
     if (await sayAirdrop.hasClaimed(address)) {
-      console.error('user has already claimed airdrop');
-      //TODO: show error message to user
-      return;
+      return toast({
+        title: 'User has already claimed airdrop',
+      });
     }
-    //TODO: show loading spinner
+    setLoader(true);
     try {
       const tx = await sayAirdrop.stakeAndVestSayTokens(
         data.amount,
@@ -113,12 +121,27 @@ export default function Dashboard() {
       const receipt = await tx.wait();
       const hash = receipt!.hash;
       console.log('tx hash: ', hash);
-      //TODO show success message to user with tx hash
+      return toast({
+        title: 'Transaction Successful!',
+        description: `Your transaction was successful. Tx Hash: ${hash}`, // Shortened hash for readability
+        action: (
+          <ToastAction
+            altText='View on Explorer'
+            onClick={() =>
+              window.open(`https://arbiscan.io/tx/${hash}`, '_blank')
+            }
+          >
+            View
+          </ToastAction>
+        ),
+      });
     } catch (error) {
       console.error('error claiming airdrop', error);
-      //TODO show error message to user
+      return toast({
+        title: 'Error claiming airdrop',
+      });
     } finally {
-      //TODO: hide loading spinner
+      setLoader(false);
     }
   };
   return (
@@ -134,9 +157,17 @@ export default function Dashboard() {
                 {airdropAmount.toString()}
               </span>
               <button
-                onClick={handleClaimAirdrop}
-                className='my-1 rounded-full bg-[#9999FF] px-5 text-xs font-bold text-white'
+                onClick={(e) => {
+                  if (isAirdropEligible) {
+                    console.log('clicked');
+                    handleClaimAirdrop();
+                  }
+                }}
+                className={`my-1 flex items-center justify-center gap-2 rounded-full text-xs font-bold text-white transition-all duration-200
+            ${!isAirdropEligible ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#9999FF]'} 
+            ${loader ? 'px-9 py-2 text-sm' : 'px-7 py-2'}`}
               >
+                {loader && <Loader2 className='animate-spin' />}
                 Claim
               </button>
             </div>
