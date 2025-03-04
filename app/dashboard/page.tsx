@@ -21,9 +21,9 @@ import {
   getMerkleProof,
   getUserAirdropAmount,
 } from '@/services/blockchain/common';
+import { SupportedChain } from '@/services/blockchain/constants/addresses';
 import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
 import { useGetVaultData } from '@/services/blockchain/hooks/useGetVaultData';
-import { useUserMerkleProof } from '@/services/blockchain/hooks/useUserMerkleProof';
 import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contracts';
 import { TradingHistory } from '@/types/dashboard.types';
 import { ethers, ZeroAddress } from 'ethers';
@@ -31,6 +31,7 @@ import { DollarSign, Loader2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
 import { useAccount } from 'wagmi';
+import { set } from 'zod';
 
 const chartConfig = {
   pnl: {
@@ -57,6 +58,8 @@ const chartData = [
 export default function Dashboard() {
   const { toast } = useToast();
   const [sayStaked, setSayStaked] = useState('0');
+  const [hasClaimedAirdrop, setHasClaimedAirdrop] = useState(false);
+  const [isAirdropEligible, setIsAirdropEligible] = useState(false);
   const { address, chainId } = useAccount();
   const [loader, setLoader] = useState(false);
 
@@ -69,7 +72,7 @@ export default function Dashboard() {
     () => (dashboardData?.history ?? []) as TradingHistory[],
     [dashboardData],
   );
-  console.log('dashboard data: ', dashboardData);
+  //console.log('dashboard data: ', dashboardData);
   const firstData = dashboardHistory[0] as TradingHistory | undefined;
   const latestData = dashboardHistory[dashboardHistory.length - 1] as
     | TradingHistory
@@ -84,11 +87,6 @@ export default function Dashboard() {
   const { userEquity, userPnl } = useGetVaultData(chainId, address, latestData);
   // console.log('user equity: ', userEquity, 'user pnl: ', userPnl);
 
-  const { merkleProof } = useUserMerkleProof(address!);
-
-  const isAirdropEligible =
-    Array.isArray(merkleProof?.proof) && merkleProof?.proof.length > 0;
-
   useEffect(() => {
     //NB staking only on arbitrum
     if (!address || chainId !== 42161) return;
@@ -99,6 +97,24 @@ export default function Dashboard() {
       })
       .catch(() => {});
   }, [address, sayStaker, chainId]);
+
+  useEffect(() => { 
+    if (!address || chainId !== SupportedChain.Arbitrum) {
+      setIsAirdropEligible(false);
+      return;
+    }
+    const airdropData = getUserAirdropAmount(address);
+    if (!airdropData || airdropData.amount === 0) {
+      setIsAirdropEligible(false);
+      return
+    } else {
+      setIsAirdropEligible(true);
+    }
+
+    sayAirdrop.hasClaimed(address).then((data) => {
+      setHasClaimedAirdrop(data);
+    });
+  }, [sayAirdrop, address, chainId]);
 
   const airdropAmount =
     getUserAirdropAmount(address || ZeroAddress)?.amount ?? 0.0;
@@ -135,6 +151,7 @@ export default function Dashboard() {
           </ToastAction>
         ),
       });
+      setHasClaimedAirdrop(true);
     } catch (error) {
       console.error('error claiming airdrop', error);
       return toast({
@@ -158,17 +175,17 @@ export default function Dashboard() {
               </span>
               <button
                 onClick={(e) => {
-                  if (isAirdropEligible) {
-                    console.log('clicked');
+                  if (isAirdropEligible && !hasClaimedAirdrop) {
+                    //console.log('clicked');
                     handleClaimAirdrop();
                   }
                 }}
                 className={`my-1 flex items-center justify-center gap-2 rounded-full text-xs font-bold text-white transition-all duration-200
-            ${!isAirdropEligible ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#9999FF]'} 
+            ${!isAirdropEligible || hasClaimedAirdrop ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#9999FF]'} 
             ${loader ? 'px-9 py-2 text-sm' : 'px-7 py-2'}`}
               >
                 {loader && <Loader2 className='animate-spin' />}
-                Claim
+                {!hasClaimedAirdrop? "Claim" : "Claimed"}
               </button>
             </div>
           </div>
