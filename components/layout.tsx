@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/navbar';
 import { account$, chainData } from '@/lib/store';
 import { use$ } from '@legendapp/state/react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Menu } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ReactNode } from 'react';
@@ -24,7 +24,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import Navigation from './ui/navigation';
+import Navigation, { TLink } from './ui/navigation';
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 
 const PickNetwork = () => {
   const account = use$(account$);
@@ -96,6 +97,39 @@ const PickNetwork = () => {
   );
 };
 
+const links: TLink[] = [
+  {
+    title: 'Home',
+    href: '/',
+  },
+  {
+    title: 'Dashboard',
+    href: '/dashboard',
+  },
+  {
+    title: 'Emma AI (beta)',
+    href: '/chat',
+  },
+  {
+    title: 'Vaults',
+    href: '/vaults',
+  },
+  {
+    title: 'Links',
+    href: '#',
+    items: [
+      {
+        title: 'Website',
+        href: 'https://safeyields.io',
+      },
+      {
+        title: 'Whitepaper',
+        href: 'https://safeyields.io',
+      },
+    ],
+  },
+];
+
 export default function Layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
@@ -116,10 +150,34 @@ export default function Layout({
               </Link>
             </NavbarLeft>
             <NavbarCenter>
-              <Navigation />
+              <Navigation links={links} />
             </NavbarCenter>
             <NavbarRight>
               <PickNetwork />
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    className='shrink-0 md:hidden'
+                  >
+                    <Menu className='h-5 w-5' />
+                    <span className='sr-only'>Toggle navigation menu</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side='right'>
+                  <nav className='grid gap-6 text-lg font-medium'>
+                    {links.map(({ title, href }) => (
+                      <Link
+                        href={href}
+                        className='flex items-center gap-2 text-xl font-bold'
+                      >
+                        <span>{title}</span>
+                      </Link>
+                    ))}
+                  </nav>
+                </SheetContent>
+              </Sheet>
             </NavbarRight>
           </Navbar>
         </div>

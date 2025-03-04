@@ -4,6 +4,7 @@ import Link from 'next/link';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -13,45 +14,11 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from './navigation-menu';
-import { usePathname } from 'next/navigation';
 
-type TLink = { title: string; href: string; items?: TLink[] };
+export type TLink = { title: string; href: string; items?: TLink[] };
 
-const links: TLink[] = [
-  {
-    title: 'Home',
-    href: '/',
-  },
-  {
-    title: 'Dashboard',
-    href: '/dashboard',
-  },
-  {
-    title: 'Emma AI (beta)',
-    href: '/chat',
-  },
-  {
-    title: 'Vaults',
-    href: '/vaults',
-  },
-  {
-    title: 'Links',
-    href: '#',
-    items: [
-      {
-        title: 'Website',
-        href: 'https://safeyields.io',
-      },
-      {
-        title: 'Whitepaper',
-        href: 'https://safeyields.io',
-      },
-    ],
-  },
-];
-
-export default function Navigation() {
-  const path = usePathname()
+export default function Navigation({ links }: { links: TLink[] }) {
+  const path = usePathname();
   return (
     <NavigationMenu className='hidden md:flex'>
       <NavigationMenuList>
@@ -74,7 +41,10 @@ export default function Navigation() {
           ) : (
             <NavigationMenuItem key={title}>
               <Link href={href}>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()} active={path == href}>
+                <NavigationMenuLink
+                  className={navigationMenuTriggerStyle()}
+                  active={path == href}
+                >
                   {title}
                 </NavigationMenuLink>
               </Link>
