@@ -22,16 +22,16 @@ export function chainData(chain: number | undefined) {
   }
   return undefined;
 }
-const account = getAccount(config)
-delete account.connector
+const account = getAccount(config);
+delete account.connector;
 
 export const account$ = observable(account);
 
 watchAccount(config, {
   onChange(account) {
-    console.log(account)
-    delete account.connector
-    account$.assign(account)
+    console.log(account);
+    delete account.connector;
+    account$.assign(account);
   },
 });
 

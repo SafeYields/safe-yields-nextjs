@@ -24,7 +24,7 @@ export default function ConnectButton() {
             <Button
               onClick={openChainModal}
               type='button'
-              variant="ghost"
+              variant='ghost'
               className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 border-2 border-[#4CFAC7]'
             >
               {account.displayName}

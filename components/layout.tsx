@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { ReactNode } from 'react';
 import { useSwitchChain } from 'wagmi';
 import { arbitrum, flowMainnet } from 'wagmi/chains';
+import ConnectButton from './connect-button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,7 +25,6 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import Navigation from './ui/navigation';
-import ConnectButton from './connect-button';
 
 const PickNetwork = () => {
   const account = use$(account$);
@@ -32,13 +32,18 @@ const PickNetwork = () => {
   const { switchChain } = useSwitchChain();
   return (
     <>
-      {account.isConnected &&
+      {account.isConnected && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 bg-[#4CFAC7] gap-4'>
               {data ? (
                 <>
-                  <Image src={data.src} width='16' height='16' alt='chain logo' />
+                  <Image
+                    src={data.src}
+                    width='16'
+                    height='16'
+                    alt='chain logo'
+                  />
                   {data.name}
                 </>
               ) : (
@@ -85,7 +90,7 @@ const PickNetwork = () => {
             </DropdownMenuRadioGroup>
           </DropdownMenuContent>
         </DropdownMenu>
-      }
+      )}
       <ConnectButton />
     </>
   );
