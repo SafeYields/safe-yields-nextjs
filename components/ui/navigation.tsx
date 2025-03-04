@@ -13,6 +13,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from './navigation-menu';
+import { usePathname } from 'next/navigation';
 
 type TLink = { title: string; href: string; items?: TLink[] };
 
@@ -50,6 +51,7 @@ const links: TLink[] = [
 ];
 
 export default function Navigation() {
+  const path = usePathname()
   return (
     <NavigationMenu className='hidden md:flex'>
       <NavigationMenuList>
@@ -72,7 +74,7 @@ export default function Navigation() {
           ) : (
             <NavigationMenuItem key={title}>
               <Link href={href}>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()} active={path == href}>
                   {title}
                 </NavigationMenuLink>
               </Link>
