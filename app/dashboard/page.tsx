@@ -68,6 +68,7 @@ function Dashboard() {
     return 0;
   });
 
+export default function Dashboard() {
   const [sayStaked, setSayStaked] = useState('0');
   const [hasClaimedAirdrop, setHasClaimedAirdrop] = useState(false);
   const [isAirdropEligible, setIsAirdropEligible] = useState(false);
@@ -80,6 +81,11 @@ function Dashboard() {
   const apy = use$(() => plutoTradingHistroy$.apy.get());
   const todays_pnl = use$(() => tradingHistroy$.todays_pnl.get());
   const history = use$(() => tradingHistroy$.history.get());
+
+  const { merkleProof } = useUserMerkleProof(address!);
+
+  const isAirdropEligible =
+    Array.isArray(merkleProof?.proof) && merkleProof?.proof.length > 0;
 
   useEffect(() => {
     //NB staking only on arbitrum
