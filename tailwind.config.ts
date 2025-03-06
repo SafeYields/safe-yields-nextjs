@@ -9,11 +9,18 @@ export default {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        'custom': '2px 0px 4.3px 0px hsl(var(--brand-1))'
+      },
       fontFamily: {
         spaceGrotesk: ['Space Grotesk', 'IBM Plex Sans'],
         poppins: ['Poppins'],
       },
       colors: {
+        brand: {
+          1: "hsl(var(--brand-1))",
+          2: "hsl(var(--brand-2))"
+        },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

@@ -236,7 +236,7 @@ export default function Vaults() {
   return (
     <div className='mt-8 py-4 grid grid-cols-1 gap-16 md:grid-cols-[350px_2fr] items-start px-8'>
       <div className='flex flex-grow flex-col gap-12'>
-        <Alert className='bg-[#99f]'>
+        <Alert className='bg-brand-2'>
           <AlertCircle className='h-4 w-4' />
           <AlertTitle>Warning</AlertTitle>
           <AlertDescription>
@@ -251,14 +251,14 @@ export default function Vaults() {
             <TabsList className='w-full justify-start bg-transparent py-6'>
               <TabsTrigger
                 value='deposit'
-                className='max-w-min data-[state=active]:bg-transparent data-[state=active]:text-[#99f]'
+                className='max-w-min data-[state=active]:bg-transparent data-[state=active]:text-brand-2'
               >
                 Deposit
               </TabsTrigger>
               <TabsTrigger
                 value='withdraw'
                 disabled
-                className='max-w-min data-[state=active]:bg-transparent data-[state=active]:text-[#99f]'
+                className='max-w-min data-[state=active]:bg-transparent data-[state=active]:text-brand-2'
               >
                 Withdraw
               </TabsTrigger>
@@ -281,7 +281,7 @@ export default function Vaults() {
                 <CardFooter>
                   <Button
                     onClick={handleEmmaVaultDeposit}
-                    className='w-full rounded-full bg-[#99f] text-white'
+                    className='w-full rounded-full bg-brand-2 text-white'
                     disabled={depositLoader}
                   >
                     {depositLoader && <Loader2 className='animate-spin' />}
@@ -308,7 +308,7 @@ export default function Vaults() {
                 <CardFooter>
                   <Button
                     onClick={handleEmmaVaultWithdraw}
-                    className='w-full rounded-full bg-[#99f] text-white'
+                    className='w-full rounded-full bg-brand-2 text-white'
                   >
                     Withdraw
                   </Button>
@@ -367,45 +367,45 @@ export default function Vaults() {
           <p className='leading-7 [&:not(:first-child)]:mt-6'>
             his strategy integrates advanced trading techniques with
             straightforward execution, providing a reliable tool for{' '}
-            <span className='text-[#99f] font-bold '>
+            <span className='text-brand-2 font-bold '>
               diversifying your portfolio
             </span>{' '}
             and{' '}
-            <span className='text-[#99f] font-bold'>
+            <span className='text-brand-2 font-bold'>
               achieving consistent returns.
             </span>
           </p>
           <div className='grid-cards-layout mt-4 h-18'>
             <Separator
               decorative
-              className='bg-[#4CFAC7] shrink-0 h-[1px] w-full md:h-full md:w-[1px] hidden md:block shadow-custom'
+              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] hidden md:block shadow-custom'
             />
             <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2'>
               <span className='font-medium text-xs'>Average APY</span>
-              <span className='font-bold text-[#4CFAC7]'>34%</span>
+              <span className='font-bold text-brand-1'>34%</span>
             </div>
             <Separator
               decorative
-              className='bg-[#4CFAC7] shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
+              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
             />
-            
+
             <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2'>
               <span className='font-medium text-xs'>Total Value Locked</span>
-              <span className='font-bold text-[#4CFAC7]'>34USDC</span>
+              <span className='font-bold text-brand-1'>34USDC</span>
             </div>
             <Separator
               decorative
-              className='bg-[#4CFAC7] shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
+              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
             />
             <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2'>
               <span className='font-medium text-xs'>
                 Historical Max. Downdrawn
               </span>
-              <span className='font-bold text-[#4CFAC7]'>34%</span>
+              <span className='font-bold text-brand-1'>34%</span>
             </div>
             <Separator
               decorative
-              className='bg-[#4CFAC7] shrink-0 h-[1px] w-full md:h-full md:w-[1px] hidden md:block shadow-custom'
+              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] hidden md:block shadow-custom'
             />
           </div>
         </TabsContent>
