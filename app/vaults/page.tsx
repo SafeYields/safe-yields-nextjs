@@ -23,6 +23,7 @@ import { trimDecimalPlaces } from '@/lib/utils';
 import { approveSpending, getAllowance } from '@/services/blockchain/common';
 import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
 import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contracts';
+import { Root as Separator } from '@radix-ui/react-separator';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
 import { AlertCircle, Loader2 } from 'lucide-react';
@@ -324,21 +325,38 @@ export default function Vaults() {
               achieving consistent returns.
             </span>
           </p>
-          <div className='grid grid-cols-3 mt-4'>
-            <div className='flex flex-col justify-center items-center border-l-2 border-[#4CFAC7] h-18 gap-2'>
+          <div className='grid-cards-layout mt-4 h-18'>
+            <Separator
+              decorative
+              className='bg-[#4CFAC7] shrink-0 h-[1px] w-full md:h-full md:w-[1px] hidden md:block shadow-custom'
+            />
+            <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2'>
               <span className='font-medium text-xs'>Average APY</span>
               <span className='font-bold text-[#4CFAC7]'>34%</span>
             </div>
-            <div className='flex flex-col justify-center items-center border-l-2 border-[#4CFAC7] h-18 gap-2'>
+            <Separator
+              decorative
+              className='bg-[#4CFAC7] shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
+            />
+            
+            <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2'>
               <span className='font-medium text-xs'>Total Value Locked</span>
               <span className='font-bold text-[#4CFAC7]'>34USDC</span>
             </div>
-            <div className='flex flex-col justify-center items-center border-x-2 border-[#4CFAC7] h-18 gap-2'>
+            <Separator
+              decorative
+              className='bg-[#4CFAC7] shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
+            />
+            <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2'>
               <span className='font-medium text-xs'>
                 Historical Max. Downdrawn
               </span>
               <span className='font-bold text-[#4CFAC7]'>34%</span>
             </div>
+            <Separator
+              decorative
+              className='bg-[#4CFAC7] shrink-0 h-[1px] w-full md:h-full md:w-[1px] hidden md:block shadow-custom'
+            />
           </div>
         </TabsContent>
         <TabsContent value='chart'>

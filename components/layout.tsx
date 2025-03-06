@@ -32,7 +32,7 @@ const PickNetwork = () => {
   const data = chainData(account.chainId);
   const { switchChain } = useSwitchChain();
   return (
-    <>
+    <div className='flex flex-row gap-2 hidden md:block'>
       {account.isConnected && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -93,7 +93,7 @@ const PickNetwork = () => {
         </DropdownMenu>
       )}
       <ConnectButton />
-    </>
+    </div>
   );
 };
 
