@@ -12,7 +12,7 @@ export default function ConnectButton() {
           return (
             <Button
               onClick={openConnectModal}
-              className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 bg-[#4CFAC7]'
+              className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 bg-brand-1'
             >
               Connect Wallet
             </Button>
@@ -25,7 +25,7 @@ export default function ConnectButton() {
               onClick={openChainModal}
               type='button'
               variant='ghost'
-              className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 border-2 border-[#4CFAC7]'
+              className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 border-2 border-brand-1'
             >
               {account.displayName}
             </Button>

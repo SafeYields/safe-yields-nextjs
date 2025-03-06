@@ -16,6 +16,14 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/hooks/use-toast';
@@ -52,6 +60,42 @@ const chartData = [
   { updateTime: 'Nov', pnl: 90 },
   { updateTime: 'Dec', pnl: 95 },
 ];
+
+const openPositions = [
+  {
+    pair: 'HBAR-USDT',
+    exchange: 'Binance',
+    sizeUSD: 6874.17,
+    currentPrice: 0.2342,
+    fundingPNL: undefined,
+  },
+  {
+    pair: 'HBAR-USDT',
+    exchange: 'Hyperliquid',
+    sizeUSD: -6874.17,
+    currentPrice: 0.2342,
+    fundingPNL: undefined,
+  },
+  {
+    pair: 'CELO-USDT',
+    exchange: 'Binance',
+    sizeUSD: 6874.17,
+    currentPrice: 0.2342,
+    fundingPNL: undefined,
+  },
+  {
+    pair: 'HBAR-USDT',
+    exchange: 'Hyperliquid',
+    sizeUSD: -6874.17,
+    currentPrice: 0.2342,
+    fundingPNL: undefined,
+  },
+];
+
+const currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
 
 export default function Vaults() {
   const { toast } = useToast();
@@ -192,7 +236,7 @@ export default function Vaults() {
   return (
     <div className='mt-8 py-4 grid grid-cols-1 gap-16 md:grid-cols-[350px_2fr] items-start px-8'>
       <div className='flex flex-grow flex-col gap-12'>
-        <Alert className='bg-[#99f]'>
+        <Alert className='bg-brand-2'>
           <AlertCircle className='h-4 w-4' />
           <AlertTitle>Warning</AlertTitle>
           <AlertDescription>
@@ -207,14 +251,14 @@ export default function Vaults() {
             <TabsList className='w-full justify-start bg-transparent py-6'>
               <TabsTrigger
                 value='deposit'
-                className='max-w-min data-[state=active]:bg-transparent data-[state=active]:text-[#99f]'
+                className='max-w-min data-[state=active]:bg-transparent data-[state=active]:text-brand-2'
               >
                 Deposit
               </TabsTrigger>
               <TabsTrigger
                 value='withdraw'
                 disabled
-                className='max-w-min data-[state=active]:bg-transparent data-[state=active]:text-[#99f]'
+                className='max-w-min data-[state=active]:bg-transparent data-[state=active]:text-brand-2'
               >
                 Withdraw
               </TabsTrigger>
@@ -237,7 +281,7 @@ export default function Vaults() {
                 <CardFooter>
                   <Button
                     onClick={handleEmmaVaultDeposit}
-                    className='w-full rounded-full bg-[#99f] text-white'
+                    className='w-full rounded-full bg-brand-2 text-white'
                     disabled={depositLoader}
                   >
                     {depositLoader && <Loader2 className='animate-spin' />}
@@ -264,7 +308,7 @@ export default function Vaults() {
                 <CardFooter>
                   <Button
                     onClick={handleEmmaVaultWithdraw}
-                    className='w-full rounded-full bg-[#99f] text-white'
+                    className='w-full rounded-full bg-brand-2 text-white'
                   >
                     Withdraw
                   </Button>
@@ -278,15 +322,21 @@ export default function Vaults() {
         <TabsList className='bg-transparent items-center flex'>
           <TabsTrigger
             value='info'
-            className='data-[state=active]:text-[#4CFAC7] data-[state=active]:font-bold text-lg'
+            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold text-lg'
           >
             Vault info
           </TabsTrigger>
           <TabsTrigger
             value='chart'
-            className='data-[state=active]:text-[#4CFAC7] data-[state=active]:font-bold text-lg'
+            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold text-lg'
           >
             Historical Performance Chart
+          </TabsTrigger>
+          <TabsTrigger
+            value='position'
+            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold text-lg'
+          >
+            Open Position
           </TabsTrigger>
         </TabsList>
         <TabsContent value='info'>
@@ -317,45 +367,45 @@ export default function Vaults() {
           <p className='leading-7 [&:not(:first-child)]:mt-6'>
             his strategy integrates advanced trading techniques with
             straightforward execution, providing a reliable tool for{' '}
-            <span className='text-[#99f] font-bold '>
+            <span className='text-brand-2 font-bold '>
               diversifying your portfolio
             </span>{' '}
             and{' '}
-            <span className='text-[#99f] font-bold'>
+            <span className='text-brand-2 font-bold'>
               achieving consistent returns.
             </span>
           </p>
           <div className='grid-cards-layout mt-4 h-18'>
             <Separator
               decorative
-              className='bg-[#4CFAC7] shrink-0 h-[1px] w-full md:h-full md:w-[1px] hidden md:block shadow-custom'
+              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] hidden md:block shadow-custom'
             />
             <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2'>
               <span className='font-medium text-xs'>Average APY</span>
-              <span className='font-bold text-[#4CFAC7]'>34%</span>
+              <span className='font-bold text-brand-1'>34%</span>
             </div>
             <Separator
               decorative
-              className='bg-[#4CFAC7] shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
+              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
             />
-            
+
             <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2'>
               <span className='font-medium text-xs'>Total Value Locked</span>
-              <span className='font-bold text-[#4CFAC7]'>34USDC</span>
+              <span className='font-bold text-brand-1'>34USDC</span>
             </div>
             <Separator
               decorative
-              className='bg-[#4CFAC7] shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
+              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
             />
             <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2'>
               <span className='font-medium text-xs'>
                 Historical Max. Downdrawn
               </span>
-              <span className='font-bold text-[#4CFAC7]'>34%</span>
+              <span className='font-bold text-brand-1'>34%</span>
             </div>
             <Separator
               decorative
-              className='bg-[#4CFAC7] shrink-0 h-[1px] w-full md:h-full md:w-[1px] hidden md:block shadow-custom'
+              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] hidden md:block shadow-custom'
             />
           </div>
         </TabsContent>
@@ -398,6 +448,39 @@ export default function Vaults() {
               </ChartContainer>
             </CardContent>
           </Card>
+        </TabsContent>
+        <TabsContent value='position'>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Pair</TableHead>
+                <TableHead>Exchange</TableHead>
+                <TableHead>Size USD</TableHead>
+                <TableHead>Current Price</TableHead>
+                <TableHead>Funding Pnl</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {openPositions.map((position, idx) => (
+                <>
+                  <TableRow
+                    key={`${idx}-${position.pair}`}
+                    className='even:text-brand-2 relative after:bottom-0 after:left-0 after:block after:absolute after:bg-brand-1  after:h-[1px] after:w-full shadow-brand-1 after:shadow-custom'
+                  >
+                    <TableCell className='font-bold'>{position.pair}</TableCell>
+                    <TableCell>{position.exchange}</TableCell>
+                    <TableCell>
+                      {currencyFormatter.format(position.sizeUSD)}
+                    </TableCell>
+                    <TableCell>
+                      {currencyFormatter.format(position.currentPrice)}
+                    </TableCell>
+                    <TableCell>{position.fundingPNL || 'N/A'}</TableCell>
+                  </TableRow>
+                </>
+              ))}
+            </TableBody>
+          </Table>
         </TabsContent>
       </Tabs>
     </div>
