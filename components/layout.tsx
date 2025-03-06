@@ -170,6 +170,7 @@ export default function Layout({
                     {links.map(({ title, href }) => (
                       <Link
                         href={href}
+                        key={title}
                         className='flex items-center gap-2 text-xl font-bold'
                       >
                         <span>{title}</span>
