@@ -16,6 +16,14 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/hooks/use-toast';
@@ -52,6 +60,42 @@ const chartData = [
   { updateTime: 'Nov', pnl: 90 },
   { updateTime: 'Dec', pnl: 95 },
 ];
+
+const openPositions = [
+  {
+    pair: 'HBAR-USDT',
+    exchange: 'Binance',
+    sizeUSD: 6874.17,
+    currentPrice: 0.2342,
+    fundingPNL: undefined,
+  },
+  {
+    pair: 'HBAR-USDT',
+    exchange: 'Hyperliquid',
+    sizeUSD: -6874.17,
+    currentPrice: 0.2342,
+    fundingPNL: undefined,
+  },
+  {
+    pair: 'CELO-USDT',
+    exchange: 'Binance',
+    sizeUSD: 6874.17,
+    currentPrice: 0.2342,
+    fundingPNL: undefined,
+  },
+  {
+    pair: 'HBAR-USDT',
+    exchange: 'Hyperliquid',
+    sizeUSD: -6874.17,
+    currentPrice: 0.2342,
+    fundingPNL: undefined,
+  },
+];
+
+const currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
 
 export default function Vaults() {
   const { toast } = useToast();
@@ -278,15 +322,21 @@ export default function Vaults() {
         <TabsList className='bg-transparent items-center flex'>
           <TabsTrigger
             value='info'
-            className='data-[state=active]:text-[#4CFAC7] data-[state=active]:font-bold text-lg'
+            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold text-lg'
           >
             Vault info
           </TabsTrigger>
           <TabsTrigger
             value='chart'
-            className='data-[state=active]:text-[#4CFAC7] data-[state=active]:font-bold text-lg'
+            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold text-lg'
           >
             Historical Performance Chart
+          </TabsTrigger>
+          <TabsTrigger
+            value='position'
+            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold text-lg'
+          >
+            Open Position
           </TabsTrigger>
         </TabsList>
         <TabsContent value='info'>
@@ -398,6 +448,39 @@ export default function Vaults() {
               </ChartContainer>
             </CardContent>
           </Card>
+        </TabsContent>
+        <TabsContent value='position'>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Pair</TableHead>
+                <TableHead>Exchange</TableHead>
+                <TableHead>Size USD</TableHead>
+                <TableHead>Current Price</TableHead>
+                <TableHead>Funding Pnl</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {openPositions.map((position, idx) => (
+                <>
+                  <TableRow
+                    key={`${idx}-${position.pair}`}
+                    className='even:text-brand-2 relative after:bottom-0 after:left-0 after:block after:absolute after:bg-brand-1  after:h-[1px] after:w-full shadow-brand-1 after:shadow-custom'
+                  >
+                    <TableCell className='font-bold'>{position.pair}</TableCell>
+                    <TableCell>{position.exchange}</TableCell>
+                    <TableCell>
+                      {currencyFormatter.format(position.sizeUSD)}
+                    </TableCell>
+                    <TableCell>
+                      {currencyFormatter.format(position.currentPrice)}
+                    </TableCell>
+                    <TableCell>{position.fundingPNL || 'N/A'}</TableCell>
+                  </TableRow>
+                </>
+              ))}
+            </TableBody>
+          </Table>
         </TabsContent>
       </Tabs>
     </div>
