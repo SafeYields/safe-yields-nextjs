@@ -12,20 +12,20 @@ export default function ConnectButton() {
           return (
             <Button
               onClick={openConnectModal}
-              className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105'
+              className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 bg-[#4CFAC7]'
             >
               Connect Wallet
             </Button>
           );
         }
 
-        // If connected, show the chain name, avatar, or address, etc.
         return (
           <div className='flex items-center space-x-2'>
             <Button
               onClick={openChainModal}
               type='button'
-              className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105'
+              variant='ghost'
+              className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 border-2 border-[#4CFAC7]'
             >
               {account.displayName}
             </Button>

@@ -24,7 +24,6 @@ import { useGetVaultData } from '@/services/blockchain/hooks/useGetVaultData';
 import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contracts';
 import { TradingHistory } from '@/types/dashboard.types';
 import { ethers, ZeroAddress } from 'ethers';
-import { DollarSign } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
 import { useAccount } from 'wagmi';
@@ -32,7 +31,7 @@ import { useAccount } from 'wagmi';
 const chartConfig = {
   pnl: {
     label: 'Pnl',
-    color: 'hsl(var(--primary))',
+    color: 'hsla(162, 95%, 64%, 1)',
   },
 } satisfies ChartConfig;
 
@@ -123,8 +122,8 @@ export default function Dashboard() {
   };
   return (
     <div className='my-8 flex w-full flex-col items-center justify-center gap-8'>
-      <div className='flex w-full max-w-lg flex-col justify-center gap-4 lg:flex-row lg:gap-2'>
-        <div className='p-card flex h-32 min-w-48 flex-row items-center rounded-3xl border border-[#4CFAC7] bg-card text-[#4CFAC7]'>
+      <div className='flex w-full max-w-lg flex-col justify-center lg:flex-row lg:gap-2'>
+        <div className='flex flex-row items-center lg:border-l-2 lg:border-b-0 border-b-2 border-[#4CFAC7] text-[#4CFAC7] px-3 py-4 min-w-32'>
           <div className='flex w-full flex-col items-center'>
             <span className='text-sm font-medium text-white'>Staked $SAY</span>
             <span className='text-lg font-bold'>{sayStaked}</span>
@@ -135,7 +134,7 @@ export default function Dashboard() {
               </span>
               <button
                 onClick={handleClaimAirdrop}
-                className='my-1 rounded-full bg-[#9999FF] px-5 text-xs font-bold text-white'
+                className='my-1 rounded-full bg-[#4CFAC7] px-5 text-xs font-bold text-black'
               >
                 Claim
               </button>
@@ -143,56 +142,36 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className='p-card flex h-32 min-w-48 flex-row items-center gap-4 rounded-3xl border border-[#4CFAC7] bg-card px-4 text-[#4CFAC7]'>
-          <div className='inline-block h-min w-min rounded-xl bg-card p-1.5'>
-            <DollarSign className='h-8 w-8 stroke-2' />
-          </div>
-          <div className='flex flex-col gap-2'>
-            <span className='text-sm font-medium text-white'>
-              Account Balance
-            </span>
-            <span className='text-xl font-bold'>${userEquity || '0.00'}</span>
-          </div>
+        <div className='flex flex-col items-center gap-4 lg:border-l-2 lg:border-b-0 border-b-2 border-[#4CFAC7] px-3 py-4 text-[#4CFAC7] min-w-32'>
+          <span className='text-sm font-medium text-white'>
+            Portfolio Balance
+          </span>
+          <span className='text-xl font-bold'>${userEquity || '0.00'}</span>
         </div>
 
-        <div className='p-card flex h-32 min-w-48 flex-row items-center gap-4 rounded-3xl border border-[#4CFAC7] bg-card px-4 text-[#4CFAC7]'>
-          <div className='inline-block h-min w-min rounded-xl bg-card p-1.5'>
-            <DollarSign className='h-8 w-8 stroke-2' />
-          </div>
-          <div className='flex flex-col gap-2'>
-            <span className='text-sm font-medium text-white'>Average APY</span>
-            <span className='text-xl font-bold'>
-              {dashboardData?.apy?.toFixed(2) || apy.toFixed(2)}%
-            </span>
-          </div>
+        <div className='flex flex-col items-center gap-4 lg:border-l-2 lg:border-b-0 border-b-2 border-[#4CFAC7] px-3 py-4 text-[#4CFAC7] min-w-32'>
+          <span className='text-sm font-medium text-white'>Average APY</span>
+          <span className='text-xl font-bold'>
+            {dashboardData?.apy?.toFixed(2) || apy.toFixed(2)}%
+          </span>
         </div>
-        <div className='p-card flex h-32 min-w-48 flex-row items-center gap-4 rounded-3xl border border-[#4CFAC7] bg-card px-4 text-[#4CFAC7]'>
-          <div className='inline-block h-min w-min rounded-xl bg-card p-1.5'>
-            <DollarSign className='h-8 w-8 stroke-2' />
-          </div>
-          <div className='flex flex-col gap-2'>
-            <span className='text-sm font-medium text-white'>PNL</span>
-            <span className='text-xl font-bold'>${userPnl || '0.00'}</span>
-          </div>
+        <div className='flex flex-col items-center gap-4 lg:border-l-2 lg:border-b-0 border-b-2 border-[#4CFAC7] px-3 py-4 text-[#4CFAC7] min-w-32'>
+          <span className='text-sm font-medium text-white'>PNL</span>
+          <span className='text-xl font-bold'>${userPnl || '0.00'}</span>
         </div>
-        <div className='p-card flex h-32 min-w-48 flex-row items-center gap-4 rounded-3xl border border-[#4CFAC7] bg-card px-4 text-[#4CFAC7]'>
-          <div className='inline-block h-min w-min rounded-xl bg-card p-1.5'>
-            <DollarSign className='h-8 w-8 stroke-2' />
-          </div>
-          <div className='flex flex-col gap-2'>
-            <span className='text-sm font-medium text-white'>
-              Today&apos;s PNL
-            </span>
-            <span className='text-xl font-bold'>
-              ${Number(dashboardData?.todays_pnl)?.toFixed(3) || '0.00'}
-            </span>
-          </div>
+        <div className='flex flex-col items-center gap-4 lg:border-x-2 lg:border-b-0 border-b-2 border-[#4CFAC7] px-3 py-4 text-[#4CFAC7] min-w-32'>
+          <span className='text-sm font-medium text-white'>
+            Today&apos;s PNL
+          </span>
+          <span className='text-xl font-bold'>
+            ${Number(dashboardData?.todays_pnl)?.toFixed(3) || '0.00'}
+          </span>
         </div>
       </div>
 
-      <Card className='bg-gradient w-full max-w-lg rounded-2xl text-primary'>
+      <Card className='bg-gradient w-3/4 rounded-2xl text-primary bg-chart'>
         <CardHeader>
-          <CardTitle>Line Chart</CardTitle>
+          <CardTitle></CardTitle>
           <CardDescription>
             {formatMonthYear(firstData?.updateTime ?? new Date().toString())} -{' '}
             {formatMonthYear(latestData?.updateTime ?? new Date().toString())}
