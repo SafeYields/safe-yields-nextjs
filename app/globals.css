@@ -28,9 +28,7 @@
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
-      --chart-5: 27 87% 67%;
-      --brand-1: 162 95% 64%;
-      --brand-2: 240 100% 80%;
+    --chart-5: 27 87% 67%;
   }
 
   .dark {
@@ -125,3 +123,6 @@
   }
 }
 
+.shadow-custom {
+    box-shadow: 2px 0px 4.3px 0px #4CFAC7;
+}
