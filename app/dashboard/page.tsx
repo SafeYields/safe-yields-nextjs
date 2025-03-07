@@ -123,7 +123,7 @@ export default function Dashboard() {
   return (
     <div className='my-8 flex w-full flex-col items-center justify-center gap-8'>
       <div className='flex w-full max-w-lg flex-col justify-center lg:flex-row lg:gap-2'>
-        <div className='flex flex-row items-center lg:border-l-2 lg:border-b-0 border-b-2 border-brand-1 text-brand-1 px-3 py-4 min-w-32'>
+        <div className='flex flex-row items-center lg:border-l-2 lg:border-b-0 border-b-2 border-[#4CFAC7] text-[#4CFAC7] px-3 py-4 min-w-32'>
           <div className='flex w-full flex-col items-center'>
             <span className='text-sm font-medium text-white'>Staked $SAY</span>
             <span className='text-lg font-bold'>{sayStaked}</span>
@@ -134,7 +134,7 @@ export default function Dashboard() {
               </span>
               <button
                 onClick={handleClaimAirdrop}
-                className='my-1 rounded-full bg-brand-1 px-5 text-xs font-bold text-black'
+                className='my-1 rounded-full bg-[#4CFAC7] px-5 text-xs font-bold text-black'
               >
                 Claim
               </button>
@@ -142,24 +142,24 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className='flex flex-col items-center gap-4 lg:border-l-2 lg:border-b-0 border-b-2 border-brand-1 px-3 py-4 text-brand-1 min-w-32'>
+        <div className='flex flex-col items-center gap-4 lg:border-l-2 lg:border-b-0 border-b-2 border-[#4CFAC7] px-3 py-4 text-[#4CFAC7] min-w-32'>
           <span className='text-sm font-medium text-white'>
             Portfolio Balance
           </span>
           <span className='text-xl font-bold'>${userEquity || '0.00'}</span>
         </div>
 
-        <div className='flex flex-col items-center gap-4 lg:border-l-2 lg:border-b-0 border-b-2 border-brand-1 px-3 py-4 text-brand-1 min-w-32'>
+        <div className='flex flex-col items-center gap-4 lg:border-l-2 lg:border-b-0 border-b-2 border-[#4CFAC7] px-3 py-4 text-[#4CFAC7] min-w-32'>
           <span className='text-sm font-medium text-white'>Average APY</span>
           <span className='text-xl font-bold'>
             {dashboardData?.apy?.toFixed(2) || apy.toFixed(2)}%
           </span>
         </div>
-        <div className='flex flex-col items-center gap-4 lg:border-l-2 lg:border-b-0 border-b-2 border-brand-1 px-3 py-4 text-brand-1 min-w-32'>
+        <div className='flex flex-col items-center gap-4 lg:border-l-2 lg:border-b-0 border-b-2 border-[#4CFAC7] px-3 py-4 text-[#4CFAC7] min-w-32'>
           <span className='text-sm font-medium text-white'>PNL</span>
           <span className='text-xl font-bold'>${userPnl || '0.00'}</span>
         </div>
-        <div className='flex flex-col items-center gap-4 lg:border-x-2 lg:border-b-0 border-b-2 border-brand-1 px-3 py-4 text-brand-1 min-w-32'>
+        <div className='flex flex-col items-center gap-4 lg:border-x-2 lg:border-b-0 border-b-2 border-[#4CFAC7] px-3 py-4 text-[#4CFAC7] min-w-32'>
           <span className='text-sm font-medium text-white'>
             Today&apos;s PNL
           </span>
