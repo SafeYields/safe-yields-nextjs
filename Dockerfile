@@ -36,7 +36,7 @@ ENV NEXT_PUBLIC_PROJECT_ID $NEXT_PUBLIC_PROJECT_ID
 ARG TAVILY_API_KEY
 ENV TAVILY_API_KEY $TAVILY_API_KEY
 
-
+RUN npx next telemetry disable
 RUN npm run build
 
 # 3. Production image, copy all the files and run next
