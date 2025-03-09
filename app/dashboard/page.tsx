@@ -23,6 +23,7 @@ import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
 import { useGetVaultData } from '@/services/blockchain/hooks/useGetVaultData';
 import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contracts';
 import { TradingHistory } from '@/types/dashboard.types';
+import { Root as Separator } from '@radix-ui/react-separator';
 import { ethers, ZeroAddress } from 'ethers';
 import { useEffect, useMemo, useState } from 'react';
 import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
@@ -122,8 +123,13 @@ export default function Dashboard() {
   };
   return (
     <div className='my-8 flex w-full flex-col items-center justify-center gap-8'>
-      <div className='flex w-full max-w-lg flex-col justify-center lg:flex-row lg:gap-2'>
-        <div className='flex flex-row items-center lg:border-l-2 lg:border-b-0 border-b-2 border-brand-1 text-brand-1 px-3 py-4 min-w-32'>
+      <div className='flex flex-col md:flex-row items-center justify-center w-full max-w-max lg:gap-2 md:h-28 max-h-fit'>
+        <Separator
+          decorative
+          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
+        />
+
+        <div className='flex flex-row items-center text-brand-1 px-12 md:px-4 py-4 min-w-40'>
           <div className='flex w-full flex-col items-center'>
             <span className='text-sm font-medium text-white'>Staked $SAY</span>
             <span className='text-lg font-bold'>{sayStaked}</span>
@@ -142,24 +148,44 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className='flex flex-col items-center gap-4 lg:border-l-2 lg:border-b-0 border-b-2 border-brand-1 px-3 py-4 text-brand-1 min-w-32'>
+        <Separator
+          decorative
+          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
+        />
+
+        <div className='flex flex-col items-center gap-4 px-12 md:px-4 py-4 text-brand-1 min-w-40'>
           <span className='text-sm font-medium text-white'>
             Portfolio Balance
           </span>
           <span className='text-xl font-bold'>${userEquity || '0.00'}</span>
         </div>
 
-        <div className='flex flex-col items-center gap-4 lg:border-l-2 lg:border-b-0 border-b-2 border-brand-1 px-3 py-4 text-brand-1 min-w-32'>
+        <Separator
+          decorative
+          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
+        />
+
+        <div className='flex flex-col items-center gap-4 px-12 md:px-4 py-4 text-brand-1 min-w-40'>
           <span className='text-sm font-medium text-white'>Average APY</span>
           <span className='text-xl font-bold'>
             {dashboardData?.apy?.toFixed(2) || apy.toFixed(2)}%
           </span>
         </div>
-        <div className='flex flex-col items-center gap-4 lg:border-l-2 lg:border-b-0 border-b-2 border-brand-1 px-3 py-4 text-brand-1 min-w-32'>
+        <Separator
+          decorative
+          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
+        />
+
+        <div className='flex flex-col items-center gap-4  px-12 md:px-4 py-4 text-brand-1 min-w-40'>
           <span className='text-sm font-medium text-white'>PNL</span>
           <span className='text-xl font-bold'>${userPnl || '0.00'}</span>
         </div>
-        <div className='flex flex-col items-center gap-4 lg:border-x-2 lg:border-b-0 border-b-2 border-brand-1 px-3 py-4 text-brand-1 min-w-32'>
+        <Separator
+          decorative
+          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
+        />
+
+        <div className='flex flex-col items-center gap-4  px-12 md:px-4 py-4 text-brand-1 min-w-40'>
           <span className='text-sm font-medium text-white'>
             Today&apos;s PNL
           </span>
@@ -167,6 +193,10 @@ export default function Dashboard() {
             ${Number(dashboardData?.todays_pnl)?.toFixed(3) || '0.00'}
           </span>
         </div>
+        <Separator
+          decorative
+          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
+        />
       </div>
 
       <Card className='bg-gradient w-3/4 rounded-2xl text-primary bg-chart'>

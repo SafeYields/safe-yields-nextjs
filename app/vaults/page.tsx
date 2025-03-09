@@ -322,28 +322,51 @@ export default function Vaults() {
         <TabsList className='bg-transparent items-center flex'>
           <TabsTrigger
             value='info'
-            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold text-lg'
+            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold text-xl'
           >
             Vault info
           </TabsTrigger>
           <TabsTrigger
             value='chart'
-            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold text-lg'
+            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold text-xl'
           >
             Historical Performance Chart
           </TabsTrigger>
           <TabsTrigger
             value='position'
-            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold text-lg'
+            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold text-xl'
           >
             Open Position
           </TabsTrigger>
         </TabsList>
         <TabsContent value='info'>
-          <h3 className='scroll-m-20 text-2xl font-semibold tracking-tight'>
+          <h3 className='scroll-m-20 text-xl font-semibold tracking-tight flex items-center gap-2'>
+            <div>
+              <svg
+                width='22'
+                height='22'
+                viewBox='0 0 22 22'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <circle cx='10' cy='13' r='9' fill='#9999FF' />
+                <path
+                  d='M9.05021 8.01215L7.85239 5.40356C5.21718 10.674 2.60859 15.9178 0 21.1882C0.77193 21.1882 1.464 21.2148 2.15608 21.1882C2.28917 21.1882 2.50212 21.0551 2.58197 20.922C3.11434 19.8839 3.62008 18.8458 4.15245 17.8077C5.74955 14.5869 7.37326 11.3927 8.97036 8.17186C8.97036 8.09201 9.02359 8.06539 9.05021 8.01215Z'
+                  fill='#F2ECE4'
+                />
+                <path
+                  d='M13.9744 18.8457C13.8146 18.8457 13.6816 18.8457 13.5485 18.8457C11.073 18.8457 8.59747 18.8191 6.12197 18.8191C5.93564 18.8191 5.64284 18.9522 5.56299 19.1119C5.21695 19.7773 4.95077 20.4428 4.63135 21.2414C8.11834 21.2414 11.5787 21.2414 15.0657 21.2414L13.9744 18.8457Z'
+                  fill='#F2ECE4'
+                />
+                <path
+                  d='M7.98535 5.03085L10.5407 0L21.1614 21.1349L15.332 21.0817L7.98535 5.03085Z'
+                  fill='#F2ECE4'
+                />
+              </svg>
+            </div>
             Delta Neutral Funding Rate Arbitrage
           </h3>
-          <p className='leading-7 [&:not(:first-child)]:mt-6'>
+          <p className='leading-7 [&:not(:first-child)]:mt-6 text-base'>
             Unlock potential with our Delta-neutral Funding Rate Arbitrage
             strategy, designed to exploit funding rate differentials across
             exchanges, while maintaining a neutral position in the market.
@@ -375,7 +398,7 @@ export default function Vaults() {
               achieving consistent returns.
             </span>
           </p>
-          <div className='grid-cards-layout mt-4 h-18'>
+          <div className='flex flex-col md:flex-row mt-4 md:h-20 max-h-fit max-w-fit items-center mx-auto gap-4'>
             <Separator
               decorative
               className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] hidden md:block shadow-custom'

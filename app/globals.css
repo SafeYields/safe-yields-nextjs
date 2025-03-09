@@ -28,9 +28,9 @@
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
-      --chart-5: 27 87% 67%;
-      --brand-1: 162 95% 64%;
-      --brand-2: 240 100% 80%;
+    --chart-5: 27 87% 67%;
+    --brand-1: 162 95% 64%;
+    --brand-2: 240 100% 80%;
   }
 
   .dark {
@@ -110,18 +110,3 @@
     rgba(242, 236, 228, 0.01) 100%
   );
 }
-
-.grid-cards-layout {
-  @apply grid items-center justify-center;
-}
-@media (max-width: 768px) {
-  .grid-cards-layout {
-    grid-template-rows: repeat(auto-fit, 1px fit-content(100%));
-  }
-}
-@media (min-width: 768px) {
-  .grid-cards-layout {
-    grid-template-columns: repeat(auto-fit, 1px 200px);
-  }
-}
-

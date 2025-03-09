@@ -16,8 +16,8 @@ export default function Home() {
           className='inline-block md:absolute inline-block left-1/2 md:-translate-x-1/2 top-4'
         />
         <h3 className='scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0 max-w-md self-end'>
-          Find <span className='text-brand-1'>consistency</span> in the
-          volatile DeFi space.
+          Find <span className='text-brand-1'>consistency</span> in the volatile
+          DeFi space.
         </h3>
       </div>
     </>
