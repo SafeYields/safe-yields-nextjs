@@ -43,7 +43,7 @@ export default function Chat() {
 
   return (
     <AssistantRuntimeProvider runtime={runtime}>
-      <div className='grid h-[90vh] grid-cols-[1fr_5fr] gap-2'>
+      <div className='grid h-[90vh] md:grid-cols-[1fr_5fr] grid-cols-1 gap-2'>
         <BuildPortfolioToolUI />
         <ThreadList />
         <Thread />

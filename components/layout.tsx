@@ -32,7 +32,7 @@ const PickNetwork = () => {
   const data = chainData(account.chainId);
   const { switchChain } = useSwitchChain();
   return (
-    <div className='flex flex-row gap-2 hidden md:block'>
+    <div className='md:flex flex-row gap-2 hidden'>
       {account.isConnected && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -130,12 +130,31 @@ const links: TLink[] = [
   },
 ];
 
+const social = [
+  {
+    src: "/image/discord.svg",
+    alt: "discord server",
+    href: "#"
+  },
+  {
+    src: "/image/x.svg",
+    alt: "x account",
+    href: "#"
+  },
+  {
+    src: "/image/telegram.svg",
+    alt: "telegram group",
+    href: "#"
+  }
+]
+
+
 export default function Layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
     <>
-      <header className='sticky top-0 z-50 -mb-4 px-4 pb-4 shadow'>
+      <header id="header" className='sticky top-0 z-50 -mb-4 px-4 pb-4 shadow bg-background'>
         <div className='absolute left-0 h-24 w-full bg-background/15'></div>
         <div className='relative mx-auto max-w-container'>
           <Navbar>
@@ -165,13 +184,24 @@ export default function Layout({
                     <span className='sr-only'>Toggle navigation menu</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent side='right'>
-                  <nav className='grid gap-6 text-lg font-medium'>
-                    {links.map(({ title, href }) => (
+                <SheetContent side='right' className='bg-sidebar'>
+                  <nav className='mt-8 flex flex-col items-center justify-center gap-8 text-lg font-medium'>
+                    {links.map(({ title, href, items }) => (
+                      items ? (
+                        items.map(({title, href}) => (
+                          <Link
+                        href={href}
+                        key={title}
+                        className='flex items-center gap-2 text-lg font-bold'
+                      >
+                        <span>{title}</span>
+                      </Link>                          
+                        ))
+                      ) :
                       <Link
                         href={href}
                         key={title}
-                        className='flex items-center gap-2 text-xl font-bold'
+                        className='flex items-center gap-2 text-lg font-bold'
                       >
                         <span>{title}</span>
                       </Link>

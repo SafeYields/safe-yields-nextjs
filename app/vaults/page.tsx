@@ -234,7 +234,7 @@ export default function Vaults() {
   };
 
   return (
-    <div className='mt-8 py-4 grid grid-cols-1 gap-4 md:grid-cols-[350px_2fr] items-start px-8'>
+    <div className='mt-8 py-4 grid grid-cols-1 gap-16 md:grid-cols-[350px_2fr] items-start px-8'>
       <div className='flex min-w-lg flex-grow flex-col gap-12'>
         <Alert className='bg-brand-2'>
           <AlertCircle className='h-4 w-4' />

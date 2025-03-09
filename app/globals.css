@@ -31,6 +31,7 @@
     --chart-5: 27 87% 67%;
     --brand-1: 162 95% 64%;
     --brand-2: 240 100% 80%;
+    --sidebar-background: 183 17% 19%;
   }
 
   .dark {
@@ -104,9 +105,18 @@
 }
 
 .bg-chart {
-  background: linear-gradient(
+ @apply bg-background;
+  background-image: linear-gradient(
     180deg,
     rgba(242, 236, 228, 0.05) 0%,
     rgba(242, 236, 228, 0.01) 100%
   );
+}
+
+
+body, #header {
+    background-image: url(/images/background-1.svg), url(/images/background-2.svg);
+    background-position: top left, bottom right;
+    background-repeat: repeat-y, repeat-x;
+    background-size: auto, auto;
 }

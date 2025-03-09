@@ -59,7 +59,7 @@ export const Thread: FC = () => {
             <ThreadPrimitive.If empty={false}>
               <div className='min-h-8 flex-grow' />
             </ThreadPrimitive.If>
-
+            
             <div className='sticky bottom-0 mt-3 flex w-full max-w-[var(--thread-max-width)] flex-col items-center justify-end rounded-t-lg bg-inherit pb-4'>
               <ThreadScrollToBottom />
               <Composer />
@@ -132,7 +132,7 @@ const ThreadWelcomeSuggestions: FC = () => {
 
 const Composer: FC = () => {
   return (
-    <ComposerPrimitive.Root className='flex w-full flex-wrap items-end rounded-lg border bg-inherit px-2.5 shadow-sm transition-colors ease-in focus-within:border-ring/20'>
+    <ComposerPrimitive.Root className='flex w-full flex-wrap items-end rounded-lg border bg-inherit px-2.5 shadow-sm transition-colors ease-in focus-within:border-ring/20 bg-[#162728]'>
       <ComposerAttachments />
       <ComposerAddAttachment />
       <ComposerPrimitive.Input
@@ -154,9 +154,9 @@ const ComposerAction: FC = () => {
           <TooltipIconButton
             tooltip='Send'
             variant='default'
-            className='my-2.5 size-8 p-2 transition-opacity ease-in'
+            className='my-2.5 size-8 p-2 transition-opacity ease-in bg-transparent cursor-pointer'
           >
-            <SendHorizontalIcon />
+            <SendHorizontalIcon className='fill-white stroke-white' />
           </TooltipIconButton>
         </ComposerPrimitive.Send>
       </ThreadPrimitive.If>
