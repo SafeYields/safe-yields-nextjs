@@ -234,8 +234,8 @@ export default function Vaults() {
   };
 
   return (
-    <div className='mt-8 py-4 grid grid-cols-1 gap-16 md:grid-cols-[350px_2fr] items-start px-8'>
-      <div className='flex flex-grow flex-col gap-12'>
+    <div className='mt-8 py-4 grid grid-cols-1 gap-4 md:grid-cols-[350px_2fr] items-start px-8'>
+      <div className='flex min-w-lg flex-grow flex-col gap-12'>
         <Alert className='bg-brand-2'>
           <AlertCircle className='h-4 w-4' />
           <AlertTitle>Warning</AlertTitle>
@@ -246,7 +246,7 @@ export default function Vaults() {
         <div>
           <Tabs
             defaultValue='deposit'
-            className='bg-[#F2ECE41F] rounded-xl px-4'
+            className='bg-[#F2ECE41F] rounded-xl'
           >
             <TabsList className='w-full justify-start bg-transparent py-6'>
               <TabsTrigger
@@ -264,7 +264,7 @@ export default function Vaults() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value='deposit'>
-              <Card className='bg-transparent space-y-4 mt-4'>
+              <Card className='bg-transparent space-y-4 mt-4 border-0'>
                 <CardContent>
                   <div className='relative'>
                     <Input
@@ -318,7 +318,7 @@ export default function Vaults() {
           </Tabs>
         </div>
       </div>
-      <Tabs className='w-full' defaultValue='info'>
+      <Tabs className='w-full max-w-2xl mx-auto' defaultValue='info'>
         <TabsList className='bg-transparent items-center flex'>
           <TabsTrigger
             value='info'
