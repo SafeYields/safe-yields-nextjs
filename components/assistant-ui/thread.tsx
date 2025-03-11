@@ -132,7 +132,7 @@ const ThreadWelcomeSuggestions: FC = () => {
 
 const Composer: FC = () => {
   return (
-    <ComposerPrimitive.Root className='flex w-full flex-wrap items-end rounded-lg border bg-inherit px-2.5 shadow-sm transition-colors ease-in focus-within:border-ring/20 bg-[#162728]'>
+    <ComposerPrimitive.Root className='flex w-full flex-wrap items-end rounded-lg border px-2.5 shadow-sm transition-colors ease-in focus-within:border-ring/20 bg-[#162728] input-shadow'>
       <ComposerAttachments />
       <ComposerAddAttachment />
       <ComposerPrimitive.Input

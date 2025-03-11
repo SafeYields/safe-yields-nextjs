@@ -4,6 +4,11 @@ import { Thread } from '@/components/assistant-ui/thread';
 import { ThreadList } from '@/components/assistant-ui/thread-list';
 import { Button } from '@/components/ui/button';
 import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from '@/components/ui/resizable';
+import {
   AssistantRuntimeProvider,
   CompositeAttachmentAdapter,
   SimpleImageAttachmentAdapter,
@@ -43,11 +48,19 @@ export default function Chat() {
 
   return (
     <AssistantRuntimeProvider runtime={runtime}>
-      <div className='grid h-[90vh] md:grid-cols-[1fr_5fr] grid-cols-1 gap-2'>
-        <BuildPortfolioToolUI />
-        <ThreadList />
-        <Thread />
-      </div>
+      <ResizablePanelGroup
+        direction='horizontal'
+        className='max-h-[90%] w-full'
+      >
+        <ResizablePanel defaultSize={20}>
+          <ThreadList />
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={80}>
+          <BuildPortfolioToolUI />
+          <Thread />
+        </ResizablePanel>
+      </ResizablePanelGroup>
     </AssistantRuntimeProvider>
   );
 }

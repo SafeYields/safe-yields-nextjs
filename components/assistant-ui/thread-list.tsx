@@ -20,12 +20,9 @@ export const ThreadList: FC = () => {
 const ThreadListNew: FC = () => {
   return (
     <ThreadListPrimitive.New asChild>
-      <Button
-        className='flex items-center justify-start gap-1 rounded-lg px-2.5 py-2 text-start hover:bg-muted data-[active]:bg-muted'
-        variant='ghost'
-      >
-        <PlusIcon />
-        New Thread
+      <Button className='flex items-center gap-1 rounded-lg px-2.5 py-2 text-brand-1 bg-background'>
+        New Chat
+        <PlusIcon className='w-3 h-3' />
       </Button>
     </ThreadListPrimitive.New>
   );
