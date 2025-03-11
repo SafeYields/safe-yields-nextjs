@@ -447,15 +447,7 @@ export default function Vaults() {
                     left: 12,
                     right: 12,
                   }}
-                >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey='updateTime'
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    tickFormatter={(value) => value.slice(0, 3)}
-                  />
+                >                  
                   <ChartTooltip
                     cursor={false}
                     content={<ChartTooltipContent hideLabel />}
