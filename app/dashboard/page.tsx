@@ -3,9 +3,7 @@
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
-  CardTitle,
 } from '@/components/ui/card';
 import {
   ChartConfig,
@@ -201,11 +199,6 @@ export default function Dashboard() {
 
       <Card className='bg-gradient w-3/4 rounded-2xl text-primary bg-chart max-w-5xl'>
         <CardHeader>
-          <CardTitle></CardTitle>
-          <CardDescription>
-            {formatMonthYear(firstData?.updateTime ?? new Date().toString())} -{' '}
-            {formatMonthYear(latestData?.updateTime ?? new Date().toString())}
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer config={chartConfig}>
@@ -217,14 +210,6 @@ export default function Dashboard() {
                 right: 12,
               }}
             >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey='updateTime'
-                tickLine={false}
-                axisLine={false}
-                tickMargin={8}
-                tickFormatter={(value) => value.slice(0, 3)}
-              />
               <ChartTooltip
                 cursor={false}
                 content={<ChartTooltipContent hideLabel />}
