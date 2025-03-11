@@ -199,7 +199,7 @@ export default function Dashboard() {
         />
       </div>
 
-      <Card className='bg-gradient w-3/4 rounded-2xl text-primary bg-chart'>
+      <Card className='bg-gradient w-3/4 rounded-2xl text-primary bg-chart max-w-5xl'>
         <CardHeader>
           <CardTitle></CardTitle>
           <CardDescription>
