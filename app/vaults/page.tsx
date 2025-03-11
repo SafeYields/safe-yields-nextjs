@@ -1,14 +1,7 @@
 'use client';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import {
   ChartConfig,
   ChartContainer,
@@ -16,7 +9,13 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu';
 import {
   Table,
   TableBody,
@@ -431,52 +430,51 @@ export default function Vaults() {
           </div>
         </TabsContent>
         <TabsContent value='chart'>
-      <div className='w-3/4 text-primary flex flex-col'>
-        <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Last 30 days</NavigationMenuTrigger>
-              <NavigationMenuContent className='text-sm bg-[#F2ECE4] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-25'>
-                <ul className='flex flex-col w-max'>
-                  <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
-                    Last 3 months
-                  </li>
-                  <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
-                    All time
-                  </li>
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
-        <Card className='w-full bg-transparent bg-chart rounded-2xl max-w-5x'>
-
-            <CardContent>
-              <ChartContainer config={chartConfig}>
-                <LineChart
-                  accessibilityLayer
-                  data={chartData}
-                  margin={{
-                    left: 12,
-                    right: 12,
-                  }}
-                >
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent hideLabel />}
-                  />
-                  <Line
-                    dataKey='pnl'
-                    type='natural'
-                    stroke='var(--color-pnl)'
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-              </ChartContainer>
-            </CardContent>
-        </Card>
-        </div>
+          <div className='w-3/4 text-primary flex flex-col'>
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Last 30 days</NavigationMenuTrigger>
+                  <NavigationMenuContent className='text-sm bg-[#F2ECE4] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-25'>
+                    <ul className='flex flex-col w-max'>
+                      <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
+                        Last 3 months
+                      </li>
+                      <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
+                        All time
+                      </li>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+            <Card className='w-full bg-transparent bg-chart rounded-2xl max-w-5x'>
+              <CardContent>
+                <ChartContainer config={chartConfig}>
+                  <LineChart
+                    accessibilityLayer
+                    data={chartData}
+                    margin={{
+                      left: 12,
+                      right: 12,
+                    }}
+                  >
+                    <ChartTooltip
+                      cursor={false}
+                      content={<ChartTooltipContent hideLabel />}
+                    />
+                    <Line
+                      dataKey='pnl'
+                      type='natural'
+                      stroke='var(--color-pnl)'
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
         <TabsContent value='position'>
           <Table>

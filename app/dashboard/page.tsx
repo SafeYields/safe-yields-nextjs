@@ -65,7 +65,7 @@ export default function Dashboard() {
     [dashboardData],
   );
   console.log('dashboard data: ', dashboardData);
-  const firstData = dashboardHistory[0] as TradingHistory | undefined;
+  // const firstData = dashboardHistory[0] as TradingHistory | undefined;
   const latestData = dashboardHistory[dashboardHistory.length - 1] as
     | TradingHistory
     | undefined;
