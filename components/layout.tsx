@@ -155,7 +155,7 @@ export default function Layout({
   return (
     <>
       <header className='sticky top-0 z-50 px-4 pb-4 shadow bg-main'>
-        <div className='absolute left-0 h-12 w-full bg-background/15'></div>
+        <div className='absolute left-0 h-12 w-full'></div>
         <div className='relative mx-auto max-w-container'>
           <Navbar>
             <NavbarLeft>

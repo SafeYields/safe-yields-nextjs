@@ -122,7 +122,7 @@ export default function Dashboard() {
     }
   };
   return (
-    <div className='my-8 flex w-full flex-col items-center justify-center gap-8 bg-main'>
+    <div  id="main-bg" className='my-8 flex w-full flex-col items-center justify-center gap-8'>
       <div className='flex flex-col md:flex-row items-center justify-center w-full max-w-max lg:gap-2 md:h-28 max-h-fit'>
         <Separator
           decorative
