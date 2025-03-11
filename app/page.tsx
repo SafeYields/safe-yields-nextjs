@@ -3,7 +3,10 @@ import Image from 'next/image';
 export default function Home() {
   return (
     <>
-      <div id="main-bg" className='flex flex-col justify-between px-16 relative w-full h-[85%]'>
+      <div
+        id='main-bg'
+        className='flex flex-col justify-between px-16 relative w-full h-[85%]'
+      >
         <h3 className='scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0 max-w-md'>
           Emma AI guides you through selecting optimal yield strategies for{' '}
           <span className='text-brand-1'>sustainable growth</span>
@@ -15,7 +18,7 @@ export default function Home() {
             alt='safeyields character'
             sizes='60vw'
             className='object-contain h-full w-full'
-          />  
+          />
         </div>
 
         <h3 className='scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0 max-w-md self-end'>

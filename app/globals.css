@@ -105,7 +105,7 @@
 }
 
 .bg-chart {
- @apply bg-background;
+  @apply bg-background;
   background-image: linear-gradient(
     180deg,
     rgba(242, 236, 228, 0.05) 0%,
@@ -113,22 +113,27 @@
   );
 }
 
-
 body:has(#main-bg) {
-    @apply bg-background;
-    background-image: url(/images/background-1.svg), url(/images/background-2.svg), url(/images/background-2.svg);
-    background-position: -30% -20%, 130% -20%, center 250%;
-    background-repeat: no-repeat, no-repeat, no-repeat;
-    background-size: auto, auto, auto;
+  @apply bg-background;
+  background-image:
+    url(/images/background-1.svg), url(/images/background-2.svg),
+    url(/images/background-2.svg);
+  background-position:
+    -30% -20%,
+    130% -20%,
+    center 250%;
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-size: auto, auto, auto;
 }
 
 .bg-main {
-    background-image: url(/images/background-1.svg);
-    background-repeat: repeat;
-    background-size: auto;
+  background-image: url(/images/background-1.svg);
+  background-repeat: repeat;
+  background-size: auto;
 }
 
-
-html, body, [data-rk] {
-    @apply h-full
+html,
+body,
+[data-rk] {
+  @apply h-full;
 }

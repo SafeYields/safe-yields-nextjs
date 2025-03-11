@@ -16,6 +16,7 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
 import {
   Table,
   TableBody,
@@ -36,7 +37,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { useState } from 'react';
-import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
+import { Line, LineChart } from 'recharts';
 import { useAccount } from 'wagmi';
 
 const chartConfig = {
@@ -244,10 +245,7 @@ export default function Vaults() {
           </AlertDescription>
         </Alert>
         <div>
-          <Tabs
-            defaultValue='deposit'
-            className='bg-[#F2ECE41F] rounded-xl'
-          >
+          <Tabs defaultValue='deposit' className='bg-[#F2ECE41F] rounded-xl'>
             <TabsList className='w-full justify-start bg-transparent py-6'>
               <TabsTrigger
                 value='deposit'
@@ -433,11 +431,26 @@ export default function Vaults() {
           </div>
         </TabsContent>
         <TabsContent value='chart'>
-          <Card className='bg-gradient w-3/4 rounded-2xl text-primary bg-chart mx-auto'>
-            <CardHeader>
-              <CardTitle></CardTitle>
-              <CardDescription></CardDescription>
-            </CardHeader>
+      <div className='w-3/4 text-primary flex flex-col'>
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Last 30 days</NavigationMenuTrigger>
+              <NavigationMenuContent className='text-sm bg-[#F2ECE4] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-25'>
+                <ul className='flex flex-col w-max'>
+                  <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
+                    Last 3 months
+                  </li>
+                  <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
+                    All time
+                  </li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+        <Card className='w-full bg-transparent bg-chart rounded-2xl max-w-5x'>
+
             <CardContent>
               <ChartContainer config={chartConfig}>
                 <LineChart
@@ -447,7 +460,7 @@ export default function Vaults() {
                     left: 12,
                     right: 12,
                   }}
-                >                  
+                >
                   <ChartTooltip
                     cursor={false}
                     content={<ChartTooltipContent hideLabel />}
@@ -462,7 +475,8 @@ export default function Vaults() {
                 </LineChart>
               </ChartContainer>
             </CardContent>
-          </Card>
+        </Card>
+        </div>
         </TabsContent>
         <TabsContent value='position'>
           <Table>

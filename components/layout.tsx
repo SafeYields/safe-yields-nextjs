@@ -148,7 +148,6 @@ const links: TLink[] = [
 //   }
 // ]
 
-
 export default function Layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
@@ -186,26 +185,27 @@ export default function Layout({
                 </SheetTrigger>
                 <SheetContent side='right' className='bg-sidebar'>
                   <nav className='mt-8 flex flex-col items-center justify-center gap-8 text-lg font-medium'>
-                    {links.map(({ title, href, items }) => (
+                    {links.map(({ title, href, items }) =>
                       items ? (
-                        items.map(({title, href}) => (
+                        items.map(({ title, href }) => (
                           <Link
-                        href={href}
-                        key={title}
-                        className='flex items-center gap-2 text-lg font-bold'
-                      >
-                        <span>{title}</span>
-                      </Link>                          
+                            href={href}
+                            key={title}
+                            className='flex items-center gap-2 text-lg font-bold'
+                          >
+                            <span>{title}</span>
+                          </Link>
                         ))
-                      ) :
-                      <Link
-                        href={href}
-                        key={title}
-                        className='flex items-center gap-2 text-lg font-bold'
-                      >
-                        <span>{title}</span>
-                      </Link>
-                    ))}
+                      ) : (
+                        <Link
+                          href={href}
+                          key={title}
+                          className='flex items-center gap-2 text-lg font-bold'
+                        >
+                          <span>{title}</span>
+                        </Link>
+                      ),
+                    )}
                   </nav>
                 </SheetContent>
               </Sheet>

@@ -1,17 +1,20 @@
 'use client';
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { calculateAPYFromHistory, formatMonthYear } from '@/lib/utils';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu';
+import { calculateAPYFromHistory } from '@/lib/utils';
 import { useGetDashboardData } from '@/services/api/hooks/useGetDashboardData';
 import {
   getMerkleProof,
@@ -24,7 +27,7 @@ import { TradingHistory } from '@/types/dashboard.types';
 import { Root as Separator } from '@radix-ui/react-separator';
 import { ethers, ZeroAddress } from 'ethers';
 import { useEffect, useMemo, useState } from 'react';
-import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
+import { Line, LineChart } from 'recharts';
 import { useAccount } from 'wagmi';
 
 const chartConfig = {
@@ -120,7 +123,10 @@ export default function Dashboard() {
     }
   };
   return (
-    <div  id="main-bg" className='my-8 flex w-full flex-col items-center justify-center gap-8'>
+    <div
+      id='main-bg'
+      className='my-8 flex w-full flex-col items-center justify-center gap-8'
+    >
       <div className='flex flex-col md:flex-row items-center justify-center w-full max-w-max lg:gap-2 md:h-28 max-h-fit'>
         <Separator
           decorative
@@ -196,35 +202,51 @@ export default function Dashboard() {
           className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
         />
       </div>
-
-      <Card className='bg-gradient w-3/4 rounded-2xl text-primary bg-chart max-w-5xl'>
-        <CardHeader>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig}>
-            <LineChart
-              accessibilityLayer
-              data={dashboardHistory.length ? dashboardHistory : chartData}
-              margin={{
-                left: 12,
-                right: 12,
-              }}
-            >
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
-              />
-              <Line
-                dataKey='pnl'
-                type='natural'
-                stroke='var(--color-pnl)'
-                strokeWidth={2}
-                dot={false}
-              />
-            </LineChart>
-          </ChartContainer>
-        </CardContent>
-      </Card>
+      <div className='w-3/4 text-primary flex flex-col'>
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Last 30 days</NavigationMenuTrigger>
+              <NavigationMenuContent className='text-sm bg-[#F2ECE4] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-25'>
+                <ul className='flex flex-col w-max'>
+                  <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
+                    Last 3 months
+                  </li>
+                  <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
+                    All time
+                  </li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+        <Card className='w-full bg-transparent bg-chart rounded-2xl max-w-5x'>
+          <CardContent>
+            <ChartContainer config={chartConfig}>
+              <LineChart
+                accessibilityLayer
+                data={dashboardHistory.length ? dashboardHistory : chartData}
+                margin={{
+                  left: 12,
+                  right: 12,
+                }}
+              >
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent hideLabel />}
+                />
+                <Line
+                  dataKey='pnl'
+                  type='natural'
+                  stroke='var(--color-pnl)'
+                  strokeWidth={2}
+                  dot={false}
+                />
+              </LineChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

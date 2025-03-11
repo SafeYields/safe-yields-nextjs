@@ -26,8 +26,8 @@ export default function Navigation({ links }: { links: TLink[] }) {
           items ? (
             <NavigationMenuItem key={title}>
               <NavigationMenuTrigger>{title}</NavigationMenuTrigger>
-              <NavigationMenuContent className='bg-[#F2ECE4]/25 '>
-                <ul className='flex flex-col w-[200px] gap-3 p-4'>
+              <NavigationMenuContent className='bg-[#F2ECE4] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-25'>
+                <ul className='flex flex-col w-max'>
                   {items.map((item) => (
                     <ListItem
                       key={item.title}
@@ -66,7 +66,7 @@ const ListItem = React.forwardRef<
         <a
           ref={ref}
           className={cn(
-            'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors  hover:text-brand-1 focus:text-brand-1',
+            'block select-none space-y-1 rounded-md leading-none no-underline outline-none transition-colors  hover:text-brand-1 focus:text-brand-1 py-4 px-8',
             className,
           )}
           {...props}
