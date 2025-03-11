@@ -122,6 +122,11 @@ body:has(#main-bg) {
     background-size: auto, auto, auto;
 }
 
+.bg-main {
+    background-image: url(/images/background-2.svg);
+    background-repeat: repeat-x;
+    background-size: auto;
+}
 
 
 html, body, [data-rk] {
