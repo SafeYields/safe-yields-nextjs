@@ -112,11 +112,25 @@ const links: TLink[] = [
   },
   {
     title: 'Vaults',
-    href: '/vaults',
+    items: [
+      {
+        title: 'Delta Neutral',
+        href: '/vaults',
+      },
+      {
+        title: 'Triangular Arbitrage',
+        href: '#',
+        disabled: true,
+      },
+      {
+        title: 'Classical Arbitrage',
+        href: '#',
+        disabled: true,
+      },
+    ],
   },
   {
     title: 'Links',
-    href: '#',
     items: [
       {
         title: 'Website',
@@ -124,7 +138,11 @@ const links: TLink[] = [
       },
       {
         title: 'Whitepaper',
-        href: 'https://safeyields.io',
+        href: '#',
+      },
+      {
+        title: 'PitchDeck',
+        href: '#',
       },
     ],
   },
