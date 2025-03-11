@@ -17,6 +17,11 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import {
   Table,
   TableBody,
   TableCell,
@@ -400,8 +405,38 @@ export default function Vaults() {
               decorative
               className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] hidden md:block shadow-custom'
             />
-            <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2'>
-              <span className='font-medium text-xs'>Average APY</span>
+            <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2 min-w-max'>
+              <div className='flex flex-row gap-4'>
+                <span className='font-medium text-xs'>Average APY</span>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <svg
+                      width='11'
+                      height='11'
+                      viewBox='0 0 11 11'
+                      fill='none'
+                      xmlns='http://www.w3.org/2000/svg'
+                    >
+                      <path
+                        d='M0.5 5.5C0.5 2.73858 2.73858 0.5 5.5 0.5C8.26142 0.5 10.5 2.73858 10.5 5.5C10.5 8.26142 8.26142 10.5 5.5 10.5H0.5V5.5Z'
+                        stroke='#F2ECE4'
+                      />
+                      <path
+                        d='M6.17772 2.57294C6.17772 2.7321 6.11406 2.87533 6.00265 3.00265C5.89125 3.11406 5.74801 3.17772 5.58886 3.17772C5.50928 3.17772 5.44562 3.1618 5.36605 3.12997C5.30239 3.09814 5.23873 3.0504 5.17507 3.00265C5.12732 2.95491 5.07958 2.89125 5.04775 2.81167C5.01592 2.7321 5 2.66843 5 2.57294C5 2.49337 5.01592 2.42971 5.04775 2.36605C5.07958 2.30239 5.12732 2.23873 5.17507 2.17507C5.22281 2.12732 5.28647 2.07958 5.36605 2.04775C5.42971 2.01591 5.50928 2 5.58886 2C5.66844 2 5.7321 2.01591 5.81167 2.04775C5.87533 2.07958 5.93899 2.12732 6.00265 2.17507C6.06631 2.22281 6.09814 2.28647 6.12997 2.35013C6.1618 2.41379 6.17772 2.49337 6.17772 2.57294ZM6.11406 7.42706C6.11406 7.60212 6.06631 7.74536 5.97082 7.84085C5.87533 7.95225 5.74801 8 5.58886 8C5.42971 8 5.30239 7.95225 5.2069 7.84085C5.11141 7.72944 5.06366 7.60212 5.06366 7.42706V4.56233C5.06366 4.38727 5.11141 4.24403 5.2069 4.14854C5.30239 4.03714 5.42971 3.98939 5.58886 3.98939C5.74801 3.98939 5.87533 4.03714 5.97082 4.14854C6.06631 4.25995 6.11406 4.38727 6.11406 4.56233V7.42706Z'
+                        fill='#F2ECE4'
+                      />
+                    </svg>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    align='start'
+                    className='bg-[#F2ECE4] text-xs text-black rounded-e-3xl rounded-b-3xl'
+                  >
+                    Represents the rate of return over a year, accounting for
+                    the effect of compounding interest and it&apos;s calculated from
+                    all time historical data.
+                  </PopoverContent>
+                </Popover>
+              </div>
               <span className='font-bold text-brand-1'>34%</span>
             </div>
             <Separator
@@ -409,7 +444,7 @@ export default function Vaults() {
               className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
             />
 
-            <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2'>
+            <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2 min-w-max'>
               <span className='font-medium text-xs'>Total Value Locked</span>
               <span className='font-bold text-brand-1'>34USDC</span>
             </div>
@@ -417,10 +452,38 @@ export default function Vaults() {
               decorative
               className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
             />
-            <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2'>
-              <span className='font-medium text-xs'>
-                Historical Max. Downdrawn
-              </span>
+            <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2 min-w-max'>
+              <div className='flex flex-row gap-4'>
+                <span className='font-medium text-xs'>
+                  Historical Max. Downdrawn
+                </span>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <svg
+                      width='11'
+                      height='11'
+                      viewBox='0 0 11 11'
+                      fill='none'
+                      xmlns='http://www.w3.org/2000/svg'
+                    >
+                      <path
+                        d='M0.5 5.5C0.5 2.73858 2.73858 0.5 5.5 0.5C8.26142 0.5 10.5 2.73858 10.5 5.5C10.5 8.26142 8.26142 10.5 5.5 10.5H0.5V5.5Z'
+                        stroke='#F2ECE4'
+                      />
+                      <path
+                        d='M6.17772 2.57294C6.17772 2.7321 6.11406 2.87533 6.00265 3.00265C5.89125 3.11406 5.74801 3.17772 5.58886 3.17772C5.50928 3.17772 5.44562 3.1618 5.36605 3.12997C5.30239 3.09814 5.23873 3.0504 5.17507 3.00265C5.12732 2.95491 5.07958 2.89125 5.04775 2.81167C5.01592 2.7321 5 2.66843 5 2.57294C5 2.49337 5.01592 2.42971 5.04775 2.36605C5.07958 2.30239 5.12732 2.23873 5.17507 2.17507C5.22281 2.12732 5.28647 2.07958 5.36605 2.04775C5.42971 2.01591 5.50928 2 5.58886 2C5.66844 2 5.7321 2.01591 5.81167 2.04775C5.87533 2.07958 5.93899 2.12732 6.00265 2.17507C6.06631 2.22281 6.09814 2.28647 6.12997 2.35013C6.1618 2.41379 6.17772 2.49337 6.17772 2.57294ZM6.11406 7.42706C6.11406 7.60212 6.06631 7.74536 5.97082 7.84085C5.87533 7.95225 5.74801 8 5.58886 8C5.42971 8 5.30239 7.95225 5.2069 7.84085C5.11141 7.72944 5.06366 7.60212 5.06366 7.42706V4.56233C5.06366 4.38727 5.11141 4.24403 5.2069 4.14854C5.30239 4.03714 5.42971 3.98939 5.58886 3.98939C5.74801 3.98939 5.87533 4.03714 5.97082 4.14854C6.06631 4.25995 6.11406 4.38727 6.11406 4.56233V7.42706Z'
+                        fill='#F2ECE4'
+                      />
+                    </svg>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    align='end'
+                    className='bg-[#F2ECE4] text-xs text-black rounded-s-3xl rounded-b-3xl'
+                  >
+                    Measures the largest single drop from peak to through, indicating the highest potential loss.
+                  </PopoverContent>
+                </Popover>
+              </div>
               <span className='font-bold text-brand-1'>34%</span>
             </div>
             <Separator

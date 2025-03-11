@@ -4,6 +4,7 @@ import Link from 'next/link';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   NavigationMenu,
@@ -17,8 +18,12 @@ import {
 
 export type TLink =
   | { title: string; href: string; disabled?: boolean }
-  | { title: string; href?: string; items: TLink[] };
-
+  | {
+      title: string;
+      href?: string;
+      items: TLink[];
+      social?: { src: string; href: string; alt: string }[];
+    };
 
 export default function Navigation({ links }: { links: TLink[] }) {
   const path = usePathname();
@@ -39,6 +44,26 @@ export default function Navigation({ links }: { links: TLink[] }) {
                       disabled={'disabled' in item && true}
                     ></ListItem>
                   ))}
+                  {'social' in link && (
+                    <div className='flex flex-row w-full gap-4 justify-center py-4 px-8'>
+                      {link.social?.map(({ src, href, alt }) => (
+                        <Link
+                          href={href}
+                          key={src}
+                          className=' block bg-brand-1 rounded-full p-2'
+                        >
+                          <div className='w-4 h-4 relative'>
+                            <Image
+                              src={src}
+                              alt={alt}
+                              fill
+                              className='w-full h-full object-contain'
+                            />
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>

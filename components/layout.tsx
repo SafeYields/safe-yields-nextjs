@@ -145,26 +145,25 @@ const links: TLink[] = [
         href: '#',
       },
     ],
+    social: [
+      {
+        src: '/images/discord.svg',
+        href: '#',
+        alt: 'discord server',
+      },
+      {
+        src: '/images/x.svg',
+        href: '#',
+        alt: 'x account',
+      },
+      {
+        src: '/images/telegram.svg',
+        href: '#',
+        alt: 'telegram channel',
+      },
+    ],
   },
 ];
-
-// const social = [
-//   {
-//     src: "/image/discord.svg",
-//     alt: "discord server",
-//     href: "#"
-//   },
-//   {
-//     src: "/image/x.svg",
-//     alt: "x account",
-//     href: "#"
-//   },
-//   {
-//     src: "/image/telegram.svg",
-//     alt: "telegram group",
-//     href: "#"
-//   }
-// ]
 
 export default function Layout({
   children,
