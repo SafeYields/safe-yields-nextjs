@@ -203,24 +203,24 @@ export default function Layout({
                 </SheetTrigger>
                 <SheetContent side='right' className='bg-sidebar'>
                   <nav className='mt-8 flex flex-col items-center justify-center gap-8 text-lg font-medium'>
-                    {links.map(({ title, href, items }) =>
-                      items ? (
-                        items.map(({ title, href }) => (
+                    {links.map((link) =>
+                      'items' in link ? (
+                        link.items.map((item) => (
                           <Link
-                            href={href}
-                            key={title}
+                            href={item.href!}
+                            key={item.title}
                             className='flex items-center gap-2 text-lg font-bold'
                           >
-                            <span>{title}</span>
+                            <span>{item.title}</span>
                           </Link>
                         ))
                       ) : (
                         <Link
-                          href={href}
-                          key={title}
+                          href={link.href}
+                          key={link.title}
                           className='flex items-center gap-2 text-lg font-bold'
                         >
-                          <span>{title}</span>
+                          <span>{link.title}</span>
                         </Link>
                       ),
                     )}

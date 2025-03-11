@@ -17,7 +17,8 @@ import {
 
 export type TLink =
   | { title: string; href: string; disabled?: boolean }
-  | { title: string; items: TLink[] };
+  | { title: string; href?: string; items: TLink[] };
+
 
 export default function Navigation({ links }: { links: TLink[] }) {
   const path = usePathname();
