@@ -154,8 +154,8 @@ export default function Layout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <>
-      <header id="header" className='sticky top-0 z-50 -mb-4 px-4 pb-4 shadow bg-background'>
-        <div className='absolute left-0 h-24 w-full bg-background/15'></div>
+      <header className='sticky top-0 z-50 px-4 pb-4 shadow bg-main'>
+        <div className='absolute left-0 h-12 w-full bg-background/15'></div>
         <div className='relative mx-auto max-w-container'>
           <Navbar>
             <NavbarLeft>
@@ -213,9 +213,7 @@ export default function Layout({
           </Navbar>
         </div>
       </header>
-      <div className='flex flex-1 flex-col gap-4 p-4 pt-0 h-full'>
-        {children}
-      </div>
+      {children}
     </>
   );
 }
