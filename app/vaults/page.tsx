@@ -59,7 +59,7 @@ export default function Vaults() {
     amountFormatted: '0',
     amountBigint: BigInt(0),
   });
-  
+
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input = e.target.value;
 

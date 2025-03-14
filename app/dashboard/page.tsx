@@ -14,7 +14,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import { account$, tradingHistroy$ } from '@/lib/store';
+import { account$, balance$, tradingHistroy$ } from '@/lib/store';
 import {
   getMerkleProof,
   getUserAirdropAmount,
@@ -38,6 +38,7 @@ const chartConfig = {
 export default function Dashboard() {
   const address = use$(() => account$.address.get());
   const chainId = use$(() => account$.chainId.get());
+  const balance = use$(balance$);
 
   const [sayStaked, setSayStaked] = useState('0');
   const dashboardData = use$(tradingHistroy$);
@@ -49,7 +50,7 @@ export default function Dashboard() {
   const dashboardHistory = dashboardData?.history;
   const latestData = dashboardHistory?.at(-1);
 
-  const { userEquity, userPnl } = useGetVaultData(chainId, address, latestData);
+  const { userPnl, userShares } = useGetVaultData(chainId, address, latestData);
 
   useEffect(() => {
     //NB staking only on arbitrum
@@ -140,7 +141,12 @@ export default function Dashboard() {
               <span className='text-sm font-medium text-white'>
                 Portfolio Balance
               </span>
-              <span className='text-xl font-bold'>${userEquity}</span>
+              <span className='text-xl font-bold'>
+                <Show ifReady={balance}>
+                  {() => balance!.available_balance * +userShares}
+                </Show>{' '}
+                $
+              </span>
             </div>
 
             <Separator

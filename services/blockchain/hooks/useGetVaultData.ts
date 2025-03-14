@@ -33,7 +33,6 @@ export const useGetVaultData = (
       const parsedUserShare = +ethers.formatUnits(results[0].value, 6);
       const parsedTotalShares = +ethers.formatUnits(results[1].value, 6);
       const vaultUsdcBalance = +ethers.formatUnits(results[2].value, 6);
-
       // if (!performanceData) {
       //   setVaultData({...vaultData, vaultUdcBalance: vaultUsdcBalance.toFixed(3)});
       //   return;

@@ -131,6 +131,21 @@ const arbitrumBalance$ = observable(() =>
   ).json(),
 );
 
+export const balance$ = observable(
+  linked({
+    get: () => {
+      switch (account$.chainId.get()) {
+        case arbitrum.id:
+          return arbitrumBalance$.get();
+        case flowMainnet.id:
+          return flowEVMBalance$.get();
+        default:
+          return undefined;
+      }
+    },
+  }),
+);
+
 export const totalLockedValue$ = observable<{ value: number | undefined }>({
   value: undefined,
 });
