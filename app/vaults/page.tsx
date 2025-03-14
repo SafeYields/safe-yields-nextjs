@@ -21,21 +21,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/hooks/use-toast';
+import { totalLockedValue$, tradingHistroy$ } from '@/lib/store';
 import { trimDecimalPlaces } from '@/lib/utils';
 import { approveSpending, getAllowance } from '@/services/blockchain/common';
 import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
 import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contracts';
+import { Show, use$ } from '@legendapp/state/react';
 import { Root as Separator } from '@radix-ui/react-separator';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
@@ -43,78 +37,29 @@ import { AlertCircle, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { Line, LineChart } from 'recharts';
 import { useAccount } from 'wagmi';
+import OpenPosition from './open-position';
 
 const chartConfig = {
-  pnl: {
+  pnlPerc: {
     label: 'Pnl',
     color: 'hsla(162, 95%, 64%, 1)',
   },
 } satisfies ChartConfig;
 
-const chartData = [
-  { updateTime: 'Jan', pnl: 75 },
-  { updateTime: 'Feb', pnl: 80 },
-  { updateTime: 'Mar', pnl: 85 },
-  { updateTime: 'Apr', pnl: 90 },
-  { updateTime: 'May', pnl: 92 },
-  { updateTime: 'Jun', pnl: 88 },
-  { updateTime: 'Jul', pnl: 85 },
-  { updateTime: 'Aug', pnl: 80 },
-  { updateTime: 'Sep', pnl: 78 },
-  { updateTime: 'Oct', pnl: 82 },
-  { updateTime: 'Nov', pnl: 90 },
-  { updateTime: 'Dec', pnl: 95 },
-];
-
-const openPositions = [
-  {
-    pair: 'HBAR-USDT',
-    exchange: 'Binance',
-    sizeUSD: 6874.17,
-    currentPrice: 0.2342,
-    fundingPNL: undefined,
-  },
-  {
-    pair: 'HBAR-USDT',
-    exchange: 'Hyperliquid',
-    sizeUSD: -6874.17,
-    currentPrice: 0.2342,
-    fundingPNL: undefined,
-  },
-  {
-    pair: 'CELO-USDT',
-    exchange: 'Binance',
-    sizeUSD: 6874.17,
-    currentPrice: 0.2342,
-    fundingPNL: undefined,
-  },
-  {
-    pair: 'HBAR-USDT',
-    exchange: 'Hyperliquid',
-    sizeUSD: -6874.17,
-    currentPrice: 0.2342,
-    fundingPNL: undefined,
-  },
-];
-
-const currencyFormatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-});
-
 export default function Vaults() {
   const { toast } = useToast();
+  const totalValueLocked = use$(totalLockedValue$);
   const { openConnectModal } = useConnectModal();
   const { address } = useAccount();
   const signer = useEthersSigner()!;
   const [depositLoader, setDepostLoader] = useState(false);
   const { usdc, emmaVault } = useSafeYieldsContract(signer);
-
+  const data = use$(tradingHistroy$);
   const [amounts, setAmounts] = useState({
     amountFormatted: '0',
     amountBigint: BigInt(0),
   });
-
+  
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input = e.target.value;
 
@@ -432,12 +377,14 @@ export default function Vaults() {
                     className='bg-[#F2ECE4] text-xs text-black rounded-e-3xl rounded-b-3xl'
                   >
                     Represents the rate of return over a year, accounting for
-                    the effect of compounding interest and it&apos;s calculated from
-                    all time historical data.
+                    the effect of compounding interest and it&apos;s calculated
+                    from all time historical data.
                   </PopoverContent>
                 </Popover>
               </div>
-              <span className='font-bold text-brand-1'>34%</span>
+              <span className='font-bold text-brand-1'>
+                <Show ifReady={data}>{() => data!.apy.toFixed(2)}</Show>
+              </span>
             </div>
             <Separator
               decorative
@@ -446,7 +393,11 @@ export default function Vaults() {
 
             <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2 min-w-max'>
               <span className='font-medium text-xs'>Total Value Locked</span>
-              <span className='font-bold text-brand-1'>34USDC</span>
+              <span className='font-bold text-brand-1'>
+                <Show ifReady={totalValueLocked}>
+                  {() => totalValueLocked.value?.toFixed(2)}
+                </Show>
+              </span>
             </div>
             <Separator
               decorative
@@ -480,11 +431,16 @@ export default function Vaults() {
                     align='end'
                     className='bg-[#F2ECE4] text-xs text-black rounded-s-3xl rounded-b-3xl'
                   >
-                    Measures the largest single drop from peak to through, indicating the highest potential loss.
+                    Measures the largest single drop from peak to through,
+                    indicating the highest potential loss.
                   </PopoverContent>
                 </Popover>
               </div>
-              <span className='font-bold text-brand-1'>34%</span>
+              <span className='font-bold text-brand-1'>
+                <Show ifReady={data}>
+                  {() => data!.max_drawdown.toFixed(2)}
+                </Show>
+              </span>
             </div>
             <Separator
               decorative
@@ -493,7 +449,7 @@ export default function Vaults() {
           </div>
         </TabsContent>
         <TabsContent value='chart'>
-          <div className='w-3/4 text-primary flex flex-col'>
+          <div className='w-3/4 text-primary flex flex-col mx-auto'>
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
@@ -511,66 +467,40 @@ export default function Vaults() {
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-            <Card className='w-full bg-transparent bg-chart rounded-2xl max-w-5x'>
-              <CardContent>
-                <ChartContainer config={chartConfig}>
-                  <LineChart
-                    accessibilityLayer
-                    data={chartData}
-                    margin={{
-                      left: 12,
-                      right: 12,
-                    }}
-                  >
-                    <ChartTooltip
-                      cursor={false}
-                      content={<ChartTooltipContent hideLabel />}
-                    />
-                    <Line
-                      dataKey='pnl'
-                      type='natural'
-                      stroke='var(--color-pnl)'
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                  </LineChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
+            <Show ifReady={data}>
+              {() => (
+                <Card className='w-full bg-transparent bg-chart rounded-2xl max-w-5x'>
+                  <CardContent>
+                    <ChartContainer config={chartConfig}>
+                      <LineChart
+                        accessibilityLayer
+                        data={data!.history}
+                        margin={{
+                          left: 12,
+                          right: 12,
+                        }}
+                      >
+                        <ChartTooltip
+                          cursor={false}
+                          content={<ChartTooltipContent hideLabel />}
+                        />
+                        <Line
+                          dataKey='pnlPerc'
+                          type='natural'
+                          stroke='var(--color-pnlPerc)'
+                          strokeWidth={2}
+                          dot={false}
+                        />
+                      </LineChart>
+                    </ChartContainer>
+                  </CardContent>
+                </Card>
+              )}
+            </Show>
           </div>
         </TabsContent>
         <TabsContent value='position'>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Pair</TableHead>
-                <TableHead>Exchange</TableHead>
-                <TableHead>Size USD</TableHead>
-                <TableHead>Current Price</TableHead>
-                <TableHead>Funding Pnl</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {openPositions.map((position, idx) => (
-                <>
-                  <TableRow
-                    key={`${idx}-${position.pair}`}
-                    className='even:text-brand-2 relative after:bottom-0 after:left-0 after:block after:absolute after:bg-brand-1  after:h-[1px] after:w-full shadow-brand-1 after:shadow-custom'
-                  >
-                    <TableCell className='font-bold'>{position.pair}</TableCell>
-                    <TableCell>{position.exchange}</TableCell>
-                    <TableCell>
-                      {currencyFormatter.format(position.sizeUSD)}
-                    </TableCell>
-                    <TableCell>
-                      {currencyFormatter.format(position.currentPrice)}
-                    </TableCell>
-                    <TableCell>{position.fundingPNL || 'N/A'}</TableCell>
-                  </TableRow>
-                </>
-              ))}
-            </TableBody>
-          </Table>
+          <OpenPosition />
         </TabsContent>
       </Tabs>
     </div>

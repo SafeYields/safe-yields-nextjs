@@ -1,4 +1,5 @@
 'use client';
+import { chainData } from '@/app/dashboard/util';
 import { Button } from '@/components/ui/button';
 import {
   Navbar,
@@ -6,7 +7,7 @@ import {
   NavbarLeft,
   NavbarRight,
 } from '@/components/ui/navbar';
-import { account$, chainData } from '@/lib/store';
+import { account$ } from '@/lib/store';
 import { use$ } from '@legendapp/state/react';
 import { ChevronRight, Menu } from 'lucide-react';
 import Image from 'next/image';
