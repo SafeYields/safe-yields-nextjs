@@ -56,15 +56,12 @@ const flowEVMTradingHistroy$ = observable(() =>
   ).json(),
 );
 
-const arbitrumExposure$ = observable(() =>
+export const plutoExposure$ = observable(() =>
   ky<{ exposures: Exposure[] }>(
-    'https://trading-data.alphacube.io:8086/api/v1/exposure',
-  ).json().then(res => res.exposures),
-);
-const flowEVMExposure$ = observable(() =>
-  ky<{ exposures: Exposure[] }>(
-    'https://trading-data.alphacube.io:8085/api/v1/exposure',
-  ).json().then(res => res.exposures),
+    'https://trading-data.alphacube.io:8084/api/v1/exposure',
+  )
+    .json()
+    .then((res) => res.exposures),
 );
 
 export const tradingHistroy$ = observable(
@@ -83,21 +80,6 @@ export const tradingHistroy$ = observable(
   }),
 );
 
-export const exposure$ = observable(
-  linked({
-    get: () => {
-      switch (chainId$.get()) {
-        case arbitrum.id:
-          return arbitrumExposure$.get();
-        case flowMainnet.id:
-          return flowEVMExposure$.get();
-        default:
-          return undefined;
-      }
-    },
-    initial: undefined,
-  }),
-);
 
 const plutoBalance$ = observable(() =>
   ky<{ profit: number; available_balance: number }>(
