@@ -14,7 +14,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import { account$, balance$, tradingHistroy$ } from '@/lib/store';
+import { balance$, tradingHistroy$ } from '@/lib/store';
 import {
   getMerkleProof,
   getUserAirdropAmount,
@@ -27,6 +27,7 @@ import { Root as Separator } from '@radix-ui/react-separator';
 import { ethers, ZeroAddress } from 'ethers';
 import { useEffect, useState } from 'react';
 import { Line, LineChart } from 'recharts';
+import { useAccount } from 'wagmi';
 
 const chartConfig = {
   pnlPerc: {
@@ -36,8 +37,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function Dashboard() {
-  const address = use$(() => account$.address.get());
-  const chainId = use$(() => account$.chainId.get());
+  const account = useAccount();
   const balance = use$(balance$);
 
   const [sayStaked, setSayStaked] = useState('0');
@@ -50,30 +50,34 @@ export default function Dashboard() {
   const dashboardHistory = dashboardData?.history;
   const latestData = dashboardHistory?.at(-1);
 
-  const { userPnl, userShares } = useGetVaultData(chainId, address, latestData);
+  const { userPnl, userShares } = useGetVaultData(
+    account.chainId,
+    account.address,
+    latestData,
+  );
 
   useEffect(() => {
     //NB staking only on arbitrum
-    if (!address || chainId !== 42161) return;
+    if (!account.address || account.chainId !== 42161) return;
     sayStaker
-      .userStake(address)
+      .userStake(account.address)
       .then((data) => {
         setSayStaked(ethers.formatEther(data.stakeAmount));
       })
       .catch(() => {});
-  }, [address, sayStaker, chainId]);
+  }, [account.address, sayStaker, account.chainId]);
 
   const airdropAmount =
-    getUserAirdropAmount(address || ZeroAddress)?.amount ?? 0.0;
+    getUserAirdropAmount(account.address || ZeroAddress)?.amount ?? 0.0;
 
   const handleClaimAirdrop = async () => {
-    if (!address) return;
-    const data = getMerkleProof(address);
-    console.log('user: ', address, 'proof: ', data);
+    if (!account.address) return;
+    const data = getMerkleProof(account.address);
+    console.log('user: ', account.address, 'proof: ', data);
     if (!data.proof.length) {
       console.log('user not eligible for airdrop');
     }
-    if (await sayAirdrop.hasClaimed(address)) {
+    if (await sayAirdrop.hasClaimed(account.address)) {
       console.error('user has already claimed airdrop');
       //TODO: show error message to user
       return;
@@ -95,7 +99,7 @@ export default function Dashboard() {
       //TODO: hide loading spinner
     }
   };
-
+  console.log(dashboardData);
   return (
     <Show ifReady={() => dashboardData}>
       {() => (

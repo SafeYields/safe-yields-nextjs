@@ -92,7 +92,7 @@ const ThreadWelcome: FC = () => {
       <div className='flex w-full max-w-[var(--thread-max-width)] flex-grow flex-col'>
         <div className='flex w-full flex-grow flex-col items-center justify-center'>
           <Avatar>
-            <AvatarImage src='/images/logo.svg' />
+            <AvatarImage src='/images/chat.png' />
             <AvatarFallback>C</AvatarFallback>
           </Avatar>
           <p className='mt-4 font-medium'>How can I help you today?</p>
@@ -226,7 +226,7 @@ const AssistantMessage: FC = () => {
   return (
     <MessagePrimitive.Root className='relative grid w-full max-w-[var(--thread-max-width)] grid-cols-[auto_auto_1fr] grid-rows-[auto_1fr] py-4'>
       <Avatar className='col-start-1 row-span-full row-start-1 mr-4'>
-        <AvatarImage src='/images/logo.svg' />
+        <AvatarImage src='/images/chat.png' />
         <AvatarFallback>A</AvatarFallback>
       </Avatar>
 

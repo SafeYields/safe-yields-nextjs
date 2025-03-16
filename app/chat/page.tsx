@@ -21,14 +21,15 @@ import { useChatRuntime } from '@assistant-ui/react-ai-sdk';
 const BuildPortfolioToolUI = makeAssistantToolUI({
   toolName: 'buildPortfolio',
   render: ({}) => {
-    window.open('/portfolio', '_blank', 'noopener,noreferrer');
+    window.open('/vaults', '_blank', 'noopener,noreferrer');
     return (
       <Button
+        className='bg-brand-2 text-white px-4 py-0 rounded-xl'
         onClick={() =>
-          window.open('/portfolio', '_blank', 'noopener,noreferrer')
+          window.open('/vaults', '_blank', 'noopener,noreferrer')
         }
       >
-        Open
+        Click here to deposit
       </Button>
     );
   },

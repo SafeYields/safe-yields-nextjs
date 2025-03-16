@@ -7,13 +7,11 @@ import {
   NavbarLeft,
   NavbarRight,
 } from '@/components/ui/navbar';
-import { account$ } from '@/lib/store';
-import { use$ } from '@legendapp/state/react';
 import { ChevronRight, Menu } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ReactNode } from 'react';
-import { useSwitchChain } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 import { arbitrum, flowMainnet } from 'wagmi/chains';
 import ConnectButton from './connect-button';
 import {
@@ -29,7 +27,7 @@ import Navigation, { TLink } from './ui/navigation';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 
 const PickNetwork = () => {
-  const account = use$(account$);
+  const account = useAccount();
   const data = chainData(account.chainId);
   const { switchChain } = useSwitchChain();
   return (
@@ -171,7 +169,7 @@ export default function Layout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <>
-      <header className='sticky top-0 z-50 px-4 mb-4 bg-main'>
+      <header className='sticky top-0 z-50 px-4 mb-4 bg-gradient-to-b from-brand-1/35  to-brand-1/10'>
         <div className='absolute left-0 h-8 w-full'></div>
         <div className='relative mx-auto max-w-container'>
           <Navbar>

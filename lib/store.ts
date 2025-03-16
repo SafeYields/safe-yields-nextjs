@@ -1,8 +1,6 @@
 import { config } from '@/app/providers';
 import { batch, linked, observable, when } from '@legendapp/state';
-import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/local-storage';
-import { syncObservable } from '@legendapp/state/sync';
-import { getAccount, watchAccount } from '@wagmi/core';
+import { watchAccount } from '@wagmi/core';
 import ky from 'ky';
 import { arbitrum, flowMainnet } from 'wagmi/chains';
 
@@ -39,26 +37,14 @@ export type HistoryItem = {
   pnlPerc: string;
 };
 
-const account = getAccount(config);
-delete account.connector;
-
-export const account$ = observable(account);
+type ChainId = (typeof config.chains)[number]['id'];
+const chainId$ = observable<ChainId | undefined>(undefined);
 
 watchAccount(config, {
   onChange(account) {
-    console.log(account);
-    delete account.connector;
-    account$.assign(account);
+    chainId$.set(account.chainId as ChainId);
   },
 });
-
-syncObservable(account$, {
-  persist: {
-    name: 'account',
-    plugin: ObservablePersistLocalStorage,
-  },
-});
-
 const arbitrumTradingHistroy$ = observable(() =>
   ky<TradingHistory>(
     'https://trading-data.alphacube.io:8086/api/v1/history',
@@ -73,18 +59,18 @@ const flowEVMTradingHistroy$ = observable(() =>
 const arbitrumExposure$ = observable(() =>
   ky<{ exposures: Exposure[] }>(
     'https://trading-data.alphacube.io:8086/api/v1/exposure',
-  ).json(),
+  ).json().then(res => res.exposures),
 );
 const flowEVMExposure$ = observable(() =>
   ky<{ exposures: Exposure[] }>(
     'https://trading-data.alphacube.io:8085/api/v1/exposure',
-  ).json(),
+  ).json().then(res => res.exposures),
 );
 
 export const tradingHistroy$ = observable(
   linked({
     get: () => {
-      switch (account$.chainId.get()) {
+      switch (chainId$.get()) {
         case arbitrum.id:
           return arbitrumTradingHistroy$.get();
         case flowMainnet.id:
@@ -100,7 +86,7 @@ export const tradingHistroy$ = observable(
 export const exposure$ = observable(
   linked({
     get: () => {
-      switch (account$.chainId.get()) {
+      switch (chainId$.get()) {
         case arbitrum.id:
           return arbitrumExposure$.get();
         case flowMainnet.id:
@@ -134,7 +120,7 @@ const arbitrumBalance$ = observable(() =>
 export const balance$ = observable(
   linked({
     get: () => {
-      switch (account$.chainId.get()) {
+      switch (chainId$.get()) {
         case arbitrum.id:
           return arbitrumBalance$.get();
         case flowMainnet.id:
