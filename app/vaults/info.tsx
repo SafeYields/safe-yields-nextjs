@@ -4,11 +4,11 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
-import { totalLockedValue$, tradingHistroy$ } from '@/lib/store';
+import { plutoTradingHistroy$, totalLockedValue$ } from '@/lib/store';
 import { Show, use$ } from '@legendapp/state/react';
 
 export default function Info() {
-  const data = use$(tradingHistroy$);
+  const data = use$(plutoTradingHistroy$);
   const totalValueLocked = use$(totalLockedValue$);
 
   return (

@@ -16,7 +16,7 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
-function Row({ item$ }: {item$: Observable<Exposure>}) {
+function Row({ item$ }: { item$: Observable<Exposure> }) {
   return (
     <TableRow className='even:text-brand-2 relative after:bottom-0 after:left-0 after:block after:absolute after:bg-brand-1  after:h-[1px] after:w-full shadow-brand-1 after:shadow-custom'>
       <TableCell className='font-bold'>{item$.pair.get()}</TableCell>

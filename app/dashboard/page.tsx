@@ -99,7 +99,7 @@ export default function Dashboard() {
       //TODO: hide loading spinner
     }
   };
-  
+
   return (
     <Show ifReady={() => dashboardData}>
       {() => (

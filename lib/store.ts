@@ -56,6 +56,12 @@ const flowEVMTradingHistroy$ = observable(() =>
   ).json(),
 );
 
+export const plutoTradingHistroy$ = observable(() =>
+  ky<TradingHistory>(
+    'https://trading-data.alphacube.io:8084/api/v1/history',
+  ).json(),
+);
+
 export const plutoExposure$ = observable(() =>
   ky<{ exposures: Exposure[] }>(
     'https://trading-data.alphacube.io:8084/api/v1/exposure',
@@ -79,7 +85,6 @@ export const tradingHistroy$ = observable(
     initial: undefined,
   }),
 );
-
 
 const plutoBalance$ = observable(() =>
   ky<{ profit: number; available_balance: number }>(

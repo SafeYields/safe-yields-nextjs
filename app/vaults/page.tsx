@@ -19,7 +19,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/hooks/use-toast';
-import { tradingHistroy$ } from '@/lib/store';
+import { plutoTradingHistroy$ } from '@/lib/store';
 import { trimDecimalPlaces } from '@/lib/utils';
 import { approveSpending, getAllowance } from '@/services/blockchain/common';
 import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
@@ -48,7 +48,7 @@ export default function Vaults() {
   const signer = useEthersSigner()!;
   const [depositLoader, setDepostLoader] = useState(false);
   const { usdc, emmaVault } = useSafeYieldsContract(signer);
-  const data = use$(tradingHistroy$);
+  const data = use$(plutoTradingHistroy$);
   const [amounts, setAmounts] = useState({
     amountFormatted: '0',
     amountBigint: BigInt(0),
