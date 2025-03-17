@@ -142,3 +142,12 @@ body,
 .input-shadow {
   box-shadow: 2px 3px 14.1px -8px #d9d9d9;
 }
+
+#header{
+    background: linear-gradient(
+  169.19deg,
+  rgba(76, 250, 199, 0.2) -30.7%,
+  rgba(60, 197, 156, 0.167918) 36.39%,
+  rgba(0, 0, 0, 0.05) 119.91%
+);
+}
