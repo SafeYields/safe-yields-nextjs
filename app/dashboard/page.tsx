@@ -174,9 +174,7 @@ export default function Dashboard() {
             <div className='flex flex-col items-center gap-4  px-12 md:px-4 py-4 text-brand-1 min-w-40'>
               <span className='text-sm font-medium text-white'>PNL</span>
               <span className='text-xl font-bold'>
-                <Show ifReady={tradingHistroy$.todays_pnl}>
-                  {(today_pnl$) => today_pnl$! * +userShares}
-                </Show>
+                {dashboardData!.todays_pnl * +userShares}
               </span>
             </div>
             <Separator
