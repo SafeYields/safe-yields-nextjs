@@ -75,7 +75,7 @@ export default function Info() {
           decorative
           className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] hidden md:block shadow-custom'
         />
-        <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2 min-w-max w-32'>
+        <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2 min-w-max w-44'>
           <div className='flex flex-row gap-4'>
             <span className='font-medium text-xs'>Average APY</span>
             <Popover>
@@ -116,7 +116,7 @@ export default function Info() {
           className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
         />
 
-        <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2 min-w-max w-32'>
+        <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2 min-w-max w-44'>
           <span className='font-medium text-xs'>Total Value Locked</span>
           <span className='font-bold text-brand-1'>
             <Show ifReady={totalValueLocked}>
@@ -128,7 +128,7 @@ export default function Info() {
           decorative
           className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
         />
-        <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2 min-w-max w-32'>
+        <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2 min-w-max w-44'>
           <div className='flex flex-row gap-4'>
             <span className='font-medium text-xs'>
               Historical Max. Downdrawn
