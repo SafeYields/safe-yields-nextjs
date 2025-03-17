@@ -146,10 +146,10 @@ export default function Dashboard() {
                 Portfolio Balance
               </span>
               <span className='text-xl font-bold'>
+                $
                 <Show ifReady={balance}>
                   {() => balance!.available_balance * +userShares}
                 </Show>{' '}
-                $
               </span>
             </div>
 
