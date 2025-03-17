@@ -270,7 +270,7 @@ export default function Vaults() {
         </div>
       </div>
       <Tabs className='w-full max-w-2xl mx-auto' defaultValue='info'>
-        <TabsList className='bg-transparent items-center flex'>
+        <TabsList className='bg-transparent w-full items-center flex gap-4'>
           <TabsTrigger
             value='info'
             className='data-[state=active]:text-brand-1 data-[state=active]:font-bold font-normal text-xl'
