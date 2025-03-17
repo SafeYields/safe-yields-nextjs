@@ -102,6 +102,10 @@ plutoExposurePaginated$.onChange(async () => {
   });
 });
 
+plutoExposurePaginated$.onChange((changes) => {
+  console.log(changes);
+});
+
 export const tradingHistroy$ = observable(
   linked({
     get: () => {

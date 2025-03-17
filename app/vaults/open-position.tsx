@@ -71,60 +71,54 @@ function PaginateTable() {
   const { hasNext, hasPrev, page } = use$(plutoExposurePaginated$);
 
   return (
-    <Memo>
-      <Pagination className='justify-start'>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              isActive={hasPrev}
-              disabled={!hasPrev}
-              onClick={() =>
-                plutoExposurePaginated$.page.set((page) => page - 1)
-              }
-            />
-          </PaginationItem>
-          <Show if={hasPrev && !hasNext}>
-            {() => (
-              <PaginationItem>
-                <PaginationLink
-                  onClick={() =>
-                    plutoExposurePaginated$.page.set((page) => page - 1)
-                  }
-                >
-                  {page - 1}
-                </PaginationLink>
-              </PaginationItem>
-            )}
-          </Show>
-          <PaginationItem>
-            <PaginationLink isActive>{page}</PaginationLink>
-          </PaginationItem>
+    <Pagination className='justify-start'>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious
+            isActive={hasPrev}
+            disabled={!hasPrev}
+            onClick={() => plutoExposurePaginated$.page.set((page) => page - 1)}
+          />
+        </PaginationItem>
+        <Show if={hasPrev && !hasNext}>
+          {() => (
+            <PaginationItem>
+              <PaginationLink
+                onClick={() =>
+                  plutoExposurePaginated$.page.set((page) => page - 1)
+                }
+              >
+                {page - 1}
+              </PaginationLink>
+            </PaginationItem>
+          )}
+        </Show>
+        <PaginationItem>
+          <PaginationLink isActive>{page}</PaginationLink>
+        </PaginationItem>
 
-          <Show if={hasNext}>
-            {() => (
-              <PaginationItem>
-                <PaginationLink
-                  onClick={() =>
-                    plutoExposurePaginated$.page.set((page) => page + 1)
-                  }
-                >
-                  {page + 1}
-                </PaginationLink>
-              </PaginationItem>
-            )}
-          </Show>
+        <Show if={hasNext}>
+          {() => (
+            <PaginationItem>
+              <PaginationLink
+                onClick={() =>
+                  plutoExposurePaginated$.page.set((page) => page + 1)
+                }
+              >
+                {page + 1}
+              </PaginationLink>
+            </PaginationItem>
+          )}
+        </Show>
 
-          <PaginationItem>
-            <PaginationNext
-              isActive={hasNext}
-              disabled={!hasNext}
-              onClick={() =>
-                plutoExposurePaginated$.page.set((page) => page + 1)
-              }
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
-    </Memo>
+        <PaginationItem>
+          <PaginationNext
+            isActive={hasNext}
+            disabled={!hasNext}
+            onClick={() => plutoExposurePaginated$.page.set((page) => page + 1)}
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
   );
 }

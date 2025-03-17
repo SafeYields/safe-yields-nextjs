@@ -27,7 +27,7 @@ import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contract
 import { Show, use$ } from '@legendapp/state/react';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
-import { AlertCircle, Loader2 } from 'lucide-react';
+import { AlertCircle, Loader2, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
 import { Line, LineChart } from 'recharts';
 import { useAccount } from 'wagmi';
@@ -44,7 +44,7 @@ const chartConfig = {
 export default function Vaults() {
   const { toast } = useToast();
   const { openConnectModal } = useConnectModal();
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const signer = useEthersSigner()!;
   const [depositLoader, setDepostLoader] = useState(false);
   const { usdc, emmaVault } = useSafeYieldsContract(signer);
@@ -188,8 +188,11 @@ export default function Vaults() {
           </AlertDescription>
         </Alert>
         <div>
-          <Tabs defaultValue='deposit' className='bg-[#F2ECE41F] rounded-xl'>
-            <TabsList className='w-full justify-start bg-transparent py-6'>
+          <Tabs
+            defaultValue='deposit'
+            className='bg-[#F2ECE41F] rounded-xl py-4 px-2'
+          >
+            <TabsList className='justify-start w-full items-center bg-transparent flex flex-row px-6'>
               <TabsTrigger
                 value='deposit'
                 className='max-w-min data-[state=active]:bg-transparent data-[state=active]:text-brand-2'
@@ -203,10 +206,13 @@ export default function Vaults() {
               >
                 Withdraw
               </TabsTrigger>
+              <div className='w-full flex items-center justify-end px-4 text-white'>
+                <RefreshCw className='w-6 h-6' />
+              </div>
             </TabsList>
             <TabsContent value='deposit'>
               <Card className='bg-transparent space-y-4 mt-4 border-0'>
-                <CardContent>
+                <CardContent className='flex flex-col gap-3'>
                   <div className='relative'>
                     <Input
                       onChange={handleAmountChange}
@@ -218,15 +224,19 @@ export default function Vaults() {
                       USDC
                     </span>
                   </div>
+                  <div className='flex justify-between text-xs px-4'>
+                    <span>Your current position</span>
+                    <span>53USDC</span>
+                  </div>
                 </CardContent>
                 <CardFooter>
                   <Button
                     onClick={handleEmmaVaultDeposit}
                     className='w-full rounded-full bg-brand-2 text-white'
-                    disabled={depositLoader}
+                    disabled={depositLoader || !isConnected}
                   >
                     {depositLoader && <Loader2 className='animate-spin' />}
-                    Deposit
+                    {isConnected ? 'Deposit' : 'Connect Wallet'}
                   </Button>
                 </CardFooter>
               </Card>
