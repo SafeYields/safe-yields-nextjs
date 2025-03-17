@@ -7,6 +7,9 @@ import {
   NavbarLeft,
   NavbarRight,
 } from '@/components/ui/navbar';
+import { tradingHistroy$ } from '@/lib/store';
+import { useGetVaultData } from '@/services/blockchain/hooks/useGetVaultData';
+import { use$ } from '@legendapp/state/react';
 import { ChevronRight, Menu } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -25,9 +28,6 @@ import {
 } from './ui/dropdown-menu';
 import Navigation, { TLink } from './ui/navigation';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
-import { balance$, tradingHistroy$ } from '@/lib/store';
-import { Show, use$ } from '@legendapp/state/react';
-import { useGetVaultData } from '@/services/blockchain/hooks/useGetVaultData';
 
 const PickNetwork = () => {
   const account = useAccount();
@@ -103,17 +103,7 @@ const PickNetwork = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       )}
-      <div className='flex flex-col gap-2'>
-        <ConnectButton />
-        <Show ifReady={balance$}>
-          {(data$) => 
-            <span className='text-xs'>
-              Your balance: {data$!.available_balance * +userShares} {arbitrum.id === account.chainId ? "USDC": "stgUSDC"}
-            </span>
-          }
-        </Show>
-
-      </div>
+      <ConnectButton />
     </div>
   );
 };
@@ -191,7 +181,7 @@ export default function Layout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <>
-      <header id="header" className='sticky top-0 z-50 px-4 mb-4'>
+      <header id='header' className='sticky top-0 z-50 px-4 mb-4'>
         <div className='absolute left-0 h-8 w-full'></div>
         <div className='relative mx-auto'>
           <Navbar>

@@ -175,9 +175,7 @@ export default function Dashboard() {
               <span className='text-sm font-medium text-white'>PNL</span>
               <span className='text-xl font-bold'>
                 <Show ifReady={tradingHistroy$.todays_pnl}>
-                  {(today_pnl$) => 
-                    today_pnl$! * +userShares
-                  }
+                  {(today_pnl$) => today_pnl$! * +userShares}
                 </Show>
               </span>
             </div>
