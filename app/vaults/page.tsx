@@ -178,8 +178,8 @@ export default function Vaults() {
   };
 
   return (
-    <div className='mt-8 py-4 grid grid-cols-1 gap-16 md:grid-cols-[350px_2fr] justify-evenly items-start px-8 md:px-20'>
-      <div className='flex min-w-lg flex-grow flex-col gap-12'>
+    <div className='mt-8 py-4 grid grid-cols-1 gap-16 md:grid-cols-[28rem_2fr] justify-center items-start px-8 md:px-20'>
+      <div className='flex min-w-md flex-grow flex-col gap-12'>
         <Alert className='bg-brand-2'>
           <AlertCircle className='h-4 w-4' />
           <AlertTitle>Warning</AlertTitle>
@@ -271,7 +271,7 @@ export default function Vaults() {
             value='chart'
             className='data-[state=active]:text-brand-1 data-[state=active]:font-bold font-normal text-xl'
           >
-            Historical Performance Chart
+            Performance Chart
           </TabsTrigger>
           <TabsTrigger
             value='position'

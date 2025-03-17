@@ -37,21 +37,23 @@ PaginationItem.displayName = 'PaginationItem';
 type PaginationLinkProps = {
   isActive?: boolean;
 } & Pick<ButtonProps, 'size'> &
-  React.ComponentProps<'a'>;
+  React.ComponentProps<'button'>;
 
 const PaginationLink = ({
   className,
   isActive,
-  size = 'icon',
+  size = 'xs',
   ...props
 }: PaginationLinkProps) => (
-  <a
+  <button
     aria-current={isActive ? 'page' : undefined}
     className={cn(
       buttonVariants({
-        variant: isActive ? 'outline' : 'ghost',
+        variant: 'link',
         size,
       }),
+      'font-bold',
+      { 'text-brand-1': isActive, 'text-[#4D7B7E]': !isActive },
       className,
     )}
     {...props}
@@ -69,8 +71,7 @@ const PaginationPrevious = ({
     className={cn('gap-1 pl-2.5', className)}
     {...props}
   >
-    <ChevronLeft className='h-4 w-4' />
-    <span>Previous</span>
+    <ChevronLeft className={cn('h-6 w-6', { 'text-white': props.isActive })} />
   </PaginationLink>
 );
 PaginationPrevious.displayName = 'PaginationPrevious';
@@ -82,11 +83,10 @@ const PaginationNext = ({
   <PaginationLink
     aria-label='Go to next page'
     size='default'
-    className={cn('gap-1 pr-2.5', className)}
+    className={cn('gap-1 pr-2', className)}
     {...props}
   >
-    <span>Next</span>
-    <ChevronRight className='h-4 w-4' />
+    <ChevronRight className={cn('h-6 w-6', { 'text-white': props.isActive })} />
   </PaginationLink>
 );
 PaginationNext.displayName = 'PaginationNext';

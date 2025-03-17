@@ -62,13 +62,45 @@ export const plutoTradingHistroy$ = observable(() =>
   ).json(),
 );
 
-export const plutoExposure$ = observable(() =>
+const plutoExposure$ = observable(() =>
   ky<{ exposures: Exposure[] }>(
     'https://trading-data.alphacube.io:8084/api/v1/exposure',
   )
     .json()
     .then((res) => res.exposures),
 );
+
+export const plutoExposurePaginated$ = observable({
+  hasNext: false,
+  hasPrev: false,
+  page: 1,
+  pageSize: 10,
+  items: async () => {
+    const exposures = await when(plutoExposure$);
+    const page = plutoExposurePaginated$.page.get();
+    const pageSize = plutoExposurePaginated$.pageSize.get();
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    plutoExposurePaginated$.hasNext.set(endIndex < exposures.length);
+    plutoExposurePaginated$.hasPrev.set(page > 1);
+    return exposures.slice(startIndex, endIndex);
+  },
+});
+
+plutoExposurePaginated$.onChange(async () => {
+  const exposures = await when(plutoExposure$);
+  const page = plutoExposurePaginated$.page.get();
+  const pageSize = plutoExposurePaginated$.pageSize.get();
+
+  batch(() => {
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    plutoExposurePaginated$.hasNext.set(endIndex < exposures.length);
+    plutoExposurePaginated$.hasPrev.set(page > 1);
+    const items = exposures.slice(startIndex, endIndex);
+    plutoExposurePaginated$.items.set(items);
+  });
+});
 
 export const tradingHistroy$ = observable(
   linked({
