@@ -50,7 +50,7 @@ export default function Dashboard() {
   const dashboardHistory = dashboardData?.history;
   const latestData = dashboardHistory?.at(-1);
 
-  const { userPnl, userShares } = useGetVaultData(
+  const { userShares } = useGetVaultData(
     account.chainId,
     account.address,
     latestData,

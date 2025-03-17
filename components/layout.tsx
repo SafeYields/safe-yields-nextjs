@@ -7,9 +7,6 @@ import {
   NavbarLeft,
   NavbarRight,
 } from '@/components/ui/navbar';
-import { tradingHistroy$ } from '@/lib/store';
-import { useGetVaultData } from '@/services/blockchain/hooks/useGetVaultData';
-import { use$ } from '@legendapp/state/react';
 import { ChevronRight, Menu } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -33,14 +30,6 @@ const PickNetwork = () => {
   const account = useAccount();
   const data = chainData(account.chainId);
   const { switchChain } = useSwitchChain();
-  const dashboardData = use$(tradingHistroy$);
-  const latestData = dashboardData?.history?.at(-1);
-
-  const { userShares } = useGetVaultData(
-    account.chainId,
-    account.address,
-    latestData,
-  );
 
   return (
     <div className='md:flex flex-row gap-2 hidden'>
