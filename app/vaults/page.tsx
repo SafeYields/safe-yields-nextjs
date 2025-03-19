@@ -287,7 +287,7 @@ export default function Vaults() {
             value='position'
             className='data-[state=active]:text-brand-1 data-[state=active]:font-bold font-normal text-xl'
           >
-            Open Position
+            Open Positions
           </TabsTrigger>
         </TabsList>
         <TabsContent value='info' className='mt-12'>

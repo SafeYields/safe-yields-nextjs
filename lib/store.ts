@@ -37,6 +37,7 @@ export type HistoryItem = {
   pnlPerc: string;
 };
 
+
 type ChainId = (typeof config.chains)[number]['id'];
 const chainId$ = observable<ChainId | undefined>(undefined);
 
@@ -45,6 +46,7 @@ watchAccount(config, {
     chainId$.set(account.chainId as ChainId);
   },
 });
+
 const arbitrumTradingHistroy$ = observable(() =>
   ky<TradingHistory>(
     'https://trading-data.alphacube.io:8086/api/v1/history',
