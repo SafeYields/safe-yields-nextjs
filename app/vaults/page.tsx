@@ -187,7 +187,7 @@ export default function Vaults() {
           <AlertCircle className='h-4 w-4' />
           <AlertTitle>Warning</AlertTitle>
           <AlertDescription>
-            Your funds will remain locked until the next epoch on March 16th.
+            Deposits and Withdrawls paused until Epoch ends on April 1st 12:00 UTC.
           </AlertDescription>
         </Alert>
         <div>
