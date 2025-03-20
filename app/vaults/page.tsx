@@ -29,7 +29,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
 import { AlertCircle, Loader2, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
-import { Line, LineChart } from 'recharts';
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 import { useAccount } from 'wagmi';
 import Info from './info';
 import OpenPosition from './open-position';
@@ -325,6 +325,34 @@ export default function Vaults() {
                           right: 12,
                         }}
                       >
+                        <CartesianGrid />
+                        <XAxis
+                          dataKey='updateTime'
+                          tickLine={false}
+                          axisLine={false}
+                          tickMargin={8}
+                          tickFormatter={(value) =>
+                            new Intl.DateTimeFormat('en-US').format(
+                              new Date(value),
+                            )
+                          }
+                        />
+                        <YAxis
+                          dataKey={(item) =>
+                            item.pnlPerc - item.unrealizedPnlPerc
+                          }
+                          includeHidden
+                          allowDataOverflow
+                          tickMargin={8}
+                          tickCount={7}
+                          tickFormatter={(value) => value.toFixed(3)}
+                          domain={([dataMin, dataMax]) => {
+                            const range = dataMax - dataMin;
+                            const padding = range / 3;
+                            return [dataMin - padding, dataMax + padding];
+                          }}
+                        />
+
                         <ChartTooltip
                           cursor={false}
                           content={<ChartTooltipContent hideLabel />}

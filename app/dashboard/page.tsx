@@ -210,60 +210,62 @@ function Dashboard() {
           </NavigationMenuList>
         </NavigationMenu>
         <Show ifReady={history}>
-          <Card className='w-full bg-transparent bg-chart rounded-2xl'>
-            <CardContent className='py-4'>
-              <ChartContainer config={chartConfig}>
-                <LineChart
-                  accessibilityLayer
-                  data={history}
-                  margin={{
-                    left: 12,
-                    right: 12,
-                  }}
-                >
-                  <CartesianGrid />
-                  <XAxis
-                    dataKey='updateTime'
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    tickFormatter={(value) =>
-                      new Intl.DateTimeFormat('en-US').format(new Date(value))
-                    }
-                  />
-                  <YAxis
-                    dataKey={(item) => item.pnlPerc - item.unrealizedPnlPerc}
-                    includeHidden
-                    allowDataOverflow
-                    tickMargin={8}
-                    tickCount={7}
-                    tickFormatter={(value) => value.toFixed(3)}
-                    domain={([dataMin, dataMax]) => {
-                      const range = dataMax - dataMin
-                      const padding = range/3
-                      return [dataMin - padding, dataMax];
+          {() => (
+            <Card className='w-full bg-transparent bg-chart rounded-2xl'>
+              <CardContent className='py-4'>
+                <ChartContainer config={chartConfig}>
+                  <LineChart
+                    accessibilityLayer
+                    data={history}
+                    margin={{
+                      left: 12,
+                      right: 12,
                     }}
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent hideLabel />}
-                  />
+                  >
+                    <CartesianGrid />
+                    <XAxis
+                      dataKey='updateTime'
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={8}
+                      tickFormatter={(value) =>
+                        new Intl.DateTimeFormat('en-US').format(new Date(value))
+                      }
+                    />
+                    <YAxis
+                      dataKey={(item) => item.pnlPerc - item.unrealizedPnlPerc}
+                      includeHidden
+                      allowDataOverflow
+                      tickMargin={8}
+                      tickCount={7}
+                      tickFormatter={(value) => value.toFixed(3)}
+                      domain={([dataMin, dataMax]) => {
+                        const range = dataMax - dataMin;
+                        const padding = range / 3;
+                        return [dataMin - padding, dataMax + padding];
+                      }}
+                    />
+                    <ChartTooltip
+                      cursor={false}
+                      content={<ChartTooltipContent hideLabel />}
+                    />
 
-                  <Line
-                    dataKey='pnlPerc'
-                    type='natural'
-                    stroke='var(--color-pnlPerc)'
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-              </ChartContainer>
-            </CardContent>
-          </Card>
+                    <Line
+                      dataKey='pnlPerc'
+                      type='natural'
+                      stroke='var(--color-pnlPerc)'
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          )}
         </Show>
       </div>
     </div>
   );
 }
 
-export default observer(Dashboard)
+export default observer(Dashboard);
