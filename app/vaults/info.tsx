@@ -11,6 +11,13 @@ export default function Info() {
   const data = use$(plutoTradingHistroy$);
   const totalValueLocked = use$(totalLockedValue$);
 
+  const formatTotalValueLocked = (value: number) => {
+    if (value >= 1000) {
+      return (value / 1000).toFixed(0) + "k";
+    }
+    return value.toString();
+  };
+
   return (
     <>
       <h3 className='scroll-m-20 text-xl font-semibold tracking-tight flex items-center gap-2'>
@@ -70,7 +77,7 @@ export default function Info() {
           achieving consistent returns.
         </span>
       </p>
-      <div className='flex flex-col md:flex-row mt-4 md:h-20 max-h-fit max-w-fit items-center mx-auto gap-4'>
+      <div className='flex flex-col md:flex-row mt-4 md:h-20 max-h-fit w-full items-center gap-4'>
         <Separator
           decorative
           className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] hidden md:block shadow-custom'
@@ -107,7 +114,7 @@ export default function Info() {
               </HoverCardContent>
             </HoverCard>
           </div>
-          <span className='font-bold text-brand-1'>
+          <span className='font-bold text-brand-1 text-lg'>
             <Show ifReady={data}>{() => data!.apy.toFixed(2)}</Show>%
           </span>
         </div>
@@ -118,9 +125,9 @@ export default function Info() {
 
         <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2 min-w-max w-44'>
           <span className='font-medium text-xs'>Total Value Locked</span>
-          <span className='font-bold text-brand-1'>
+          <span className='font-bold text-brand-1 text-lg'>
             <Show ifReady={totalValueLocked}>
-              {() => totalValueLocked.value?.toFixed(2)}
+              {totalValueLocked.value ? formatTotalValueLocked(totalValueLocked.value) : '...'}
             </Show>
           </span>
         </div>
@@ -161,7 +168,7 @@ export default function Info() {
               </HoverCardContent>
             </HoverCard>
           </div>
-          <span className='font-bold text-brand-1'>
+          <span className='font-bold text-brand-1 text-lg'>
             <Show ifReady={data}>{() => data!.max_drawdown.toFixed(2)}</Show>%
           </span>
         </div>
