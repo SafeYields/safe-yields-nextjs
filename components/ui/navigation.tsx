@@ -34,7 +34,7 @@ export default function Navigation({ links }: { links: TLink[] }) {
           'items' in link ? (
             <NavigationMenuItem key={link.title}>
               <NavigationMenuTrigger>{link.title}</NavigationMenuTrigger>
-              <NavigationMenuContent className='bg-[#F2ECE4] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-25'>
+              <NavigationMenuContent className='bg-[#F2ECE4] bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-25'>
                 <ul className='flex flex-col w-max'>
                   {link.items.map((item) => (
                     <ListItem
