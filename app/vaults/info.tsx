@@ -1,8 +1,8 @@
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card';
 import { Separator } from '@/components/ui/separator';
 import { plutoTradingHistroy$, totalLockedValue$ } from '@/lib/store';
 import { Show, use$ } from '@legendapp/state/react';
@@ -78,8 +78,8 @@ export default function Info() {
         <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2 min-w-max w-44'>
           <div className='flex flex-row gap-4 relative'>
             <span className='font-medium text-xs'>Average APY</span>
-            <Popover>
-              <PopoverTrigger asChild className='absolute -right-5 bottom-3'>
+            <HoverCard>
+              <HoverCardTrigger asChild className='absolute -right-5 bottom-3'>
                 <svg
                   width='11'
                   height='11'
@@ -96,16 +96,16 @@ export default function Info() {
                     fill='#F2ECE4'
                   />
                 </svg>
-              </PopoverTrigger>
-              <PopoverContent
+              </HoverCardTrigger>
+              <HoverCardContent
                 align='start'
                 className='bg-[#F2ECE4] text-xs text-black rounded-e-3xl rounded-b-3xl'
               >
                 Represents the rate of return over a year, accounting for the
                 effect of compounding interest and it&apos;s calculated from all
                 time historical data.
-              </PopoverContent>
-            </Popover>
+              </HoverCardContent>
+            </HoverCard>
           </div>
           <span className='font-bold text-brand-1'>
             <Show ifReady={data}>{() => data!.apy.toFixed(2)}</Show>%
@@ -133,8 +133,8 @@ export default function Info() {
             <span className='font-medium text-xs'>
               Historical Max. Downdrawn
             </span>
-            <Popover>
-              <PopoverTrigger asChild className='absolute -right-5 bottom-3'>
+            <HoverCard>
+              <HoverCardTrigger asChild className='absolute -right-5 bottom-3'>
                 <svg
                   width='11'
                   height='11'
@@ -151,15 +151,15 @@ export default function Info() {
                     fill='#F2ECE4'
                   />
                 </svg>
-              </PopoverTrigger>
-              <PopoverContent
+              </HoverCardTrigger>
+              <HoverCardContent
                 align='end'
                 className='bg-[#F2ECE4] text-xs text-black rounded-s-3xl rounded-b-3xl'
               >
                 Measures the largest single drop from peak to through,
                 indicating the highest potential loss.
-              </PopoverContent>
-            </Popover>
+              </HoverCardContent>
+            </HoverCard>
           </div>
           <span className='font-bold text-brand-1'>
             <Show ifReady={data}>{() => data!.max_drawdown.toFixed(2)}</Show>%
