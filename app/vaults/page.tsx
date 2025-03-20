@@ -19,12 +19,12 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/hooks/use-toast';
-import { plutoTradingHistroy$ } from '@/lib/store';
+import { balance$, plutoTradingHistroy$ } from '@/lib/store';
 import { trimDecimalPlaces } from '@/lib/utils';
 import { approveSpending, getAllowance } from '@/services/blockchain/common';
 import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
 import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contracts';
-import { Show, use$ } from '@legendapp/state/react';
+import { Show, use$, useObservable } from '@legendapp/state/react';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
 import { AlertCircle, Loader2, RefreshCw } from 'lucide-react';
@@ -53,6 +53,9 @@ export default function Vaults() {
     amountFormatted: '0',
     amountBigint: BigInt(0),
   });
+
+  const position = useObservable(() => emmaVault.balanceOf(address));
+  const balance = use$(balance$);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input = e.target.value;
@@ -226,7 +229,15 @@ export default function Vaults() {
                   </div>
                   <div className='flex justify-between text-xs px-4'>
                     <span>Your current position</span>
-                    <span>53USDC</span>
+                    <Show ifReady={position}>
+                      {(p) => (
+                        <span>
+                          {(
+                            Number(p) * (balance?.available_balance || 0)
+                          ).toFixed(2)}
+                        </span>
+                      )}
+                    </Show>
                   </div>
                 </CardContent>
                 <CardFooter>
