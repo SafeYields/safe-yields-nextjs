@@ -22,11 +22,11 @@ import {
 import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
 import { useGetVaultData } from '@/services/blockchain/hooks/useGetVaultData';
 import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contracts';
-import { Show, use$ } from '@legendapp/state/react';
+import { observer, Show, use$ } from '@legendapp/state/react';
 import { Root as Separator } from '@radix-ui/react-separator';
 import { ethers, ZeroAddress } from 'ethers';
 import { useEffect, useState } from 'react';
-import { Line, LineChart } from 'recharts';
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 import { useAccount } from 'wagmi';
 import { tradingHistroy$ } from './util';
 
@@ -37,7 +37,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function Dashboard() {
+function Dashboard() {
   const account = useAccount();
   const balance = use$(balance$);
 
@@ -48,8 +48,8 @@ export default function Dashboard() {
   const { sayStaker, sayAirdrop } = useSafeYieldsContract(signer);
   const apy = use$(() => plutoTradingHistroy$.apy.get());
   const todays_pnl = use$(() => tradingHistroy$.todays_pnl.get());
-  const dashboardHistory = use$(() => tradingHistroy$.history.get());
-  const latestData = dashboardHistory?.at(-1);
+  const history = use$(() => tradingHistroy$.history.get());
+  const latestData = history?.at(-1);
 
   const { userShares } = useGetVaultData(
     account.chainId,
@@ -143,7 +143,9 @@ export default function Dashboard() {
           <span className='text-xl font-bold'>
             $
             <Show ifReady={balance}>
-              {() => Number(balance!.available_balance * +userShares).toFixed(2)}
+              {() =>
+                Number(balance!.available_balance * +userShares).toFixed(2)
+              }
             </Show>{' '}
           </span>
         </div>
@@ -207,33 +209,61 @@ export default function Dashboard() {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-        <Card className='w-full bg-transparent bg-chart rounded-2xl'>
-          <CardContent>
-            <ChartContainer config={chartConfig}>
-              <LineChart
-                accessibilityLayer
-                data={dashboardHistory}
-                margin={{
-                  left: 12,
-                  right: 12,
-                }}
-              >
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent hideLabel />}
-                />
-                <Line
-                  dataKey='pnlPerc'
-                  type='natural'
-                  stroke='var(--color-pnlPerc)'
-                  strokeWidth={2}
-                  dot={false}
-                />
-              </LineChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
+        <Show ifReady={history}>
+          <Card className='w-full bg-transparent bg-chart rounded-2xl'>
+            <CardContent className='py-4'>
+              <ChartContainer config={chartConfig}>
+                <LineChart
+                  accessibilityLayer
+                  data={history}
+                  margin={{
+                    left: 12,
+                    right: 12,
+                  }}
+                >
+                  <CartesianGrid />
+                  <XAxis
+                    dataKey='updateTime'
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    tickFormatter={(value) =>
+                      new Intl.DateTimeFormat('en-US').format(new Date(value))
+                    }
+                  />
+                  <YAxis
+                    dataKey={(item) => item.pnlPerc - item.unrealizedPnlPerc}
+                    includeHidden
+                    allowDataOverflow
+                    tickMargin={8}
+                    tickCount={7}
+                    tickFormatter={(value) => value.toFixed(3)}
+                    domain={([dataMin, dataMax]) => {
+                      const range = dataMax - dataMin
+                      const padding = range/3
+                      return [dataMin - padding, dataMax];
+                    }}
+                  />
+                  <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent hideLabel />}
+                  />
+
+                  <Line
+                    dataKey='pnlPerc'
+                    type='natural'
+                    stroke='var(--color-pnlPerc)'
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                </LineChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+        </Show>
       </div>
     </div>
   );
 }
+
+export default observer(Dashboard)
