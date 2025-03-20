@@ -14,7 +14,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import { balance$, tradingHistroy$ } from '@/lib/store';
+import { balance$, plutoTradingHistroy$ } from '@/lib/store';
 import {
   getMerkleProof,
   getUserAirdropAmount,
@@ -28,6 +28,7 @@ import { ethers, ZeroAddress } from 'ethers';
 import { useEffect, useState } from 'react';
 import { Line, LineChart } from 'recharts';
 import { useAccount } from 'wagmi';
+import { tradingHistroy$ } from './util';
 
 const chartConfig = {
   pnlPerc: {
@@ -41,13 +42,13 @@ export default function Dashboard() {
   const balance = use$(balance$);
 
   const [sayStaked, setSayStaked] = useState('0');
-  const dashboardData = use$(tradingHistroy$);
 
   const signer = useEthersSigner();
 
   const { sayStaker, sayAirdrop } = useSafeYieldsContract(signer);
-
-  const dashboardHistory = dashboardData?.history;
+  const apy = use$(() => plutoTradingHistroy$.apy.get());
+  const todays_pnl = use$(() => tradingHistroy$.todays_pnl.get());
+  const dashboardHistory = use$(() => tradingHistroy$.history.get());
   const latestData = dashboardHistory?.at(-1);
 
   const { userShares } = useGetVaultData(
@@ -101,147 +102,138 @@ export default function Dashboard() {
   };
 
   return (
-    <Show ifReady={() => dashboardData}>
-      {() => (
-        <div
-          id='main-bg'
-          className='my-8 flex w-full flex-col items-center justify-center gap-8'
-        >
-          <div className='flex flex-col md:flex-row items-center justify-center w-full max-w-max lg:gap-2 md:h-28 max-h-fit'>
-            <Separator
-              decorative
-              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
-            />
+    <div
+      id='main-bg'
+      className='my-8 flex w-full flex-col items-center justify-center gap-8'
+    >
+      <div className='flex flex-col md:flex-row items-center justify-center w-full max-w-max lg:gap-2 md:h-28 max-h-fit'>
+        <Separator
+          decorative
+          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
+        />
 
-            <div className='flex flex-row items-center text-brand-1 px-12 md:px-4 py-4 min-w-40'>
-              <div className='flex w-full flex-col items-center'>
-                <span className='text-sm font-medium text-white'>
-                  Staked $SAY
-                </span>
-                <span className='text-lg font-bold'>{sayStaked}</span>
-                <span className='text-sm font-medium text-white'>
-                  Airdrop $SAY
-                </span>
-                <div className='flex flex-row gap-3'>
-                  <span className='text-lg font-bold'>
-                    {airdropAmount.toString()}
-                  </span>
-                  <button
-                    className='my-1 rounded-full bg-brand-1 px-5 text-xs font-bold text-black'
-                    onClick={handleClaimAirdrop}
-                  >
-                    Claim
-                  </button>
-                </div>
-              </div>
+        <div className='flex flex-row items-center text-brand-1 px-12 md:px-4 py-4 min-w-40'>
+          <div className='flex w-full flex-col items-center'>
+            <span className='text-sm font-medium text-white'>Staked $SAY</span>
+            <span className='text-lg font-bold'>{sayStaked}</span>
+            <span className='text-sm font-medium text-white'>Airdrop $SAY</span>
+            <div className='flex flex-row gap-3'>
+              <span className='text-lg font-bold'>
+                {airdropAmount.toString()}
+              </span>
+              <button
+                className='my-1 rounded-full bg-brand-1 px-5 text-xs font-bold text-black'
+                onClick={handleClaimAirdrop}
+              >
+                Claim
+              </button>
             </div>
-
-            <Separator
-              decorative
-              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
-            />
-
-            <div className='flex flex-col items-center gap-4 px-12 md:px-4 py-4 text-brand-1 min-w-40'>
-              <span className='text-sm font-medium text-white'>
-                Portfolio Balance
-              </span>
-              <span className='text-xl font-bold'>
-                $
-                <Show ifReady={balance}>
-                  {() => balance!.available_balance * +userShares}
-                </Show>{' '}
-              </span>
-            </div>
-
-            <Separator
-              decorative
-              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
-            />
-
-            <div className='flex flex-col items-center gap-4 px-12 md:px-4 py-4 text-brand-1 min-w-40'>
-              <span className='text-sm font-medium text-white'>
-                Average APY
-              </span>
-              <span className='text-xl font-bold'>
-                {dashboardData!.apy!.toFixed(2)}%
-              </span>
-            </div>
-            <Separator
-              decorative
-              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
-            />
-
-            <div className='flex flex-col items-center gap-4  px-12 md:px-4 py-4 text-brand-1 min-w-40'>
-              <span className='text-sm font-medium text-white'>PNL</span>
-              <span className='text-xl font-bold'>
-                {dashboardData!.todays_pnl * +userShares}
-              </span>
-            </div>
-            <Separator
-              decorative
-              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
-            />
-
-            <div className='flex flex-col items-center gap-4  px-12 md:px-4 py-4 text-brand-1 min-w-40'>
-              <span className='text-sm font-medium text-white'>
-                Today&apos;s PNL
-              </span>
-              <span className='text-xl font-bold'>
-                ${dashboardData!.todays_pnl.toFixed(3)}
-              </span>
-            </div>
-            <Separator
-              decorative
-              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
-            />
-          </div>
-          <div className='xl:w-1/2 w-3/4 text-primary flex flex-col'>
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Last 30 days</NavigationMenuTrigger>
-                  <NavigationMenuContent className='text-sm bg-[#F2ECE4] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-25'>
-                    <ul className='flex flex-col w-max'>
-                      <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
-                        Last 3 months
-                      </li>
-                      <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
-                        All time
-                      </li>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-            <Card className='w-full bg-transparent bg-chart rounded-2xl'>
-              <CardContent>
-                <ChartContainer config={chartConfig}>
-                  <LineChart
-                    accessibilityLayer
-                    data={dashboardHistory}
-                    margin={{
-                      left: 12,
-                      right: 12,
-                    }}
-                  >
-                    <ChartTooltip
-                      cursor={false}
-                      content={<ChartTooltipContent hideLabel />}
-                    />
-                    <Line
-                      dataKey='pnlPerc'
-                      type='natural'
-                      stroke='var(--color-pnlPerc)'
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                  </LineChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
           </div>
         </div>
-      )}
-    </Show>
+
+        <Separator
+          decorative
+          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
+        />
+
+        <div className='flex flex-col items-center gap-4 px-12 md:px-4 py-4 text-brand-1 min-w-40'>
+          <span className='text-sm font-medium text-white'>
+            Portfolio Balance
+          </span>
+          <span className='text-xl font-bold'>
+            $
+            <Show ifReady={balance}>
+              {() => Number(balance!.available_balance * +userShares).toFixed(2)}
+            </Show>{' '}
+          </span>
+        </div>
+
+        <Separator
+          decorative
+          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
+        />
+
+        <div className='flex flex-col items-center gap-4 px-12 md:px-4 py-4 text-brand-1 min-w-40'>
+          <span className='text-sm font-medium text-white'>Average APY</span>
+          <span className='text-xl font-bold'>{apy?.toFixed(2)}%</span>
+        </div>
+        <Separator
+          decorative
+          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
+        />
+
+        <div className='flex flex-col items-center gap-4  px-12 md:px-4 py-4 text-brand-1 min-w-40'>
+          <span className='text-sm font-medium text-white'>PNL</span>
+          <span className='text-xl font-bold'>
+            ${Number((todays_pnl || 0) * +userShares).toFixed(2)}
+          </span>
+        </div>
+        <Separator
+          decorative
+          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
+        />
+
+        <div className='flex flex-col items-center gap-4  px-12 md:px-4 py-4 text-brand-1 min-w-40'>
+          <span className='text-sm font-medium text-white'>
+            Today&apos;s PNL
+          </span>
+          <span className='text-xl font-bold'>
+            $
+            <Show ifReady={todays_pnl} else='0'>
+              {() => todays_pnl?.toFixed(2)}
+            </Show>
+          </span>
+        </div>
+        <Separator
+          decorative
+          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
+        />
+      </div>
+      <div className='xl:w-1/2 w-3/4 text-primary flex flex-col'>
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Last 30 days</NavigationMenuTrigger>
+              <NavigationMenuContent className='text-sm bg-[#F2ECE4] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-25'>
+                <ul className='flex flex-col w-max'>
+                  <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
+                    Last 3 months
+                  </li>
+                  <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
+                    All time
+                  </li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+        <Card className='w-full bg-transparent bg-chart rounded-2xl'>
+          <CardContent>
+            <ChartContainer config={chartConfig}>
+              <LineChart
+                accessibilityLayer
+                data={dashboardHistory}
+                margin={{
+                  left: 12,
+                  right: 12,
+                }}
+              >
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent hideLabel />}
+                />
+                <Line
+                  dataKey='pnlPerc'
+                  type='natural'
+                  stroke='var(--color-pnlPerc)'
+                  strokeWidth={2}
+                  dot={false}
+                />
+              </LineChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 }

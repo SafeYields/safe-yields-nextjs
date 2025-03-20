@@ -16,7 +16,7 @@ export const config = getDefaultConfig({
   chains: [flowMainnet, arbitrum],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 export default function Providers({
   children,

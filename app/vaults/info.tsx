@@ -108,7 +108,7 @@ export default function Info() {
             </Popover>
           </div>
           <span className='font-bold text-brand-1'>
-            <Show ifReady={data}>{() => data!.apy.toFixed(2)}</Show>
+            <Show ifReady={data}>{() => data!.apy.toFixed(2)}</Show>%
           </span>
         </div>
         <Separator
@@ -162,7 +162,7 @@ export default function Info() {
             </Popover>
           </div>
           <span className='font-bold text-brand-1'>
-            <Show ifReady={data}>{() => data!.max_drawdown.toFixed(2)}</Show>
+            <Show ifReady={data}>{() => data!.max_drawdown.toFixed(2)}</Show>%
           </span>
         </div>
         <Separator

@@ -1,5 +1,6 @@
-import { config } from '@/app/providers';
+import { config, queryClient } from '@/app/providers';
 import { batch, linked, observable, when } from '@legendapp/state';
+import { syncedQuery } from '@legendapp/state/sync-plugins/tanstack-query';
 import { watchAccount } from '@wagmi/core';
 import ky from 'ky';
 import { arbitrum, flowMainnet } from 'wagmi/chains';
@@ -37,9 +38,8 @@ export type HistoryItem = {
   pnlPerc: string;
 };
 
-
 type ChainId = (typeof config.chains)[number]['id'];
-const chainId$ = observable<ChainId | undefined>(undefined);
+export const chainId$ = observable<ChainId | undefined>(undefined);
 
 watchAccount(config, {
   onChange(account) {
@@ -47,21 +47,46 @@ watchAccount(config, {
   },
 });
 
-const arbitrumTradingHistroy$ = observable(() =>
-  ky<TradingHistory>(
-    'https://trading-data.alphacube.io:8086/api/v1/history',
-  ).json(),
-);
-const flowEVMTradingHistroy$ = observable(() =>
-  ky<TradingHistory>(
-    'https://trading-data.alphacube.io:8085/api/v1/history',
-  ).json(),
+export const arbitrumTradingHistroy$ = observable(
+  syncedQuery({
+    queryClient,
+    query: {
+      queryKey: ['arbitrum:trading:histroy'],
+      queryFn: async () => {
+        return ky<TradingHistory>(
+          'https://trading-data.alphacube.io:8086/api/v1/history',
+        ).json();
+      },
+    },
+  }),
 );
 
-export const plutoTradingHistroy$ = observable(() =>
-  ky<TradingHistory>(
-    'https://trading-data.alphacube.io:8084/api/v1/history',
-  ).json(),
+export const flowEVMTradingHistroy$ = observable(
+  syncedQuery({
+    queryClient,
+    query: {
+      queryKey: ['flowEVM:trading:histroy'],
+      queryFn: async () => {
+        return ky<TradingHistory>(
+          'https://trading-data.alphacube.io:8085/api/v1/history',
+        ).json();
+      },
+    },
+  }),
+);
+
+export const plutoTradingHistroy$ = observable(
+  syncedQuery({
+    queryClient,
+    query: {
+      queryKey: ['pluto:trading:histroy'],
+      queryFn: async () => {
+        return ky<TradingHistory>(
+          'https://trading-data.alphacube.io:8084/api/v1/history',
+        ).json();
+      },
+    },
+  }),
 );
 
 const plutoExposure$ = observable(() =>
@@ -78,9 +103,9 @@ export const plutoExposurePaginated$ = observable({
   page: 1,
   pageSize: 10,
   items: async () => {
-    const exposures = await when(plutoExposure$);
     const page = plutoExposurePaginated$.page.get();
     const pageSize = plutoExposurePaginated$.pageSize.get();
+    const exposures = await when(plutoExposure$);
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     plutoExposurePaginated$.hasNext.set(endIndex < exposures.length);
@@ -88,41 +113,6 @@ export const plutoExposurePaginated$ = observable({
     return exposures.slice(startIndex, endIndex);
   },
 });
-
-plutoExposurePaginated$.onChange(async () => {
-  const exposures = await when(plutoExposure$);
-  const page = plutoExposurePaginated$.page.get();
-  const pageSize = plutoExposurePaginated$.pageSize.get();
-
-  batch(() => {
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    plutoExposurePaginated$.hasNext.set(endIndex < exposures.length);
-    plutoExposurePaginated$.hasPrev.set(page > 1);
-    const items = exposures.slice(startIndex, endIndex);
-    plutoExposurePaginated$.items.set(items);
-  });
-});
-
-plutoExposurePaginated$.onChange((changes) => {
-  console.log(changes);
-});
-
-export const tradingHistroy$ = observable(
-  linked({
-    get: () => {
-      switch (chainId$.get()) {
-        case arbitrum.id:
-          return arbitrumTradingHistroy$.get();
-        case flowMainnet.id:
-          return flowEVMTradingHistroy$.get();
-        default:
-          return undefined;
-      }
-    },
-    initial: undefined,
-  }),
-);
 
 const plutoBalance$ = observable(() =>
   ky<{ profit: number; available_balance: number }>(

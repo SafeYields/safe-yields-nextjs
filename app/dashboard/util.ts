@@ -1,3 +1,10 @@
+'use client';
+import {
+  arbitrumTradingHistroy$,
+  chainId$,
+  flowEVMTradingHistroy$,
+} from '@/lib/store';
+import { linked, observable } from '@legendapp/state';
 import { arbitrum, flowMainnet } from 'wagmi/chains';
 
 const chains: Record<number, { name: string; src: string }> = {
@@ -17,3 +24,19 @@ export function chainData(chain: number | undefined) {
   }
   return undefined;
 }
+
+export const tradingHistroy$ = observable(
+  linked({
+    get: () => {
+      switch (chainId$.get()) {
+        case arbitrum.id:
+          return arbitrumTradingHistroy$.get();
+        case flowMainnet.id:
+          return flowEVMTradingHistroy$.get();
+        default:
+          return undefined;
+      }
+    },
+    initial: undefined,
+  }),
+);
