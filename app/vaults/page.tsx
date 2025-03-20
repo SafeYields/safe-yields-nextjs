@@ -54,7 +54,7 @@ export default function Vaults() {
     amountBigint: BigInt(0),
   });
 
-  const position = useObservable(() => emmaVault.balanceOf(address));
+  const position = useObservable(() => emmaVault.balanceOf(address!));
   const balance = use$(balance$);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
