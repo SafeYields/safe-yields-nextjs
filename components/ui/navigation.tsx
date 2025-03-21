@@ -19,11 +19,11 @@ import {
 export type TLink =
   | { title: string; href: string; disabled?: boolean }
   | {
-      title: string;
-      href?: string;
-      items: TLink[];
-      social?: { src: string; href: string; alt: string }[];
-    };
+    title: string;
+    href?: string;
+    items: TLink[];
+    social?: { src: string; href: string; alt: string }[];
+  };
 
 export default function Navigation({ links }: { links: TLink[] }) {
   const path = usePathname();
@@ -69,14 +69,11 @@ export default function Navigation({ links }: { links: TLink[] }) {
             </NavigationMenuItem>
           ) : (
             <NavigationMenuItem key={link.title}>
-              <Link href={link.href}>
-                <NavigationMenuLink
-                  className={navigationMenuTriggerStyle()}
-                  active={path == link.href}
-                >
+              <NavigationMenuLink asChild active={path === link.href}>
+                <Link href={link.href} className={navigationMenuTriggerStyle()}>
                   {link.title}
-                </NavigationMenuLink>
-              </Link>
+                </Link>
+              </NavigationMenuLink>
             </NavigationMenuItem>
           ),
         )}
