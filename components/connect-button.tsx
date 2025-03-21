@@ -1,7 +1,8 @@
 import { ConnectButton as RainbowKitConnectButton } from '@rainbow-me/rainbowkit';
 import { Button } from './ui/button';
+import clsx from 'clsx';
 
-export default function ConnectButton() {
+export default function ConnectButton({ className }: { className?: string }) {
   return (
     <>
       <RainbowKitConnectButton.Custom>
@@ -13,7 +14,10 @@ export default function ConnectButton() {
             return (
               <Button
                 onClick={openConnectModal}
-                className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 bg-brand-1'
+                className={clsx(
+                  'transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 bg-brand-1',
+                  className
+                )}
               >
                 Connect Wallet
               </Button>

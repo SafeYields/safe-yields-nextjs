@@ -29,6 +29,11 @@ import { useEffect, useState } from 'react';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 import { useAccount } from 'wagmi';
 import { tradingHistroy$ } from './util';
+import Image from 'next/image';
+import ConnectButton from '@/components/connect-button';
+import { Button } from '@/components/ui/button';
+import { format } from 'date-fns';
+import clsx from 'clsx';
 
 const chartConfig = {
   pnlPerc: {
@@ -42,6 +47,8 @@ function Dashboard() {
   const balance = use$(balance$);
 
   const [sayStaked, setSayStaked] = useState('0');
+
+  const [daysCount, setDaysCount] = useState<number>(30);
 
   const signer = useEthersSigner();
 
@@ -65,7 +72,7 @@ function Dashboard() {
       .then((data) => {
         setSayStaked(ethers.formatEther(data.stakeAmount));
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [account.address, sayStaker, account.chainId]);
 
   const airdropAmount =
@@ -100,6 +107,42 @@ function Dashboard() {
       //TODO: hide loading spinner
     }
   };
+
+  const tickFormatter = (date: Date) => {
+    if (daysCount === 1) {
+      return format(date, 'HH:mm');
+    } else if (daysCount === 7) {
+      return format(date, 'dd-MMM HH:mm');
+    } else if (daysCount > 7 && daysCount <= 365) {
+      return format(date, 'dd-MMM');
+    } else {
+      return format(date, 'MMM-yyyy');
+    }
+  };
+
+  let triggerText;
+  if (daysCount === 1) {
+    triggerText = 'Last 24 hours';
+  } else if (daysCount === 7) {
+    triggerText = 'Last week';
+  } else if (daysCount === 30) {
+    triggerText = 'Last month';
+  } else if (daysCount === 90) {
+    triggerText = 'Last 3 months';
+  } else if (daysCount === 365) {
+    triggerText = 'Last year';
+  } else {
+    triggerText = 'All time';
+  }
+
+  const filteredHistory = history
+    ? history.filter((item) => {
+      const updateTime = new Date(item.updateTime);
+      const now = new Date();
+      const diffInDays = (now.getTime() - updateTime.getTime()) / (1000 * 60 * 60 * 24);
+      return diffInDays <= daysCount;
+    })
+    : [];
 
   return (
     <div
@@ -192,75 +235,149 @@ function Dashboard() {
         />
       </div>
       <div className='xl:w-1/2 w-3/4 text-primary flex flex-col'>
-        <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Last 30 days</NavigationMenuTrigger>
-              <NavigationMenuContent className='text-sm bg-[#F2ECE4] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-25'>
-                <ul className='flex flex-col w-max'>
-                  <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
-                    Last 3 months
-                  </li>
-                  <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
-                    All time
-                  </li>
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
-        <Show ifReady={history}>
+        {account.address ?
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>{triggerText}</NavigationMenuTrigger>
+                <NavigationMenuContent className='text-sm bg-[#F2ECE4] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-25'>
+                  <ul className='flex flex-col w-max'>
+                    <li
+                      onClick={() => setDaysCount(1)}
+                      className={clsx(
+                        'cursor-pointer hover:text-brand-1 py-3 px-4',
+                        daysCount === 1 && 'text-brand-1'
+                      )}
+                    >
+                      Last 24 hours
+                    </li>
+                    <li
+                      onClick={() => setDaysCount(7)}
+                      className={clsx(
+                        'cursor-pointer hover:text-brand-1 py-3 px-4',
+                        daysCount === 7 && 'text-brand-1'
+                      )}
+                    >
+                      Last week
+                    </li>
+                    <li
+                      onClick={() => setDaysCount(30)}
+                      className={clsx(
+                        'cursor-pointer hover:text-brand-1 py-3 px-4',
+                        daysCount === 30 && 'text-brand-1'
+                      )}
+                    >
+                      Last month
+                    </li>
+                    <li
+                      onClick={() => setDaysCount(90)}
+                      className={clsx(
+                        'cursor-pointer hover:text-brand-1 py-3 px-4',
+                        daysCount === 90 && 'text-brand-1'
+                      )}
+                    >
+                      Last 3 months
+                    </li>
+                    <li
+                      onClick={() => setDaysCount(365)}
+                      className={clsx(
+                        'cursor-pointer hover:text-brand-1 py-3 px-4',
+                        daysCount === 365 && 'text-brand-1'
+                      )}
+                    >
+                      Last year
+                    </li>
+                    <li
+                      onClick={() => setDaysCount(99999)}
+                      className={clsx(
+                        'cursor-pointer hover:text-brand-1 py-3 px-4',
+                        daysCount > 365 && 'text-brand-1'
+                      )}
+                    >
+                      All time
+                    </li>
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+          :
+          <div className='flex flex-col items-center justify-center gap-7'>
+            <Image
+              src='/images/Emma_ALPHA_SY_Emma_Info.png'
+              width='400'
+              height='400'
+              alt='info'
+            />
+            <span className='font-semibold'>Please connect your wallet to continue</span>
+            <div className='flex flex-row gap-4'>
+              <ConnectButton
+                className="px-12 !bg-gradient-to-r !from-[hsl(240,43%,37%)] !to-[hsl(162,81%,32%)] text-white"
+              />
+              <Button
+                variant='outline'
+                className='px-12 rounded-full text-base font-semibold border border-brand-1 transition-transform duration-200 hover:scale-105'
+              >
+                Read our Docs
+              </Button>
+            </div>
+          </div>
+        }
+        <Show ifReady={filteredHistory}>
           {() => (
-            <Card className='w-full bg-transparent bg-chart rounded-2xl'>
-              <CardContent className='py-4'>
-                <ChartContainer config={chartConfig}>
-                  <LineChart
-                    accessibilityLayer
-                    data={history}
-                    margin={{
-                      left: 12,
-                      right: 12,
-                    }}
-                  >
-                    <CartesianGrid />
-                    <XAxis
-                      dataKey='updateTime'
-                      tickLine={false}
-                      axisLine={false}
-                      tickMargin={8}
-                      tickFormatter={(value) =>
-                        new Intl.DateTimeFormat('en-US').format(new Date(value))
-                      }
-                    />
-                    <YAxis
-                      dataKey={(item) => item.pnlPerc - item.unrealizedPnlPerc}
-                      includeHidden
-                      allowDataOverflow
-                      tickMargin={8}
-                      tickCount={7}
-                      tickFormatter={(value) => value.toFixed(3)}
-                      domain={([dataMin, dataMax]) => {
-                        const range = dataMax - dataMin;
-                        const padding = range / 3;
-                        return [dataMin - padding, dataMax + padding];
+            <>
+              <Card className='w-full bg-transparent bg-chart rounded-2xl'>
+                <CardContent className='py-4'>
+                  <ChartContainer config={chartConfig}>
+                    <LineChart
+                      accessibilityLayer
+                      data={filteredHistory}
+                      margin={{
+                        left: 12,
+                        right: 12,
                       }}
-                    />
-                    <ChartTooltip
-                      cursor={false}
-                      content={<ChartTooltipContent hideLabel />}
-                    />
+                    >
+                      <CartesianGrid />
+                      <XAxis
+                        dataKey='updateTime'
+                        //tickLine={false}
+                        //axisLine={false}
+                        tickMargin={8}
+                        minTickGap={20}
+                        tickFormatter={(value) =>
+                          tickFormatter(new Date(value))
+                        }
+                      />
+                      <YAxis
+                        dataKey={(item) => item.pnlPerc - item.unrealizedPnlPerc}
+                        includeHidden
+                        allowDataOverflow
+                        tickMargin={8}
+                        tickCount={7}
+                        tickFormatter={(value) => value.toFixed(3)}
+                        domain={([dataMin, dataMax]) => {
+                          const range = dataMax - dataMin;
+                          const padding = range / 3;
+                          return [dataMin - padding, dataMax + padding];
+                        }}
+                      />
+                      <ChartTooltip
+                        cursor={false}
+                        content={<ChartTooltipContent hideLabel />}
+                      />
 
-                    <Line
-                      dataKey='pnlPerc'
-                      type='natural'
-                      stroke='var(--color-pnlPerc)'
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                  </LineChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
+                      <Line
+                        dataKey='pnlPerc'
+                        type='natural'
+                        stroke='var(--color-pnlPerc)'
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ChartContainer>
+                </CardContent>
+              </Card>
+            </>
           )}
         </Show>
       </div>
