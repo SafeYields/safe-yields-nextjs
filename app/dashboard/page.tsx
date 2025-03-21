@@ -64,6 +64,8 @@ function Dashboard() {
     latestData,
   );
 
+  console.log({userShares, balance: balance?.available_balance})
+  
   useEffect(() => {
     //NB staking only on arbitrum
     if (!account.address || account.chainId !== 42161) return;
@@ -107,7 +109,7 @@ function Dashboard() {
       //TODO: hide loading spinner
     }
   };
-
+  // TODO: Refactor.
   const tickFormatter = (date: Date) => {
     if (daysCount === 1) {
       return format(date, 'HH:mm');
@@ -119,7 +121,8 @@ function Dashboard() {
       return format(date, 'MMM-yyyy');
     }
   };
-
+  
+  // TODO: Refactor.
   let triggerText;
   if (daysCount === 1) {
     triggerText = 'Last 24 hours';
