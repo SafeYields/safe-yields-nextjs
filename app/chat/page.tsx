@@ -4,11 +4,6 @@ import { Thread } from '@/components/assistant-ui/thread';
 import { ThreadList } from '@/components/assistant-ui/thread-list';
 import { Button } from '@/components/ui/button';
 import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from '@/components/ui/resizable';
-import {
   AssistantRuntimeProvider,
   CompositeAttachmentAdapter,
   SimpleImageAttachmentAdapter,
@@ -17,6 +12,7 @@ import {
   makeAssistantToolUI,
 } from '@assistant-ui/react';
 import { useChatRuntime } from '@assistant-ui/react-ai-sdk';
+import { PanelGroup } from 'react-resizable-panels';
 
 const BuildPortfolioToolUI = makeAssistantToolUI({
   toolName: 'buildPortfolio',
@@ -47,19 +43,19 @@ export default function Chat() {
 
   return (
     <AssistantRuntimeProvider runtime={runtime}>
-      <ResizablePanelGroup
+      <PanelGroup
         direction='horizontal'
         className='max-h-[90%] w-full'
       >
-        <ResizablePanel defaultSize={20}>
+        <div className='w-[300px]'>
           <ThreadList />
-        </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={80}>
+        </div>
+        <div className='bg-[#27272a] w-[1px]'></div>
+        <div className='w-full'>
           <BuildPortfolioToolUI />
           <Thread />
-        </ResizablePanel>
-      </ResizablePanelGroup>
+        </div>
+      </PanelGroup>
     </AssistantRuntimeProvider>
   );
 }
