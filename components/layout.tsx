@@ -153,12 +153,12 @@ const links: TLink[] = [
       },
       {
         src: '/images/x.svg',
-        href: 'https://x.com/SafeYieldsx',
+        href: 'https://x.com/SafeYields',
         alt: 'x account',
       },
       {
         src: '/images/telegram.svg',
-        href: 'https://t.me/safeyields_officialtelegram',
+        href: 'https://t.me/safeyields_official',
         alt: 'telegram channel',
       },
     ],
