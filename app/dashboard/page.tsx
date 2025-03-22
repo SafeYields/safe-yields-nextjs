@@ -1,5 +1,7 @@
 'use client';
 
+import ConnectButton from '@/components/connect-button';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   ChartConfig,
@@ -14,26 +16,28 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
+import { ToastAction } from '@/components/ui/toast';
+import { useToast } from '@/hooks/use-toast';
 import { balance$, plutoTradingHistroy$ } from '@/lib/store';
 import {
   getMerkleProof,
   getUserAirdropAmount,
 } from '@/services/blockchain/common';
+import { SupportedChain } from '@/services/blockchain/constants/addresses';
 import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
 import { useGetVaultData } from '@/services/blockchain/hooks/useGetVaultData';
 import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contracts';
 import { observer, Show, use$ } from '@legendapp/state/react';
 import { Root as Separator } from '@radix-ui/react-separator';
+import clsx from 'clsx';
+import { format } from 'date-fns';
 import { ethers, ZeroAddress } from 'ethers';
+import { Loader2 } from 'lucide-react';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 import { useAccount } from 'wagmi';
 import { tradingHistroy$ } from './util';
-import Image from 'next/image';
-import ConnectButton from '@/components/connect-button';
-import { Button } from '@/components/ui/button';
-import { format } from 'date-fns';
-import clsx from 'clsx';
 
 const chartConfig = {
   pnlPerc: {
@@ -43,12 +47,15 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 function Dashboard() {
+  const { toast } = useToast();
   const account = useAccount();
   const balance = use$(balance$);
 
   const [sayStaked, setSayStaked] = useState('0');
-
+  const [hasClaimedAirdrop, setHasClaimedAirdrop] = useState(false);
+  const [isAirdropEligible, setIsAirdropEligible] = useState(false);
   const [daysCount, setDaysCount] = useState<number>(30);
+  const [loader, setLoader] = useState(false);
 
   const signer = useEthersSigner();
 
@@ -64,8 +71,8 @@ function Dashboard() {
     latestData,
   );
 
-  console.log({userShares, balance: balance?.available_balance})
-  
+  console.log({ userShares, balance: balance?.available_balance });
+
   useEffect(() => {
     //NB staking only on arbitrum
     if (!account.address || account.chainId !== 42161) return;
@@ -74,8 +81,26 @@ function Dashboard() {
       .then((data) => {
         setSayStaked(ethers.formatEther(data.stakeAmount));
       })
-      .catch(() => { });
+      .catch(() => {});
   }, [account.address, sayStaker, account.chainId]);
+
+  useEffect(() => {
+    if (!account.address || account.chainId !== SupportedChain.Arbitrum) {
+      setIsAirdropEligible(false);
+      return;
+    }
+    const airdropData = getUserAirdropAmount(account.address);
+    if (!airdropData || airdropData.amount === 0) {
+      setIsAirdropEligible(false);
+      return;
+    } else {
+      setIsAirdropEligible(true);
+    }
+
+    sayAirdrop.hasClaimed(account.address).then((data) => {
+      setHasClaimedAirdrop(data);
+    });
+  }, [sayAirdrop, account.address, account.chainId]);
 
   const airdropAmount =
     getUserAirdropAmount(account.address || ZeroAddress)?.amount ?? 0.0;
@@ -83,16 +108,13 @@ function Dashboard() {
   const handleClaimAirdrop = async () => {
     if (!account.address) return;
     const data = getMerkleProof(account.address);
-    console.log('user: ', account.address, 'proof: ', data);
-    if (!data.proof.length) {
-      console.log('user not eligible for airdrop');
-    }
+
     if (await sayAirdrop.hasClaimed(account.address)) {
-      console.error('user has already claimed airdrop');
-      //TODO: show error message to user
-      return;
+      return toast({
+        title: 'User has already claimed airdrop',
+      });
     }
-    //TODO: show loading spinner
+    setLoader(true);
     try {
       const tx = await sayAirdrop.stakeAndVestSayTokens(
         data.amount,
@@ -100,13 +122,29 @@ function Dashboard() {
       );
       const receipt = await tx.wait();
       const hash = receipt!.hash;
-      console.log('tx hash: ', hash);
-      //TODO show success message to user with tx hash
+
+      setHasClaimedAirdrop(true);
+
+      return toast({
+        title: 'Transaction Successful!',
+        description: `Your transaction was successful. Tx Hash: ${hash}`, // Shortened hash for readability
+        action: (
+          <ToastAction
+            altText='View on Explorer'
+            onClick={() =>
+              window.open(`https://arbiscan.io/tx/${hash}`, '_blank')
+            }
+          >
+            View
+          </ToastAction>
+        ),
+      });
     } catch (error) {
-      console.error('error claiming airdrop', error);
-      //TODO show error message to user
+      return toast({
+        title: 'Error claiming airdrop',
+      });
     } finally {
-      //TODO: hide loading spinner
+      setLoader(false);
     }
   };
   // TODO: Refactor.
@@ -121,7 +159,7 @@ function Dashboard() {
       return format(date, 'MMM-yyyy');
     }
   };
-  
+
   // TODO: Refactor.
   let triggerText;
   if (daysCount === 1) {
@@ -140,11 +178,12 @@ function Dashboard() {
 
   const filteredHistory = history
     ? history.filter((item) => {
-      const updateTime = new Date(item.updateTime);
-      const now = new Date();
-      const diffInDays = (now.getTime() - updateTime.getTime()) / (1000 * 60 * 60 * 24);
-      return diffInDays <= daysCount;
-    })
+        const updateTime = new Date(item.updateTime);
+        const now = new Date();
+        const diffInDays =
+          (now.getTime() - updateTime.getTime()) / (1000 * 60 * 60 * 24);
+        return diffInDays <= daysCount;
+      })
     : [];
 
   return (
@@ -168,10 +207,18 @@ function Dashboard() {
                 {airdropAmount.toString()}
               </span>
               <button
-                className='my-1 rounded-full bg-brand-1 px-5 text-xs font-bold text-black'
-                onClick={handleClaimAirdrop}
+                className={`my-1 rounded-full bg-brand-1 px-5 text-xs font-bold text-black ${!isAirdropEligible || hasClaimedAirdrop ? 'bg-brand-2 cursor-not-allowed' : 'bg-brand-1'}
+                 ${loader ? 'px-9 py-2 text-sm' : 'px-7 py-2'} 
+              `}
+                onClick={() => {
+                  if (isAirdropEligible && !hasClaimedAirdrop) {
+                    //console.log('clicked');
+                    handleClaimAirdrop();
+                  }
+                }}
               >
-                Claim
+                {loader && <Loader2 className='animate-spin' />}
+                {!hasClaimedAirdrop ? 'Claim' : 'Claimed'}
               </button>
             </div>
           </div>
@@ -238,7 +285,7 @@ function Dashboard() {
         />
       </div>
       <div className='xl:w-1/2 w-3/4 text-primary flex flex-col'>
-        {account.address ?
+        {account.address ? (
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
@@ -249,7 +296,7 @@ function Dashboard() {
                       onClick={() => setDaysCount(1)}
                       className={clsx(
                         'cursor-pointer hover:text-brand-1 py-3 px-4',
-                        daysCount === 1 && 'text-brand-1'
+                        daysCount === 1 && 'text-brand-1',
                       )}
                     >
                       Last 24 hours
@@ -258,7 +305,7 @@ function Dashboard() {
                       onClick={() => setDaysCount(7)}
                       className={clsx(
                         'cursor-pointer hover:text-brand-1 py-3 px-4',
-                        daysCount === 7 && 'text-brand-1'
+                        daysCount === 7 && 'text-brand-1',
                       )}
                     >
                       Last week
@@ -267,7 +314,7 @@ function Dashboard() {
                       onClick={() => setDaysCount(30)}
                       className={clsx(
                         'cursor-pointer hover:text-brand-1 py-3 px-4',
-                        daysCount === 30 && 'text-brand-1'
+                        daysCount === 30 && 'text-brand-1',
                       )}
                     >
                       Last month
@@ -276,7 +323,7 @@ function Dashboard() {
                       onClick={() => setDaysCount(90)}
                       className={clsx(
                         'cursor-pointer hover:text-brand-1 py-3 px-4',
-                        daysCount === 90 && 'text-brand-1'
+                        daysCount === 90 && 'text-brand-1',
                       )}
                     >
                       Last 3 months
@@ -285,7 +332,7 @@ function Dashboard() {
                       onClick={() => setDaysCount(365)}
                       className={clsx(
                         'cursor-pointer hover:text-brand-1 py-3 px-4',
-                        daysCount === 365 && 'text-brand-1'
+                        daysCount === 365 && 'text-brand-1',
                       )}
                     >
                       Last year
@@ -294,7 +341,7 @@ function Dashboard() {
                       onClick={() => setDaysCount(99999)}
                       className={clsx(
                         'cursor-pointer hover:text-brand-1 py-3 px-4',
-                        daysCount > 365 && 'text-brand-1'
+                        daysCount > 365 && 'text-brand-1',
                       )}
                     >
                       All time
@@ -304,7 +351,7 @@ function Dashboard() {
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-          :
+        ) : (
           <div className='flex flex-col items-center justify-center gap-7'>
             <Image
               src='/images/Emma_ALPHA_SY_Emma_Info.png'
@@ -312,11 +359,11 @@ function Dashboard() {
               height='400'
               alt='info'
             />
-            <span className='font-semibold'>Please connect your wallet to continue</span>
+            <span className='font-semibold'>
+              Please connect your wallet to continue
+            </span>
             <div className='flex flex-row gap-4'>
-              <ConnectButton
-                className="px-12 !bg-gradient-to-r !from-[hsl(240,43%,37%)] !to-[hsl(162,81%,32%)] text-white"
-              />
+              <ConnectButton className='px-12 !bg-gradient-to-r !from-[hsl(240,43%,37%)] !to-[hsl(162,81%,32%)] text-white' />
               <Button
                 variant='outline'
                 className='px-12 rounded-full text-base font-semibold border border-brand-1 transition-transform duration-200 hover:scale-105'
@@ -325,7 +372,7 @@ function Dashboard() {
               </Button>
             </div>
           </div>
-        }
+        )}
         <Show ifReady={filteredHistory}>
           {() => (
             <>
@@ -352,7 +399,9 @@ function Dashboard() {
                         }
                       />
                       <YAxis
-                        dataKey={(item) => item.pnlPerc - item.unrealizedPnlPerc}
+                        dataKey={(item) =>
+                          item.pnlPerc - item.unrealizedPnlPerc
+                        }
                         includeHidden
                         allowDataOverflow
                         tickMargin={8}

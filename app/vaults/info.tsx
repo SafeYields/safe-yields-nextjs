@@ -13,7 +13,7 @@ export default function Info() {
 
   const formatTotalValueLocked = (value: number) => {
     if (value >= 1000) {
-      return (value / 1000).toFixed(0) + "k";
+      return (value / 1000).toFixed(0) + 'k';
     }
     return value.toString();
   };
@@ -127,7 +127,9 @@ export default function Info() {
           <span className='font-medium text-xs'>Total Value Locked</span>
           <span className='font-bold text-brand-1 text-lg'>
             <Show ifReady={totalValueLocked}>
-              {totalValueLocked.value ? formatTotalValueLocked(totalValueLocked.value) : '...'}
+              {totalValueLocked.value
+                ? formatTotalValueLocked(totalValueLocked.value)
+                : '...'}
             </Show>
           </span>
         </div>

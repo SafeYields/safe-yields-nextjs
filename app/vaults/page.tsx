@@ -187,7 +187,8 @@ export default function Vaults() {
           <AlertCircle className='h-4 w-4' />
           <AlertTitle>Warning</AlertTitle>
           <AlertDescription>
-            Deposits and Withdrawls paused until Epoch ends on April 1st 12:00 UTC.
+            Deposits and Withdrawls paused until Epoch ends on April 1st 12:00
+            UTC.
           </AlertDescription>
         </Alert>
         <div>

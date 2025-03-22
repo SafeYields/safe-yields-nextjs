@@ -1,6 +1,6 @@
 import { ConnectButton as RainbowKitConnectButton } from '@rainbow-me/rainbowkit';
-import { Button } from './ui/button';
 import clsx from 'clsx';
+import { Button } from './ui/button';
 
 export default function ConnectButton({ className }: { className?: string }) {
   return (
@@ -16,7 +16,7 @@ export default function ConnectButton({ className }: { className?: string }) {
                 onClick={openConnectModal}
                 className={clsx(
                   'transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 bg-brand-1',
-                  className
+                  className,
                 )}
               >
                 Connect Wallet
