@@ -139,7 +139,7 @@ function Dashboard() {
           </ToastAction>
         ),
       });
-    } catch (error) {
+    } catch  {
       return toast({
         title: 'Error claiming airdrop',
       });
