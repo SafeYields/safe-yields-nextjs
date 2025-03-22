@@ -81,7 +81,7 @@ function Dashboard() {
       .then((data) => {
         setSayStaked(ethers.formatEther(data.stakeAmount));
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [account.address, sayStaker, account.chainId]);
 
   useEffect(() => {
@@ -139,7 +139,7 @@ function Dashboard() {
           </ToastAction>
         ),
       });
-    } catch  {
+    } catch {
       return toast({
         title: 'Error claiming airdrop',
       });
@@ -178,12 +178,12 @@ function Dashboard() {
 
   const filteredHistory = history
     ? history.filter((item) => {
-        const updateTime = new Date(item.updateTime);
-        const now = new Date();
-        const diffInDays =
-          (now.getTime() - updateTime.getTime()) / (1000 * 60 * 60 * 24);
-        return diffInDays <= daysCount;
-      })
+      const updateTime = new Date(item.updateTime);
+      const now = new Date();
+      const diffInDays =
+        (now.getTime() - updateTime.getTime()) / (1000 * 60 * 60 * 24);
+      return diffInDays <= daysCount;
+    })
     : [];
 
   return (
@@ -191,248 +191,250 @@ function Dashboard() {
       id='main-bg'
       className='my-8 flex w-full flex-col items-center justify-center gap-8'
     >
-      <div className='flex flex-col md:flex-row items-center justify-center w-full max-w-max lg:gap-2 md:h-28 max-h-fit'>
-        <Separator
-          decorative
-          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
-        />
+      {account.address ? (
+        <>
+          <div className='flex flex-col md:flex-row items-center justify-center w-full max-w-max lg:gap-2 md:h-28 max-h-fit'>
+            <Separator
+              decorative
+              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px] shadow-custom'
+            />
 
-        <div className='flex flex-row items-center text-brand-1 px-12 md:px-4 py-4 min-w-40'>
-          <div className='flex w-full flex-col items-center'>
-            <span className='text-sm font-medium text-white'>Staked $SAY</span>
-            <span className='text-lg font-bold'>{sayStaked}</span>
-            <span className='text-sm font-medium text-white'>Airdrop $SAY</span>
-            <div className='flex flex-row gap-3'>
-              <span className='text-lg font-bold'>
-                {airdropAmount.toString()}
-              </span>
-              <button
-                className={`my-1 rounded-full bg-brand-1 px-5 text-xs font-bold text-black ${!isAirdropEligible || hasClaimedAirdrop ? 'bg-brand-2 cursor-not-allowed' : 'bg-brand-1'}
+            <div className='flex flex-row items-center text-brand-1 px-12 md:px-4 py-4 min-w-40'>
+              <div className='flex w-full flex-col items-center'>
+                <span className='text-sm font-medium text-white'>Staked $SAY</span>
+                <span className='text-lg font-bold'>{sayStaked}</span>
+                <span className='text-sm font-medium text-white'>Airdrop $SAY</span>
+                <div className='flex flex-row gap-3'>
+                  <span className='text-lg font-bold'>
+                    {airdropAmount.toString()}
+                  </span>
+                  <button
+                    className={`my-1 rounded-full bg-brand-1 px-5 text-xs font-bold text-black ${!isAirdropEligible || hasClaimedAirdrop ? 'bg-brand-2 cursor-not-allowed' : 'bg-brand-1'}
                  ${loader ? 'px-9 py-2 text-sm' : 'px-7 py-2'} 
               `}
-                onClick={() => {
-                  if (isAirdropEligible && !hasClaimedAirdrop) {
-                    //console.log('clicked');
-                    handleClaimAirdrop();
-                  }
-                }}
-              >
-                {loader && <Loader2 className='animate-spin' />}
-                {!hasClaimedAirdrop ? 'Claim' : 'Claimed'}
-              </button>
+                    onClick={() => {
+                      if (isAirdropEligible && !hasClaimedAirdrop) {
+                        //console.log('clicked');
+                        handleClaimAirdrop();
+                      }
+                    }}
+                  >
+                    {loader && <Loader2 className='animate-spin' />}
+                    {!hasClaimedAirdrop ? 'Claim' : 'Claimed'}
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <Separator
-          decorative
-          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
-        />
-
-        <div className='flex flex-col items-center gap-4 px-12 md:px-4 py-4 text-brand-1 min-w-40'>
-          <span className='text-sm font-medium text-white'>
-            Portfolio Balance
-          </span>
-          <span className='text-xl font-bold'>
-            $
-            <Show ifReady={balance}>
-              {() =>
-                Number(balance!.available_balance * +userShares).toFixed(2)
-              }
-            </Show>{' '}
-          </span>
-        </div>
-
-        <Separator
-          decorative
-          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
-        />
-
-        <div className='flex flex-col items-center gap-4 px-12 md:px-4 py-4 text-brand-1 min-w-40'>
-          <span className='text-sm font-medium text-white'>Average APY</span>
-          <span className='text-xl font-bold'>{apy?.toFixed(2)}%</span>
-        </div>
-        <Separator
-          decorative
-          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
-        />
-
-        <div className='flex flex-col items-center gap-4  px-12 md:px-4 py-4 text-brand-1 min-w-40'>
-          <span className='text-sm font-medium text-white'>PNL</span>
-          <span className='text-xl font-bold'>
-            ${Number((todays_pnl || 0) * +userShares).toFixed(2)}
-          </span>
-        </div>
-        <Separator
-          decorative
-          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
-        />
-
-        <div className='flex flex-col items-center gap-4  px-12 md:px-4 py-4 text-brand-1 min-w-40'>
-          <span className='text-sm font-medium text-white'>
-            Today&apos;s PNL
-          </span>
-          <span className='text-xl font-bold'>
-            $
-            <Show ifReady={todays_pnl} else='0'>
-              {() => todays_pnl?.toFixed(2)}
-            </Show>
-          </span>
-        </div>
-        <Separator
-          decorative
-          className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
-        />
-      </div>
-      <div className='xl:w-1/2 w-3/4 text-primary flex flex-col'>
-        {account.address ? (
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>{triggerText}</NavigationMenuTrigger>
-                <NavigationMenuContent className='text-sm bg-[#F2ECE4] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-25'>
-                  <ul className='flex flex-col w-max'>
-                    <li
-                      onClick={() => setDaysCount(1)}
-                      className={clsx(
-                        'cursor-pointer hover:text-brand-1 py-3 px-4',
-                        daysCount === 1 && 'text-brand-1',
-                      )}
-                    >
-                      Last 24 hours
-                    </li>
-                    <li
-                      onClick={() => setDaysCount(7)}
-                      className={clsx(
-                        'cursor-pointer hover:text-brand-1 py-3 px-4',
-                        daysCount === 7 && 'text-brand-1',
-                      )}
-                    >
-                      Last week
-                    </li>
-                    <li
-                      onClick={() => setDaysCount(30)}
-                      className={clsx(
-                        'cursor-pointer hover:text-brand-1 py-3 px-4',
-                        daysCount === 30 && 'text-brand-1',
-                      )}
-                    >
-                      Last month
-                    </li>
-                    <li
-                      onClick={() => setDaysCount(90)}
-                      className={clsx(
-                        'cursor-pointer hover:text-brand-1 py-3 px-4',
-                        daysCount === 90 && 'text-brand-1',
-                      )}
-                    >
-                      Last 3 months
-                    </li>
-                    <li
-                      onClick={() => setDaysCount(365)}
-                      className={clsx(
-                        'cursor-pointer hover:text-brand-1 py-3 px-4',
-                        daysCount === 365 && 'text-brand-1',
-                      )}
-                    >
-                      Last year
-                    </li>
-                    <li
-                      onClick={() => setDaysCount(99999)}
-                      className={clsx(
-                        'cursor-pointer hover:text-brand-1 py-3 px-4',
-                        daysCount > 365 && 'text-brand-1',
-                      )}
-                    >
-                      All time
-                    </li>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-        ) : (
-          <div className='flex flex-col items-center justify-center gap-7'>
-            <Image
-              src='/images/Emma_ALPHA_SY_Emma_Info.png'
-              width='400'
-              height='400'
-              alt='info'
+            <Separator
+              decorative
+              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
             />
-            <span className='font-semibold'>
-              Please connect your wallet to continue
-            </span>
-            <div className='flex flex-row gap-4'>
-              <ConnectButton className='px-12 !bg-gradient-to-r !from-[hsl(240,43%,37%)] !to-[hsl(162,81%,32%)] text-white' />
-              <Button
-                variant='outline'
-                className='px-12 rounded-full text-base font-semibold border border-brand-1 transition-transform duration-200 hover:scale-105'
-              >
-                Read our Docs
-              </Button>
-            </div>
-          </div>
-        )}
-        <Show ifReady={filteredHistory}>
-          {() => (
-            <>
-              <Card className='w-full bg-transparent bg-chart rounded-2xl'>
-                <CardContent className='py-4'>
-                  <ChartContainer config={chartConfig}>
-                    <LineChart
-                      accessibilityLayer
-                      data={filteredHistory}
-                      margin={{
-                        left: 12,
-                        right: 12,
-                      }}
-                    >
-                      <CartesianGrid />
-                      <XAxis
-                        dataKey='updateTime'
-                        //tickLine={false}
-                        //axisLine={false}
-                        tickMargin={8}
-                        minTickGap={20}
-                        tickFormatter={(value) =>
-                          tickFormatter(new Date(value))
-                        }
-                      />
-                      <YAxis
-                        dataKey={(item) =>
-                          item.pnlPerc - item.unrealizedPnlPerc
-                        }
-                        includeHidden
-                        allowDataOverflow
-                        tickMargin={8}
-                        tickCount={7}
-                        tickFormatter={(value) => value.toFixed(3)}
-                        domain={([dataMin, dataMax]) => {
-                          const range = dataMax - dataMin;
-                          const padding = range / 3;
-                          return [dataMin - padding, dataMax + padding];
-                        }}
-                      />
-                      <ChartTooltip
-                        cursor={false}
-                        content={<ChartTooltipContent hideLabel />}
-                      />
 
-                      <Line
-                        dataKey='pnlPerc'
-                        type='natural'
-                        stroke='var(--color-pnlPerc)'
-                        strokeWidth={2}
-                        dot={false}
-                      />
-                    </LineChart>
-                  </ChartContainer>
-                </CardContent>
-              </Card>
-            </>
-          )}
-        </Show>
-      </div>
+            <div className='flex flex-col items-center gap-4 px-12 md:px-4 py-4 text-brand-1 min-w-40'>
+              <span className='text-sm font-medium text-white'>
+                Portfolio Balance
+              </span>
+              <span className='text-xl font-bold'>
+                $
+                <Show ifReady={balance}>
+                  {() =>
+                    Number(balance!.available_balance * +userShares).toFixed(2)
+                  }
+                </Show>{' '}
+              </span>
+            </div>
+
+            <Separator
+              decorative
+              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
+            />
+
+            <div className='flex flex-col items-center gap-4 px-12 md:px-4 py-4 text-brand-1 min-w-40'>
+              <span className='text-sm font-medium text-white'>Average APY</span>
+              <span className='text-xl font-bold'>{apy?.toFixed(2)}%</span>
+            </div>
+            <Separator
+              decorative
+              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
+            />
+
+            <div className='flex flex-col items-center gap-4  px-12 md:px-4 py-4 text-brand-1 min-w-40'>
+              <span className='text-sm font-medium text-white'>PNL</span>
+              <span className='text-xl font-bold'>
+                ${Number((todays_pnl || 0) * +userShares).toFixed(2)}
+              </span>
+            </div>
+            <Separator
+              decorative
+              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
+            />
+
+            <div className='flex flex-col items-center gap-4  px-12 md:px-4 py-4 text-brand-1 min-w-40'>
+              <span className='text-sm font-medium text-white'>
+                Today&apos;s PNL
+              </span>
+              <span className='text-xl font-bold'>
+                $
+                <Show ifReady={todays_pnl} else='0'>
+                  {() => todays_pnl?.toFixed(2)}
+                </Show>
+              </span>
+            </div>
+            <Separator
+              decorative
+              className='bg-brand-1 shrink-0 h-[1px] w-full md:h-full md:w-[1px]  shadow-custom'
+            />
+          </div>
+          <div className='xl:w-1/2 w-3/4 text-primary flex flex-col'>
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>{triggerText}</NavigationMenuTrigger>
+                  <NavigationMenuContent className='text-sm bg-[#F2ECE4] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-25'>
+                    <ul className='flex flex-col w-max'>
+                      <li
+                        onClick={() => setDaysCount(1)}
+                        className={clsx(
+                          'cursor-pointer hover:text-brand-1 py-3 px-4',
+                          daysCount === 1 && 'text-brand-1',
+                        )}
+                      >
+                        Last 24 hours
+                      </li>
+                      <li
+                        onClick={() => setDaysCount(7)}
+                        className={clsx(
+                          'cursor-pointer hover:text-brand-1 py-3 px-4',
+                          daysCount === 7 && 'text-brand-1',
+                        )}
+                      >
+                        Last week
+                      </li>
+                      <li
+                        onClick={() => setDaysCount(30)}
+                        className={clsx(
+                          'cursor-pointer hover:text-brand-1 py-3 px-4',
+                          daysCount === 30 && 'text-brand-1',
+                        )}
+                      >
+                        Last month
+                      </li>
+                      <li
+                        onClick={() => setDaysCount(90)}
+                        className={clsx(
+                          'cursor-pointer hover:text-brand-1 py-3 px-4',
+                          daysCount === 90 && 'text-brand-1',
+                        )}
+                      >
+                        Last 3 months
+                      </li>
+                      <li
+                        onClick={() => setDaysCount(365)}
+                        className={clsx(
+                          'cursor-pointer hover:text-brand-1 py-3 px-4',
+                          daysCount === 365 && 'text-brand-1',
+                        )}
+                      >
+                        Last year
+                      </li>
+                      <li
+                        onClick={() => setDaysCount(99999)}
+                        className={clsx(
+                          'cursor-pointer hover:text-brand-1 py-3 px-4',
+                          daysCount > 365 && 'text-brand-1',
+                        )}
+                      >
+                        All time
+                      </li>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+            <Show ifReady={filteredHistory}>
+              {() => (
+                <>
+                  <Card className='w-full bg-transparent bg-chart rounded-2xl'>
+                    <CardContent className='py-4'>
+                      <ChartContainer config={chartConfig}>
+                        <LineChart
+                          accessibilityLayer
+                          data={filteredHistory}
+                          margin={{
+                            left: 12,
+                            right: 12,
+                          }}
+                        >
+                          <CartesianGrid />
+                          <XAxis
+                            dataKey='updateTime'
+                            //tickLine={false}
+                            //axisLine={false}
+                            tickMargin={8}
+                            minTickGap={20}
+                            tickFormatter={(value) =>
+                              tickFormatter(new Date(value))
+                            }
+                          />
+                          <YAxis
+                            dataKey={(item) =>
+                              item.pnlPerc - item.unrealizedPnlPerc
+                            }
+                            includeHidden
+                            allowDataOverflow
+                            tickMargin={8}
+                            tickCount={7}
+                            tickFormatter={(value) => value.toFixed(3)}
+                            domain={([dataMin, dataMax]) => {
+                              const range = dataMax - dataMin;
+                              const padding = range / 3;
+                              return [dataMin - padding, dataMax + padding];
+                            }}
+                          />
+                          <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent hideLabel />}
+                          />
+
+                          <Line
+                            dataKey='pnlPerc'
+                            type='natural'
+                            stroke='var(--color-pnlPerc)'
+                            strokeWidth={2}
+                            dot={false}
+                          />
+                        </LineChart>
+                      </ChartContainer>
+                    </CardContent>
+                  </Card>
+                </>
+              )}
+            </Show>
+          </div>
+        </>
+      ) : (
+        <>
+          <Image
+            src='/images/Emma_ALPHA_SY_Emma_Info.png'
+            width='400'
+            height='400'
+            alt='info'
+          />
+          <span className='font-semibold'>
+            Please connect your wallet to continue
+          </span>
+          <div className='flex flex-row gap-4'>
+            <ConnectButton className='px-12 !bg-gradient-to-r !from-[hsl(240,43%,37%)] !to-[hsl(162,81%,32%)] text-white' />
+            <Button
+              variant='outline'
+              className='px-12 rounded-full text-base font-semibold border border-brand-1 transition-transform duration-200 hover:scale-105'
+            >
+              Read our Docs
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
