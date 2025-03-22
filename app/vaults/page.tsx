@@ -33,6 +33,8 @@ import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 import { useAccount } from 'wagmi';
 import Info from './info';
 import OpenPosition from './open-position';
+import clsx from 'clsx';
+import { format } from 'date-fns';
 
 const chartConfig = {
   pnlPerc: {
@@ -47,6 +49,7 @@ export default function Vaults() {
   const { address, isConnected } = useAccount();
   const signer = useEthersSigner()!;
   const [depositLoader, setDepostLoader] = useState(false);
+  const [daysCount, setDaysCount] = useState<number>(30);
   const { usdc, emmaVault } = useSafeYieldsContract(signer);
   const data = use$(plutoTradingHistroy$);
   const [amounts, setAmounts] = useState({
@@ -180,6 +183,45 @@ export default function Vaults() {
     }
   };
 
+  // TODO: Refactor.
+    const tickFormatter = (date: Date) => {
+      if (daysCount === 1) {
+        return format(date, 'HH:mm');
+      } else if (daysCount === 7) {
+        return format(date, 'dd-MMM HH:mm');
+      } else if (daysCount > 7 && daysCount <= 365) {
+        return format(date, 'dd-MMM');
+      } else {
+        return format(date, 'MMM-yyyy');
+      }
+    };
+  
+    // TODO: Refactor.
+    let triggerText;
+    if (daysCount === 1) {
+      triggerText = 'Last 24 hours';
+    } else if (daysCount === 7) {
+      triggerText = 'Last week';
+    } else if (daysCount === 30) {
+      triggerText = 'Last month';
+    } else if (daysCount === 90) {
+      triggerText = 'Last 3 months';
+    } else if (daysCount === 365) {
+      triggerText = 'Last year';
+    } else {
+      triggerText = 'All time';
+    }
+  
+    const filteredHistory = data?.history
+      ? data.history.filter((item) => {
+        const updateTime = new Date(item.updateTime);
+        const now = new Date();
+        const diffInDays =
+          (now.getTime() - updateTime.getTime()) / (1000 * 60 * 60 * 24);
+        return diffInDays <= daysCount;
+      })
+      : [];
+
   return (
     <div className='mt-8 py-4 grid grid-cols-1 gap-16 md:grid-cols-[28rem_2fr] justify-center items-start px-8 md:px-20'>
       <div className='flex min-w-md flex-grow flex-col gap-12'>
@@ -310,13 +352,61 @@ export default function Vaults() {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger>Last 30 days</NavigationMenuTrigger>
+                  <NavigationMenuTrigger>{triggerText}</NavigationMenuTrigger>
                   <NavigationMenuContent className='text-sm bg-[#F2ECE4] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-25'>
                     <ul className='flex flex-col w-max'>
-                      <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
+                      <li
+                        onClick={() => setDaysCount(1)}
+                        className={clsx(
+                          'cursor-pointer hover:text-brand-1 py-3 px-4',
+                          daysCount === 1 && 'text-brand-1',
+                        )}
+                      >
+                        Last 24 hours
+                      </li>
+                      <li
+                        onClick={() => setDaysCount(7)}
+                        className={clsx(
+                          'cursor-pointer hover:text-brand-1 py-3 px-4',
+                          daysCount === 7 && 'text-brand-1',
+                        )}
+                      >
+                        Last week
+                      </li>
+                      <li
+                        onClick={() => setDaysCount(30)}
+                        className={clsx(
+                          'cursor-pointer hover:text-brand-1 py-3 px-4',
+                          daysCount === 30 && 'text-brand-1',
+                        )}
+                      >
+                        Last month
+                      </li>
+                      <li
+                        onClick={() => setDaysCount(90)}
+                        className={clsx(
+                          'cursor-pointer hover:text-brand-1 py-3 px-4',
+                          daysCount === 90 && 'text-brand-1',
+                        )}
+                      >
                         Last 3 months
                       </li>
-                      <li className='cursor-pointer hover:text-brand-1 py-3 px-4'>
+                      <li
+                        onClick={() => setDaysCount(365)}
+                        className={clsx(
+                          'cursor-pointer hover:text-brand-1 py-3 px-4',
+                          daysCount === 365 && 'text-brand-1',
+                        )}
+                      >
+                        Last year
+                      </li>
+                      <li
+                        onClick={() => setDaysCount(99999)}
+                        className={clsx(
+                          'cursor-pointer hover:text-brand-1 py-3 px-4',
+                          daysCount > 365 && 'text-brand-1',
+                        )}
+                      >
                         All time
                       </li>
                     </ul>
@@ -329,54 +419,53 @@ export default function Vaults() {
                 <Card className='w-full bg-transparent bg-chart rounded-2xl max-w-5x'>
                   <CardContent>
                     <ChartContainer config={chartConfig}>
-                      <LineChart
-                        accessibilityLayer
-                        data={data!.history}
-                        margin={{
-                          left: 12,
-                          right: 12,
-                        }}
-                      >
-                        <CartesianGrid />
-                        <XAxis
-                          dataKey='updateTime'
-                          tickLine={false}
-                          axisLine={false}
-                          tickMargin={8}
-                          tickFormatter={(value) =>
-                            new Intl.DateTimeFormat('en-US').format(
-                              new Date(value),
-                            )
-                          }
-                        />
-                        <YAxis
-                          dataKey={(item) =>
-                            item.pnlPerc - item.unrealizedPnlPerc
-                          }
-                          includeHidden
-                          allowDataOverflow
-                          tickMargin={8}
-                          tickCount={7}
-                          tickFormatter={(value) => value.toFixed(3)}
-                          domain={([dataMin, dataMax]) => {
-                            const range = dataMax - dataMin;
-                            const padding = range / 3;
-                            return [dataMin - padding, dataMax + padding];
+                    <LineChart
+                          accessibilityLayer
+                          data={filteredHistory}
+                          margin={{
+                            left: 12,
+                            right: 12,
                           }}
-                        />
+                        >
+                          <CartesianGrid />
+                          <XAxis
+                            dataKey='updateTime'
+                            //tickLine={false}
+                            //axisLine={false}
+                            tickMargin={8}
+                            minTickGap={20}
+                            tickFormatter={(value) =>
+                              tickFormatter(new Date(value))
+                            }
+                          />
+                          <YAxis
+                            dataKey={(item) =>
+                              item.pnlPerc - item.unrealizedPnlPerc
+                            }
+                            includeHidden
+                            allowDataOverflow
+                            tickMargin={8}
+                            tickCount={7}
+                            tickFormatter={(value) => value.toFixed(3)}
+                            domain={([dataMin, dataMax]) => {
+                              const range = dataMax - dataMin;
+                              const padding = range / 3;
+                              return [dataMin - padding, dataMax + padding];
+                            }}
+                          />
+                          <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent hideLabel />}
+                          />
 
-                        <ChartTooltip
-                          cursor={false}
-                          content={<ChartTooltipContent hideLabel />}
-                        />
-                        <Line
-                          dataKey='pnlPerc'
-                          type='natural'
-                          stroke='var(--color-pnlPerc)'
-                          strokeWidth={2}
-                          dot={false}
-                        />
-                      </LineChart>
+                          <Line
+                            dataKey='pnlPerc'
+                            type='natural'
+                            stroke='var(--color-pnlPerc)'
+                            strokeWidth={2}
+                            dot={false}
+                          />
+                        </LineChart>
                     </ChartContainer>
                   </CardContent>
                 </Card>
