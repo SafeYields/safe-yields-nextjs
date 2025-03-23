@@ -5,7 +5,7 @@ export default function Home() {
     <>
       <div
         id='main-bg'
-        className='flex flex-col justify-between px-16 relative w-full h-screen'
+        className='flex flex-col justify-between px-16 relative w-full h-full'
       >
         <h3 className='scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0 max-w-md'>
           Emma AI guides you through selecting optimal yield strategies for{' '}

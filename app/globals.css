@@ -134,7 +134,6 @@ body:has(#main-bg) {
 html,
 body,
 [data-rk] {
-  @apply h-full;
   font-family: 'Poppins';
 }
 
@@ -150,3 +149,4 @@ body,
     rgba(0, 0, 0, 0.05) 119.91%
   );
 }
+
