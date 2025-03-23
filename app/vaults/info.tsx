@@ -85,7 +85,7 @@ export default function Info() {
         <div className='flex flex-col justify-center items-center gap-2 flex-1 py-2 min-w-max w-44'>
           <div className='flex flex-row gap-4 relative'>
             <span className='font-medium text-xs'>Average APY</span>
-            <HoverCard>
+            <HoverCard openDelay={0}>
               <HoverCardTrigger asChild className='absolute -right-5 bottom-3'>
                 <svg
                   width='11'
@@ -142,7 +142,7 @@ export default function Info() {
             <span className='font-medium text-xs'>
               Historical Max. Downdrawn
             </span>
-            <HoverCard>
+            <HoverCard openDelay={0}>
               <HoverCardTrigger asChild className='absolute -right-5 bottom-3'>
                 <svg
                   width='11'
