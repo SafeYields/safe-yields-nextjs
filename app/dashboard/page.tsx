@@ -417,15 +417,17 @@ function Dashboard() {
         <>
           <Image
             src='/images/Emma_ALPHA_SY_Emma_Info.png'
-            width='400'
-            height='400'
+            width='500'
+            height='500'
             alt='info'
+            className='py-16'
           />
           <span className='font-semibold'>
             Please connect your wallet to continue
           </span>
           <div className='flex flex-row gap-4'>
-            <ConnectButton className='px-12 !bg-gradient-to-r !from-[hsl(240,43%,37%)] !to-[hsl(162,81%,32%)] text-white' />
+            {/* !bg-gradient-to-r !from-[hsl(240,43%,37%)] !to-[hsl(162,81%,32%)] */}
+            <ConnectButton className='px-12 text-black bg-brand-1' />
             <Button
               variant='outline'
               className='px-12 rounded-full text-base font-semibold border border-brand-1 transition-transform duration-200 hover:scale-105'
