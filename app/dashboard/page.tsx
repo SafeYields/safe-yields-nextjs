@@ -34,7 +34,7 @@ import { format } from 'date-fns';
 import { ethers, ZeroAddress } from 'ethers';
 import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 import { useAccount } from 'wagmi';
 import { tradingHistroy$ } from './util';
@@ -176,15 +176,15 @@ function Dashboard() {
     triggerText = 'All time';
   }
 
-  const filteredHistory = history
-    ? history.filter((item) => {
+  const filteredHistory = useMemo(() => {
+    if (!history) return [];
+    const now = new Date();
+    return history.filter(item => {
       const updateTime = new Date(item.updateTime);
-      const now = new Date();
-      const diffInDays =
-        (now.getTime() - updateTime.getTime()) / (1000 * 60 * 60 * 24);
+      const diffInDays = (now.getTime() - updateTime.getTime()) / (1000 * 60 * 60 * 24);
       return diffInDays <= daysCount;
-    })
-    : [];
+    });
+  }, [history, daysCount]);
 
   return (
     <div
@@ -425,7 +425,7 @@ function Dashboard() {
           <span className='font-semibold'>
             Please connect your wallet to continue
           </span>
-          <div className='flex flex-row gap-4'>
+          <div className='flex flex-row gap-4 mb-20'>
             {/* !bg-gradient-to-r !from-[hsl(240,43%,37%)] !to-[hsl(162,81%,32%)] */}
             <ConnectButton className='px-12 text-black bg-brand-1' />
             <Button

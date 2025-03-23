@@ -28,7 +28,7 @@ import { Show, use$, useObservable } from '@legendapp/state/react';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
 import { AlertCircle, Loader2, RefreshCw } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 import { useAccount } from 'wagmi';
 import Info from './info';
@@ -212,15 +212,15 @@ export default function Vaults() {
       triggerText = 'All time';
     }
   
-    const filteredHistory = data?.history
-      ? data.history.filter((item) => {
+    const filteredHistory = useMemo(() => {
+      if (!data?.history) return [];
+      const now = new Date();
+      return data.history.filter((item) => {
         const updateTime = new Date(item.updateTime);
-        const now = new Date();
-        const diffInDays =
-          (now.getTime() - updateTime.getTime()) / (1000 * 60 * 60 * 24);
+        const diffInDays = (now.getTime() - updateTime.getTime()) / (1000 * 60 * 60 * 24);
         return diffInDays <= daysCount;
-      })
-      : [];
+      });
+    }, [data, daysCount]);
 
   return (
     <div className='mt-8 py-4 grid grid-cols-1 gap-16 md:grid-cols-[28rem_2fr] justify-center items-start px-8 md:px-20'>
