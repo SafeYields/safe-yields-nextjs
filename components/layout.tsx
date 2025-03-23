@@ -169,7 +169,7 @@ export default function Layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
-    <>
+    <section className='flex flex-col w-full h-full'>
       <header id='header' className='sticky top-0 z-50 px-4 mb-4'>
         <div className='absolute left-0 h-8 w-full'></div>
         <div className='relative mx-auto'>
@@ -231,6 +231,6 @@ export default function Layout({
         </div>
       </header>
       {children}
-    </>
+    </section>
   );
 }
