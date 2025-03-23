@@ -1,5 +1,5 @@
 'use client';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import {
@@ -26,6 +26,8 @@ import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
 import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contracts';
 import { Show, use$, useObservable } from '@legendapp/state/react';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
+import clsx from 'clsx';
+import { format } from 'date-fns';
 import { ethers } from 'ethers';
 import { AlertCircle, Loader2, RefreshCw } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -33,8 +35,6 @@ import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 import { useAccount } from 'wagmi';
 import Info from './info';
 import OpenPosition from './open-position';
-import clsx from 'clsx';
-import { format } from 'date-fns';
 
 const chartConfig = {
   pnlPerc: {
@@ -227,7 +227,6 @@ export default function Vaults() {
       <div className='flex min-w-md flex-grow flex-col gap-12'>
         <Alert className='bg-brand-2'>
           <AlertCircle className='h-4 w-4' />
-          <AlertTitle>Warning</AlertTitle>
           <AlertDescription>
             Deposits and Withdrawls paused until Epoch ends on April 1st 12:00
             UTC.
