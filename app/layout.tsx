@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className='dark antialiased'>
+      <body className='dark antialiased overflow-y-hidden'>
         <Providers>
           <Layout>{children}</Layout>
           <Toaster />

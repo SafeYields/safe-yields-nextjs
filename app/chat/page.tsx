@@ -12,7 +12,6 @@ import {
   makeAssistantToolUI,
 } from '@assistant-ui/react';
 import { useChatRuntime } from '@assistant-ui/react-ai-sdk';
-import { PanelGroup } from 'react-resizable-panels';
 
 const BuildPortfolioToolUI = makeAssistantToolUI({
   toolName: 'buildPortfolio',
@@ -43,11 +42,10 @@ export default function Chat() {
 
   return (
     <AssistantRuntimeProvider runtime={runtime}>
-      <PanelGroup
-        direction='horizontal'
-        className='max-h-[90%] w-full'
+      <div
+        className='flex flex-row w-full h-full'
       >
-        <div className='w-[300px]'>
+        <div className='chat-threadList sticky top-0 overflow-y-auto w-[300px]'>
           <ThreadList />
         </div>
         <div className='bg-[#27272a] w-[1px]'></div>
@@ -55,7 +53,7 @@ export default function Chat() {
           <BuildPortfolioToolUI />
           <Thread />
         </div>
-      </PanelGroup>
+      </div>
     </AssistantRuntimeProvider>
   );
 }

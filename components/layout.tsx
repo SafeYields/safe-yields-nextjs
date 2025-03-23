@@ -170,7 +170,7 @@ export default function Layout({
 }: Readonly<{ children: ReactNode }>) {
   return (
     <section className='flex flex-col w-full h-screen'>
-      <header id='header' className='sticky top-0 z-50 px-4 mb-4'>
+      <header id='header' className='sticky top-0 z-50 px-4'>
         <div className='absolute left-0 h-8 w-full'></div>
         <div className='relative mx-auto'>
           <Navbar>
@@ -230,7 +230,9 @@ export default function Layout({
           </Navbar>
         </div>
       </header>
-      {children}
+      <section className='overflow-y-auto w-full h-full'>
+        {children}
+      </section>
     </section>
   );
 }
