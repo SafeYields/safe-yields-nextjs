@@ -19,7 +19,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/hooks/use-toast';
-import { balance$, plutoTradingHistroy$ } from '@/lib/store';
+import { balance$, balanceOf$, increaseAllowance$, plutoTradingHistroy$ } from '@/lib/store';
 import { trimDecimalPlaces } from '@/lib/utils';
 import { approveSpending, getAllowance } from '@/services/blockchain/common';
 import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
@@ -57,7 +57,21 @@ export default function Vaults() {
     amountBigint: BigInt(0),
   });
 
-  const position = useObservable(() => emmaVault.balanceOf(address!));
+  const userShares = useObservable(() => {
+    const balanceOf = balanceOf$.get();
+    const increaseAllowance = increaseAllowance$.get();
+    if (
+      balanceOf &&
+      balanceOf.data &&
+      increaseAllowance &&
+      increaseAllowance.data
+    ) {
+      console.log(balanceOf);
+      return +balanceOf.data / +increaseAllowance.data;
+    }
+    return 0;
+  });
+
   const balance = use$(balance$);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -272,15 +286,13 @@ export default function Vaults() {
                   </div>
                   <div className='flex justify-between text-xs px-4'>
                     <span>Your current position</span>
-                    <Show ifReady={position}>
-                      {(p) => (
-                        <span>
-                          {(
-                            Number(p) * (balance?.available_balance || 0)
-                          ).toFixed(2)}
-                        </span>
-                      )}
-                    </Show>
+                    <Show ifReady={balance}>
+                      {() =>
+                        Number(
+                          balance!.available_balance * userShares.get(),
+                        ).toFixed(2)
+                      }
+                    </Show>{' '}
                   </div>
                 </CardContent>
                 <CardFooter>
