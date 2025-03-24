@@ -184,43 +184,44 @@ export default function Vaults() {
   };
 
   // TODO: Refactor.
-    const tickFormatter = (date: Date) => {
-      if (daysCount === 1) {
-        return format(date, 'HH:mm');
-      } else if (daysCount === 7) {
-        return format(date, 'dd-MMM HH:mm');
-      } else if (daysCount > 7 && daysCount <= 365) {
-        return format(date, 'dd-MMM');
-      } else {
-        return format(date, 'MMM-yyyy');
-      }
-    };
-  
-    // TODO: Refactor.
-    let triggerText;
+  const tickFormatter = (date: Date) => {
     if (daysCount === 1) {
-      triggerText = 'Last 24 hours';
+      return format(date, 'HH:mm');
     } else if (daysCount === 7) {
-      triggerText = 'Last week';
-    } else if (daysCount === 30) {
-      triggerText = 'Last month';
-    } else if (daysCount === 90) {
-      triggerText = 'Last 3 months';
-    } else if (daysCount === 365) {
-      triggerText = 'Last year';
+      return format(date, 'dd-MMM HH:mm');
+    } else if (daysCount > 7 && daysCount <= 365) {
+      return format(date, 'dd-MMM');
     } else {
-      triggerText = 'All time';
+      return format(date, 'MMM-yyyy');
     }
-  
-    const filteredHistory = useMemo(() => {
-      if (!data?.history) return [];
-      const now = new Date();
-      return data.history.filter((item) => {
-        const updateTime = new Date(item.updateTime);
-        const diffInDays = (now.getTime() - updateTime.getTime()) / (1000 * 60 * 60 * 24);
-        return diffInDays <= daysCount;
-      });
-    }, [data, daysCount]);
+  };
+
+  // TODO: Refactor.
+  let triggerText;
+  if (daysCount === 1) {
+    triggerText = 'Last 24 hours';
+  } else if (daysCount === 7) {
+    triggerText = 'Last week';
+  } else if (daysCount === 30) {
+    triggerText = 'Last month';
+  } else if (daysCount === 90) {
+    triggerText = 'Last 3 months';
+  } else if (daysCount === 365) {
+    triggerText = 'Last year';
+  } else {
+    triggerText = 'All time';
+  }
+
+  const filteredHistory = useMemo(() => {
+    if (!data?.history) return [];
+    const now = new Date();
+    return data.history.filter((item) => {
+      const updateTime = new Date(item.updateTime);
+      const diffInDays =
+        (now.getTime() - updateTime.getTime()) / (1000 * 60 * 60 * 24);
+      return diffInDays <= daysCount;
+    });
+  }, [data, daysCount]);
 
   return (
     <div className='mt-8 py-4 grid grid-cols-1 gap-16 md:grid-cols-[28rem_2fr] justify-center items-start px-8 md:px-20'>
@@ -418,53 +419,53 @@ export default function Vaults() {
                 <Card className='w-full bg-transparent bg-chart rounded-2xl max-w-5x'>
                   <CardContent>
                     <ChartContainer config={chartConfig}>
-                    <LineChart
-                          accessibilityLayer
-                          data={filteredHistory}
-                          margin={{
-                            left: 12,
-                            right: 12,
+                      <LineChart
+                        accessibilityLayer
+                        data={filteredHistory}
+                        margin={{
+                          left: 12,
+                          right: 12,
+                        }}
+                      >
+                        <CartesianGrid />
+                        <XAxis
+                          dataKey='updateTime'
+                          //tickLine={false}
+                          //axisLine={false}
+                          tickMargin={8}
+                          minTickGap={20}
+                          tickFormatter={(value) =>
+                            tickFormatter(new Date(value))
+                          }
+                        />
+                        <YAxis
+                          dataKey={(item) =>
+                            item.pnlPerc - item.unrealizedPnlPerc
+                          }
+                          includeHidden
+                          allowDataOverflow
+                          tickMargin={8}
+                          tickCount={7}
+                          tickFormatter={(value) => value.toFixed(3)}
+                          domain={([dataMin, dataMax]) => {
+                            const range = dataMax - dataMin;
+                            const padding = range / 3;
+                            return [dataMin - padding, dataMax + padding];
                           }}
-                        >
-                          <CartesianGrid />
-                          <XAxis
-                            dataKey='updateTime'
-                            //tickLine={false}
-                            //axisLine={false}
-                            tickMargin={8}
-                            minTickGap={20}
-                            tickFormatter={(value) =>
-                              tickFormatter(new Date(value))
-                            }
-                          />
-                          <YAxis
-                            dataKey={(item) =>
-                              item.pnlPerc - item.unrealizedPnlPerc
-                            }
-                            includeHidden
-                            allowDataOverflow
-                            tickMargin={8}
-                            tickCount={7}
-                            tickFormatter={(value) => value.toFixed(3)}
-                            domain={([dataMin, dataMax]) => {
-                              const range = dataMax - dataMin;
-                              const padding = range / 3;
-                              return [dataMin - padding, dataMax + padding];
-                            }}
-                          />
-                          <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent hideLabel />}
-                          />
+                        />
+                        <ChartTooltip
+                          cursor={false}
+                          content={<ChartTooltipContent hideLabel />}
+                        />
 
-                          <Line
-                            dataKey='pnlPerc'
-                            type='natural'
-                            stroke='var(--color-pnlPerc)'
-                            strokeWidth={2}
-                            dot={false}
-                          />
-                        </LineChart>
+                        <Line
+                          dataKey='pnlPerc'
+                          type='natural'
+                          stroke='var(--color-pnlPerc)'
+                          strokeWidth={2}
+                          dot={false}
+                        />
+                      </LineChart>
                     </ChartContainer>
                   </CardContent>
                 </Card>

@@ -42,9 +42,7 @@ export default function Chat() {
 
   return (
     <AssistantRuntimeProvider runtime={runtime}>
-      <div
-        className='flex flex-row w-full h-full'
-      >
+      <div className='flex flex-row w-full h-full'>
         <div className='chat-threadList sticky top-0 overflow-y-auto w-[300px]'>
           <ThreadList />
         </div>

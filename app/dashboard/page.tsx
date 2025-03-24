@@ -18,16 +18,20 @@ import {
 } from '@/components/ui/navigation-menu';
 import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/hooks/use-toast';
-import { balance$, plutoTradingHistroy$ } from '@/lib/store';
+import {
+  balance$,
+  balanceOf$,
+  increaseAllowance$,
+  plutoTradingHistroy$,
+} from '@/lib/store';
 import {
   getMerkleProof,
   getUserAirdropAmount,
 } from '@/services/blockchain/common';
 import { SupportedChain } from '@/services/blockchain/constants/addresses';
 import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
-import { useGetVaultData } from '@/services/blockchain/hooks/useGetVaultData';
 import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contracts';
-import { observer, Show, use$ } from '@legendapp/state/react';
+import { observer, Show, use$, useObservable } from '@legendapp/state/react';
 import { Root as Separator } from '@radix-ui/react-separator';
 import clsx from 'clsx';
 import { format } from 'date-fns';
@@ -51,6 +55,21 @@ function Dashboard() {
   const account = useAccount();
   const balance = use$(balance$);
 
+  const userShares = useObservable(() => {
+    const balanceOf = balanceOf$.get();
+    const increaseAllowance = increaseAllowance$.get();
+    if (
+      balanceOf &&
+      balanceOf.data &&
+      increaseAllowance &&
+      increaseAllowance.data
+    ) {
+      console.log(balanceOf);
+      return +balanceOf.data / +increaseAllowance.data;
+    }
+    return 0;
+  });
+
   const [sayStaked, setSayStaked] = useState('0');
   const [hasClaimedAirdrop, setHasClaimedAirdrop] = useState(false);
   const [isAirdropEligible, setIsAirdropEligible] = useState(false);
@@ -63,15 +82,6 @@ function Dashboard() {
   const apy = use$(() => plutoTradingHistroy$.apy.get());
   const todays_pnl = use$(() => tradingHistroy$.todays_pnl.get());
   const history = use$(() => tradingHistroy$.history.get());
-  const latestData = history?.at(-1);
-
-  const { userShares } = useGetVaultData(
-    account.chainId,
-    account.address,
-    latestData,
-  );
-
-  console.log({ userShares, balance: balance?.available_balance });
 
   useEffect(() => {
     //NB staking only on arbitrum
@@ -81,7 +91,7 @@ function Dashboard() {
       .then((data) => {
         setSayStaked(ethers.formatEther(data.stakeAmount));
       })
-      .catch(() => { });
+      .catch(() => {});
   }, [account.address, sayStaker, account.chainId]);
 
   useEffect(() => {
@@ -179,9 +189,10 @@ function Dashboard() {
   const filteredHistory = useMemo(() => {
     if (!history) return [];
     const now = new Date();
-    return history.filter(item => {
+    return history.filter((item) => {
       const updateTime = new Date(item.updateTime);
-      const diffInDays = (now.getTime() - updateTime.getTime()) / (1000 * 60 * 60 * 24);
+      const diffInDays =
+        (now.getTime() - updateTime.getTime()) / (1000 * 60 * 60 * 24);
       return diffInDays <= daysCount;
     });
   }, [history, daysCount]);
@@ -201,9 +212,13 @@ function Dashboard() {
 
             <div className='flex flex-row items-center text-brand-1 px-12 md:px-4 py-4 min-w-40'>
               <div className='flex w-full flex-col items-center'>
-                <span className='text-sm font-medium text-white'>Staked $SAY</span>
+                <span className='text-sm font-medium text-white'>
+                  Staked $SAY
+                </span>
                 <span className='text-lg font-bold'>{sayStaked}</span>
-                <span className='text-sm font-medium text-white'>Airdrop $SAY</span>
+                <span className='text-sm font-medium text-white'>
+                  Airdrop $SAY
+                </span>
                 <div className='flex flex-row gap-3'>
                   <span className='text-lg font-bold'>
                     {airdropAmount.toString()}
@@ -239,7 +254,9 @@ function Dashboard() {
                 $
                 <Show ifReady={balance}>
                   {() =>
-                    Number(balance!.available_balance * +userShares).toFixed(2)
+                    Number(
+                      balance!.available_balance * userShares.get(),
+                    ).toFixed(2)
                   }
                 </Show>{' '}
               </span>
@@ -251,7 +268,9 @@ function Dashboard() {
             />
 
             <div className='flex flex-col items-center gap-4 px-12 md:px-4 py-4 text-brand-1 min-w-40'>
-              <span className='text-sm font-medium text-white'>Average APY</span>
+              <span className='text-sm font-medium text-white'>
+                Average APY
+              </span>
               <span className='text-xl font-bold'>{apy?.toFixed(2)}%</span>
             </div>
             <Separator
@@ -262,7 +281,9 @@ function Dashboard() {
             <div className='flex flex-col items-center gap-4  px-12 md:px-4 py-4 text-brand-1 min-w-40'>
               <span className='text-sm font-medium text-white'>PNL</span>
               <span className='text-xl font-bold'>
-                ${Number((todays_pnl || 0) * +userShares).toFixed(2)}
+                <Show if={todays_pnl}>
+                  ${Number((todays_pnl || 0) * userShares.get()).toFixed(2)}
+                </Show>
               </span>
             </div>
             <Separator

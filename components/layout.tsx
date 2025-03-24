@@ -230,9 +230,7 @@ export default function Layout({
           </Navbar>
         </div>
       </header>
-      <section className='overflow-y-auto w-full h-full'>
-        {children}
-      </section>
+      <section className='overflow-y-auto w-full h-full'>{children}</section>
     </section>
   );
 }

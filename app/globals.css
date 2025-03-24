@@ -115,11 +115,13 @@
 
 body:has(#main-bg) {
   @apply bg-background;
-  background-image: 
-    url(/images/background-1.svg), 
-    url(/images/background-2.svg), 
+  background-image:
+    url(/images/background-1.svg), url(/images/background-2.svg),
     url(/images/background-2.svg);
-  background-position: -450px top, calc(100% + 450px) top, center calc(100% + 450px);
+  background-position:
+    -450px top,
+    calc(100% + 450px) top,
+    center calc(100% + 450px);
   background-repeat: no-repeat, no-repeat, no-repeat;
   background-size: auto, auto, auto;
   background-attachment: fixed, fixed, fixed;

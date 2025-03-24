@@ -1,7 +1,8 @@
 import { config, queryClient } from '@/app/providers';
 import { batch, linked, observable, when } from '@legendapp/state';
 import { syncedQuery } from '@legendapp/state/sync-plugins/tanstack-query';
-import { watchAccount } from '@wagmi/core';
+import { call, watchAccount } from '@wagmi/core';
+import { ethers } from 'ethers';
 import ky from 'ky';
 import { arbitrum, flowMainnet } from 'wagmi/chains';
 
@@ -40,10 +41,14 @@ export type HistoryItem = {
 
 type ChainId = (typeof config.chains)[number]['id'];
 export const chainId$ = observable<ChainId | undefined>(undefined);
+const address$ = observable<`0x${string}` | undefined>(undefined);
 
 watchAccount(config, {
   onChange(account) {
-    chainId$.set(account.chainId as ChainId);
+    batch(() => {
+      chainId$.set(account.chainId as ChainId);
+      address$.set(account.address);
+    });
   },
 });
 
@@ -150,6 +155,58 @@ export const balance$ = observable(
 export const totalLockedValue$ = observable<{ value: number | undefined }>({
   value: undefined,
 });
+
+export const balanceOf$ = observable(
+  linked({
+    get() {
+      const chainId = chainId$.get();
+      if (!chainId) {
+        return undefined;
+      }
+
+      const to =
+        chainId == arbitrum.id
+          ? '0x3dc49d34704386d301c4e407b40b3ecf05225cd5'
+          : '0x80a7660824ee5abdd347fbf0acfb0373785f2660';
+
+      const address = address$.get();
+      const encodedAddress = ethers.AbiCoder.defaultAbiCoder().encode(
+        ['address'],
+        [address],
+      );
+
+      return call(config, {
+        to: to,
+        data: `0x70a08231${encodedAddress.slice(2)}`,
+        chainId: chainId,
+        blockTag: 'latest',
+      });
+    },
+  }),
+);
+
+export const increaseAllowance$ = observable(
+  linked({
+    get() {
+      const chainId = chainId$.get();
+      if (!chainId) {
+        return undefined;
+      }
+
+      const to =
+        chainId == arbitrum.id
+          ? '0x3dc49d34704386d301c4e407b40b3ecf05225cd5'
+          : '0x80a7660824ee5abdd347fbf0acfb0373785f2660';
+
+      return call(config, {
+        to: to,
+        data: '0x18160ddd',
+        chainId: chainId,
+        blockTag: 'latest',
+      });
+    },
+  }),
+);
 
 batch(async () => {
   const pluto = await when(plutoBalance$);
