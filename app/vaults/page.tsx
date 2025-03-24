@@ -19,7 +19,12 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/hooks/use-toast';
-import { balance$, balanceOf$, increaseAllowance$, plutoTradingHistroy$ } from '@/lib/store';
+import {
+  balance$,
+  balanceOf$,
+  increaseAllowance$,
+  plutoTradingHistroy$,
+} from '@/lib/store';
 import { trimDecimalPlaces } from '@/lib/utils';
 import { approveSpending, getAllowance } from '@/services/blockchain/common';
 import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
