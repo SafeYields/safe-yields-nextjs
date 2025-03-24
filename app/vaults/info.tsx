@@ -67,7 +67,7 @@ export default function Info() {
         </li>
       </ul>
       <p className='leading-7 [&:not(:first-child)]:mt-6'>
-        his strategy integrates advanced trading techniques with straightforward
+        This strategy integrates advanced trading techniques with straightforward
         execution, providing a reliable tool for{' '}
         <span className='text-brand-2 font-bold '>
           diversifying your portfolio
