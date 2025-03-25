@@ -169,7 +169,7 @@ export const balanceOf$ = observable(
           ? '0x3dc49d34704386d301c4e407b40b3ecf05225cd5'
           : '0x80a7660824ee5abdd347fbf0acfb0373785f2660';
 
-      const address = '0x6501B7A416ed4d861129A4B2EFa90B364d4E776C';
+      const address = address$.get();
       const encodedAddress = ethers.AbiCoder.defaultAbiCoder().encode(
         ['address'],
         [address],
