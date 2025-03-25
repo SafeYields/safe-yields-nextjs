@@ -30,6 +30,7 @@ import {
 } from '@/services/blockchain/common';
 import { SupportedChain } from '@/services/blockchain/constants/addresses';
 import useEthersSigner from '@/services/blockchain/hooks/useEthersSigner';
+import { useGetVaultData } from '@/services/blockchain/hooks/useGetVaultData';
 import { useSafeYieldsContract } from '@/services/blockchain/safeyields.contracts';
 import { observer, Show, use$, useObservable } from '@legendapp/state/react';
 import { Root as Separator } from '@radix-ui/react-separator';
@@ -68,6 +69,7 @@ function Dashboard() {
     return 0;
   });
 
+export default function Dashboard() {
   const [sayStaked, setSayStaked] = useState('0');
   const [hasClaimedAirdrop, setHasClaimedAirdrop] = useState(false);
   const [isAirdropEligible, setIsAirdropEligible] = useState(false);
@@ -109,6 +111,24 @@ function Dashboard() {
       setHasClaimedAirdrop(data);
     });
   }, [sayAirdrop, account.address, account.chainId]);
+
+  useEffect(() => { 
+    if (!address || chainId !== SupportedChain.Arbitrum) {
+      setIsAirdropEligible(false);
+      return;
+    }
+    const airdropData = getUserAirdropAmount(address);
+    if (!airdropData || airdropData.amount === 0) {
+      setIsAirdropEligible(false);
+      return
+    } else {
+      setIsAirdropEligible(true);
+    }
+
+    sayAirdrop.hasClaimed(address).then((data) => {
+      setHasClaimedAirdrop(data);
+    });
+  }, [sayAirdrop, address, chainId]);
 
   const airdropAmount =
     getUserAirdropAmount(account.address || ZeroAddress)?.amount ?? 0.0;
