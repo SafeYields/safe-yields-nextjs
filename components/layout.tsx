@@ -9,11 +9,12 @@ import {
 } from '@/components/ui/navbar';
 import { ChevronRight, Menu } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { ReactNode } from 'react';
 import { useAccount, useSwitchChain } from 'wagmi';
 import { arbitrum, flowMainnet } from 'wagmi/chains';
+import { AppSidebar } from './app-sidebar';
 import ConnectButton from './connect-button';
+import { Button } from './ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,8 +24,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import Navigation, { TLink } from './ui/navigation';
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
+import { SidebarInset, SidebarProvider, SidebarTrigger } from './ui/sidebar';
 
 const PickNetwork = () => {
   const account = useAccount();
@@ -51,49 +51,59 @@ const PickNetwork = () => {
                 'Choose Network'
               )}
 
-              <ChevronRight className='rotate-90 w-8 h-12' />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className='w-44 rounded-xl shadow-[0_0_8px_#4CFAC7]'>
-            <DropdownMenuLabel>Networks</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuRadioGroup value={account.chainId?.toString()}>
-              <DropdownMenuRadioItem
-                value={flowMainnet.id.toString()}
-                className='flex justify-between hover:scale-95 focus:bg-[#4CFAC7]/20'
-                onSelect={() => {
-                  switchChain({ chainId: flowMainnet.id });
-                }}
-              >
-                <span>Flow EVM</span>
-                <Image
-                  src='/images/flow.svg'
-                  width='16'
-                  height='16'
-                  alt='flow chain logo'
-                />
-              </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem
-                value={arbitrum.id.toString()}
-                className='flex justify-between hover:scale-95 focus:bg-[#4CFAC7]/20'
-                onSelect={() => {
-                  switchChain({ chainId: arbitrum.id });
-                }}
-              >
-                <span>Arbitrum</span>
-                <Image
-                  src='/images/arbitrum.svg'
-                  width='16'
-                  height='16'
-                  alt='arbitrum chain logo'
-                />
-              </DropdownMenuRadioItem>
-            </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
-      <ConnectButton />
-    </div>
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105'>
+          {data ? (
+            <>
+              <Image src={data.src} width='16' height='16' alt='chain logo' />
+              {data.name}
+            </>
+          ) : (
+            'Choose Network'
+          )}
+
+          <ChevronRight className='rotate-90' />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className='w-44 rounded-xl shadow-[0_0_8px_#4CFAC7]'>
+        <DropdownMenuLabel>Networks</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuRadioGroup value={account.chainId?.toString()}>
+          <DropdownMenuRadioItem
+            value={flowMainnet.id.toString()}
+            className='flex justify-between hover:scale-95 focus:bg-[#4CFAC7]/20'
+            onSelect={() => {
+              switchChain({ chainId: flowMainnet.id });
+            }}
+          >
+            <span>Flow EVM</span>
+            <Image
+              src='/images/flow.svg'
+              width='16'
+              height='16'
+              alt='flow chain logo'
+            />
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem
+            value={arbitrum.id.toString()}
+            className='flex justify-between hover:scale-95 focus:bg-[#4CFAC7]/20'
+            onSelect={() => {
+              switchChain({ chainId: arbitrum.id });
+            }}
+          >
+            <span>Arbitrum</span>
+            <Image
+              src='/images/arbitrum.svg'
+              width='16'
+              height='16'
+              alt='arbitrum chain logo'
+            />
+          </DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
@@ -168,6 +178,11 @@ const links: TLink[] = [
 export default function Layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
+  const { address, chainId } = use$(account$.get());
+  console.log(address);
+  const { usdcBalance } = useGetTokenBalances(address!, 1);
+  const isMobile = useIsMobile();
+
   return (
     <section className='flex flex-col w-full h-screen'>
       <header id='header' className='sticky top-0 z-50 px-4'>
