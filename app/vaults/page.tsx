@@ -304,7 +304,7 @@ export default function Vaults() {
                   <Button
                     onClick={handleEmmaVaultDeposit}
                     className='w-full rounded-full bg-brand-2 text-white'
-                    disabled={depositLoader || !isConnected}
+                    disabled={true/* depositLoader || !isConnected */}
                   >
                     {depositLoader && <Loader2 className='animate-spin' />}
                     {isConnected ? 'Deposit' : 'Connect Wallet'}
