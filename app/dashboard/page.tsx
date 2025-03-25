@@ -54,7 +54,6 @@ function Dashboard() {
   const { toast } = useToast();
   const account = useAccount();
   const balance = use$(balance$);
-
   const userShares = useObservable(() => {
     const balanceOf = balanceOf$.get();
     const increaseAllowance = increaseAllowance$.get();
@@ -64,7 +63,6 @@ function Dashboard() {
       increaseAllowance &&
       increaseAllowance.data
     ) {
-      console.log(balanceOf);
       return +balanceOf.data / +increaseAllowance.data;
     }
     return 0;
@@ -82,7 +80,7 @@ function Dashboard() {
   const apy = use$(() => plutoTradingHistroy$.apy.get());
   const todays_pnl = use$(() => tradingHistroy$.todays_pnl.get());
   const history = use$(() => tradingHistroy$.history.get());
-
+  
   useEffect(() => {
     //NB staking only on arbitrum
     if (!account.address || account.chainId !== 42161) return;
@@ -229,7 +227,6 @@ function Dashboard() {
               `}
                     onClick={() => {
                       if (isAirdropEligible && !hasClaimedAirdrop) {
-                        //console.log('clicked');
                         handleClaimAirdrop();
                       }
                     }}
