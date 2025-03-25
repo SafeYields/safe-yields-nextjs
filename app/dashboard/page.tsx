@@ -196,7 +196,9 @@ function Dashboard() {
       return diffInDays <= daysCount;
     });
   }, [history, daysCount]);
-
+  console.log(userShares)
+  console.log(balance?.available_balance)
+  console.log(todays_pnl)
   return (
     <div
       id='main-bg'
