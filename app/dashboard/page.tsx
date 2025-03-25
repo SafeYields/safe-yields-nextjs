@@ -396,15 +396,16 @@ function Dashboard() {
                             }
                           />
                           <YAxis
-                            dataKey={(item) =>
-                              item.pnlPerc - item.unrealizedPnlPerc
-                            }
+                            dataKey={(item) => parseFloat(item.pnlPerc)}
                             includeHidden
                             allowDataOverflow
                             tickMargin={8}
                             tickCount={7}
                             tickFormatter={(value) => value.toFixed(3)}
                             domain={([dataMin, dataMax]) => {
+                              if (dataMin === dataMax) {
+                                return [dataMin - 1, dataMax + 1];
+                              }
                               const range = dataMax - dataMin;
                               const padding = range / 3;
                               return [dataMin - padding, dataMax + padding];
