@@ -36,7 +36,7 @@ const PickNetwork = () => {
       {account.isConnected && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 bg-brand-1 gap-4'>
+            <Button className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 bg-[#4CFAC7] gap-4'>
               {data ? (
                 <>
                   <Image
@@ -60,7 +60,7 @@ const PickNetwork = () => {
             <DropdownMenuRadioGroup value={account.chainId?.toString()}>
               <DropdownMenuRadioItem
                 value={flowMainnet.id.toString()}
-                className='flex justify-between hover:scale-95 focus:bg-brand-1/20'
+                className='flex justify-between hover:scale-95 focus:bg-[#4CFAC7]/20'
                 onSelect={() => {
                   switchChain({ chainId: flowMainnet.id });
                 }}
@@ -75,7 +75,7 @@ const PickNetwork = () => {
               </DropdownMenuRadioItem>
               <DropdownMenuRadioItem
                 value={arbitrum.id.toString()}
-                className='flex justify-between hover:scale-95 focus:bg-brand-1/20'
+                className='flex justify-between hover:scale-95 focus:bg-[#4CFAC7]/20'
                 onSelect={() => {
                   switchChain({ chainId: arbitrum.id });
                 }}
