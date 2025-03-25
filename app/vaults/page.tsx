@@ -48,21 +48,6 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const chartData = [
-  { updateTime: 'Jan', pnl: 75 },
-  { updateTime: 'Feb', pnl: 80 },
-  { updateTime: 'Mar', pnl: 85 },
-  { updateTime: 'Apr', pnl: 90 },
-  { updateTime: 'May', pnl: 92 },
-  { updateTime: 'Jun', pnl: 88 },
-  { updateTime: 'Jul', pnl: 85 },
-  { updateTime: 'Aug', pnl: 80 },
-  { updateTime: 'Sep', pnl: 78 },
-  { updateTime: 'Oct', pnl: 82 },
-  { updateTime: 'Nov', pnl: 90 },
-  { updateTime: 'Dec', pnl: 95 },
-];
-
 export default function Vaults() {
   const { toast } = useToast();
   const { openConnectModal } = useConnectModal();
@@ -275,14 +260,14 @@ export default function Vaults() {
             <TabsList className='justify-start w-full items-center bg-transparent flex flex-row px-6'>
               <TabsTrigger
                 value='deposit'
-                className='max-w-min data-[state=active]:bg-transparent data-[state=active]:text-[#99f]'
+                className='max-w-min data-[state=active]:bg-transparent data-[state=active]:text-brand-2'
               >
                 Deposit
               </TabsTrigger>
               <TabsTrigger
                 value='withdraw'
                 disabled
-                className='max-w-min data-[state=active]:bg-transparent data-[state=active]:text-[#99f]'
+                className='max-w-min data-[state=active]:bg-transparent data-[state=active]:text-brand-2'
               >
                 Withdraw
               </TabsTrigger>
@@ -345,7 +330,7 @@ export default function Vaults() {
                 <CardFooter>
                   <Button
                     onClick={handleEmmaVaultWithdraw}
-                    className='w-full rounded-full bg-[#99f] text-white'
+                    className='w-full rounded-full bg-brand-2 text-white'
                   >
                     Withdraw
                   </Button>

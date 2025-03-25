@@ -14,7 +14,7 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      'inline-flex h-10 items-center justify-center rounded-md bg-transparent p-1 text-muted-foreground',
+      'inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground',
       className,
     )}
     {...props}
@@ -25,27 +25,15 @@ TabsList.displayName = TabsPrimitive.List.displayName;
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
+>(({ className, ...props }, ref) => (
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      'group relative inline-flex items-center justify-center whitespace-nowrap px-3 py-3 text-sm font-medium data-[state=active]:text-[#4CFAC7]',
-      'ring-offset-background focus-visible:outline-none focus-visible:ring-2' /* transition-all was here but causes a weird highlight effect on mobile. don't think it's needed. */,
-      'focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+      'inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm',
       className,
     )}
     {...props}
-  >
-    {children}
-    <div
-      className={cn(
-        'absolute -bottom-0 left-0 right-0 mx-auto',
-        'hidden h-[2px] w-full rounded-full bg-gradient-to-r from-[#4CFAC7]/0 via-[#4CFAC7] to-[#4CFAC7]/0 blur-[2px]',
-        'shadow-[0_-6px_20px_#4CFAC7,0_-10px_30px_#4CFAC7,0_-15px_40px_#4CFAC7]',
-        'group-data-[state=active]:block',
-      )}
-    />
-  </TabsPrimitive.Trigger>
+  />
 ));
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
 
@@ -56,7 +44,7 @@ const TabsContent = React.forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      'ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+      'mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
       className,
     )}
     {...props}
