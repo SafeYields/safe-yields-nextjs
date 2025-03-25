@@ -260,6 +260,7 @@ export default function Vaults() {
             <TabsList className='justify-start w-full items-center bg-transparent flex flex-row px-6'>
               <TabsTrigger
                 value='deposit'
+                disabled
                 className='max-w-min data-[state=active]:bg-transparent data-[state=active]:text-brand-2'
               >
                 Deposit
