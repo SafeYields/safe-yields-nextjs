@@ -434,7 +434,7 @@ export default function Vaults() {
             <Show ifReady={data}>
               {() => (
                 <Card className='w-full bg-transparent bg-chart rounded-2xl max-w-5x'>
-                  <CardContent className='py-4'>
+                  <CardContent>
                     <ChartContainer config={chartConfig}>
                       <LineChart
                         accessibilityLayer
@@ -456,16 +456,15 @@ export default function Vaults() {
                           }
                         />
                         <YAxis
-                          dataKey={(item) => parseFloat(item.pnlPerc)}
+                          dataKey={(item) =>
+                            item.pnlPerc - item.unrealizedPnlPerc
+                          }
                           includeHidden
                           allowDataOverflow
                           tickMargin={8}
                           tickCount={7}
                           tickFormatter={(value) => value.toFixed(3)}
                           domain={([dataMin, dataMax]) => {
-                            if (dataMin === dataMax) {
-                              return [dataMin - 1, dataMax + 1];
-                            }
                             const range = dataMax - dataMin;
                             const padding = range / 3;
                             return [dataMin - padding, dataMax + padding];
