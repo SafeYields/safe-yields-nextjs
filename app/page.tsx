@@ -24,7 +24,7 @@ export default function Home() {
           />
         </div>
 
-        <h3 className='scroll-m-20 pb-8 text-3xl font-semibold tracking-tight first:mt-0 max-w-md self-end'>
+        <h3 className='scroll-m-20 pb-8 text-3xl font-semibold tracking-tight first:mt-0 max-w-md self-end w-[350px]'>
           Find <span className='text-brand-1'>consistency</span> in the volatile
           DeFi space.
         </h3>

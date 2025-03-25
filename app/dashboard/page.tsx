@@ -80,7 +80,7 @@ function Dashboard() {
   const apy = use$(() => plutoTradingHistroy$.apy.get());
   const todays_pnl = use$(() => tradingHistroy$.todays_pnl.get());
   const history = use$(() => tradingHistroy$.history.get());
-  
+
   useEffect(() => {
     //NB staking only on arbitrum
     if (!account.address || account.chainId !== 42161) return;
@@ -89,7 +89,7 @@ function Dashboard() {
       .then((data) => {
         setSayStaked(ethers.formatEther(data.stakeAmount));
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [account.address, sayStaker, account.chainId]);
 
   useEffect(() => {
@@ -446,12 +446,14 @@ function Dashboard() {
           <div className='flex flex-row gap-4 mb-20'>
             {/* !bg-gradient-to-r !from-[hsl(240,43%,37%)] !to-[hsl(162,81%,32%)] */}
             <ConnectButton className='px-12 text-black bg-brand-1' />
-            <Button
-              variant='outline'
-              className='px-12 rounded-full text-base font-semibold border border-brand-1 transition-transform duration-200 hover:scale-105'
-            >
-              Read our Docs
-            </Button>
+            <a href="https://www.safeyields.io/_files/ugd/56bef1_808fc263b7d04a4bb420be7b40262e80.pdf" target="_blank" rel="noopener noreferrer">
+              <Button
+                variant='outline'
+                className='px-12 rounded-full text-base font-semibold border border-brand-1 transition-transform duration-200 hover:scale-105'
+              >
+                Read our Docs
+              </Button>
+            </a>
           </div>
         </>
       )}

@@ -138,11 +138,11 @@ const links: TLink[] = [
       },
       {
         title: 'Whitepaper',
-        href: 'https://www.safeyields.io/_files/ugd/56bef1_808fc263b7d04a4bb420be7b40262e80.pdfwhitepaper',
+        href: 'https://www.safeyields.io/_files/ugd/56bef1_808fc263b7d04a4bb420be7b40262e80.pdf',
       },
       {
         title: 'PitchDeck',
-        href: 'https://www.safeyields.io/_files/ugd/56bef1_6a2fdda649d44ef0958596f9e8885f28.pdfpitchdeck',
+        href: 'https://www.safeyields.io/_files/ugd/56bef1_6a2fdda649d44ef0958596f9e8885f28.pdf',
       },
     ],
     social: [
