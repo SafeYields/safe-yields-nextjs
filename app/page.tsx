@@ -7,7 +7,7 @@ export default function Home() {
         id='main-bg'
         className='flex flex-col justify-between px-16 relative w-full h-full'
       >
-        <h3 className='scroll-m-20 pt-8 text-3xl font-semibold tracking-tight first:mt-0 max-w-md'>
+        <h3 className='scroll-m-20 pt-8 md:text-3xl text-xl font-semibold tracking-tight first:mt-0 max-w-md'>
           Emma AI guides you through selecting optimal yield strategies for{' '}
           <span className='text-brand-1'>sustainable growth</span>
         </h3>
@@ -20,11 +20,11 @@ export default function Home() {
             /* sizes='60vw' */
             /* width={600}
             height={600} */
-            className='object-contain py-20'
+            className='object-contain py-40'
           />
         </div>
 
-        <h3 className='scroll-m-20 pb-8 text-3xl font-semibold tracking-tight first:mt-0 max-w-md self-end w-[350px]'>
+        <h3 className='scroll-m-20 pb-8 md:text-3xl text-xl font-semibold tracking-tight first:mt-0 max-w-md self-end md:w-[350px]'>
           Find <span className='text-brand-1'>consistency</span> in the volatile
           DeFi space.
         </h3>
