@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { chainData } from '@/app/dashboard/util';
 import { Button } from '@/components/ui/button';
 import {
@@ -7,7 +8,7 @@ import {
   NavbarLeft,
   NavbarRight,
 } from '@/components/ui/navbar';
-import { ChevronRight, Menu } from 'lucide-react';
+import { ChevronRight, Menu, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ReactNode } from 'react';
@@ -51,7 +52,6 @@ const PickNetwork = () => {
               ) : (
                 'Choose Network'
               )}
-
               <ChevronRight className='rotate-90 w-8 h-12' />
             </Button>
           </DropdownMenuTrigger>
@@ -94,6 +94,36 @@ const PickNetwork = () => {
         </DropdownMenu>
       )}
       <ConnectButton />
+    </div>
+  );
+};
+
+const MobileDropdown = ({ link }: { link: TLink }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="w-full">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex gap-4 justify-center items-center text-lg font-bold"
+      >
+        <span>{link.title}</span>
+        <ChevronDown
+          className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+        />
+      </button>
+      {open && (
+        <div className="flex flex-col items-center justify-center pt-3">
+          {'items' in link && link.items?.map((item) => (
+            <Link
+              href={item.href!}
+              key={item.title}
+              className="p-2 text-base font-medium"
+            >
+              {item.title}
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -201,58 +231,65 @@ export default function Layout({
                     <span className='sr-only'>Toggle navigation menu</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="bg-sidebar overflow-y-auto">
-                  <nav className="mt-8 flex flex-col items-center gap-8 text-lg font-medium h-full mb-10">
-                    {links.map((link) =>
-                      "items" in link ? (
-                        <div
-                          key={link.title}
-                          className={clsx(
-                            "flex flex-col items-center justify-center gap-8",
-                            link.title === 'Links' ? 'mt-auto mb-10' : '',
-                          )}
-                        >
-                          {link.items.map((item) => (
-                            <Link
-                              href={item.href!}
-                              key={item.title}
-                              className="flex items-center gap-2 text-lg font-bold"
-                            >
-                              <span>{item.title}</span>
-                            </Link>
-                          ))}
-                          {"social" in link && link.social && (
-                            <div className="flex flex-row gap-4 justify-center py-4 px-8">
-                              {link.social.map(({ src, href, alt }) => (
-                                <Link
-                                  href={href}
-                                  key={src}
-                                  className="block bg-brand-1 rounded-full p-2"
-                                >
-                                  <div className="w-4 h-4 relative">
-                                    <Image
-                                      src={src}
-                                      alt={alt}
-                                      fill
-                                      className="w-full h-full object-contain"
-                                    />
-                                  </div>
-                                </Link>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <Link
-                          href={link.href}
-                          key={link.title}
-                          className="flex items-center gap-2 text-lg font-bold"
-                        >
-                          <span>{link.title}</span>
-                        </Link>
-                      )
-                    )}
-
+                <SheetContent side="right" className="bg-sidebar">
+                  <nav className="mt-8 flex flex-col items-center gap-8 text-lg font-medium h-full mb-10 overflow-y-auto">
+                    {links.map((link) => {
+                      if ('items' in link && link.title !== 'Links') {
+                        return (
+                          <MobileDropdown key={link.title} link={link} />
+                        );
+                      } else if ('items' in link && link.title === 'Links') {
+                        return (
+                          <div
+                            key={link.title}
+                            className={clsx(
+                              "flex flex-col items-center justify-center gap-8",
+                              'mt-auto mb-10'
+                            )}
+                          >
+                            {link.items.map((item) => (
+                              <Link
+                                href={item.href!}
+                                key={item.title}
+                                className="flex items-center gap-2 text-lg font-bold"
+                              >
+                                <span>{item.title}</span>
+                              </Link>
+                            ))}
+                            {"social" in link && link.social && (
+                              <div className="flex flex-row gap-4 justify-center py-4 px-8">
+                                {link.social.map(({ src, href, alt }) => (
+                                  <Link
+                                    href={href}
+                                    key={src}
+                                    className="block bg-brand-1 rounded-full p-2"
+                                  >
+                                    <div className="w-4 h-4 relative">
+                                      <Image
+                                        src={src}
+                                        alt={alt}
+                                        fill
+                                        className="w-full h-full object-contain"
+                                      />
+                                    </div>
+                                  </Link>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <Link
+                            href={link.href!}
+                            key={link.title}
+                            className="flex items-center gap-2 text-lg font-bold"
+                          >
+                            <span>{link.title}</span>
+                          </Link>
+                        );
+                      }
+                    })}
                   </nav>
                 </SheetContent>
               </Sheet>
