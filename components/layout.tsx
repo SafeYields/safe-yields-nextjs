@@ -94,13 +94,13 @@ const PickNetwork = () => {
         </DropdownMenu>
       )}
       <div className='md:flex hidden'>
-        <ConnectButton/>
+        <ConnectButton />
       </div>
     </div>
   );
 };
 
-const MobileDropdown = ({ link }: { link: TLink }) => {
+const MobileDropdown = ({ link, onLinkClick }: { link: TLink; onLinkClick: () => void }) => {
   const [open, setOpen] = useState(false);
   return (
     <div className="w-full">
@@ -115,15 +115,18 @@ const MobileDropdown = ({ link }: { link: TLink }) => {
       </button>
       {open && (
         <div className="flex flex-col items-center justify-center pt-3">
-          {'items' in link && link.items?.map((item) => (
-            <Link
-              href={item.href!}
-              key={item.title}
-              className="p-2 text-base font-medium"
-            >
-              {item.title}
-            </Link>
-          ))}
+          {"items" in link &&
+            link.items?.map((item) => (
+              <Link
+                href={item.href!}
+                key={item.title}
+                onClick={onLinkClick}
+                className="p-2 text-base font-medium"
+              >
+                {item.title}
+              </Link>
+            ))
+          }
         </div>
       )}
     </div>
@@ -201,6 +204,9 @@ const links: TLink[] = [
 export default function Layout({
   children,
 }: Readonly<{ children: ReactNode }>) {
+  const [open, setOpen] = useState(false);
+  const closeSidebar = () => setOpen(false);
+
   return (
     <section className='flex flex-col w-full h-screen'>
       <header id='header' className='sticky top-0 z-50 px-4'>
@@ -224,7 +230,7 @@ export default function Layout({
               <div className='md:flex hidden'>
                 <PickNetwork />
               </div>
-              <Sheet>
+              <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger asChild>
                   <Button
                     variant='ghost'
@@ -240,7 +246,11 @@ export default function Layout({
                     {links.map((link) => {
                       if ('items' in link && link.title !== 'Links') {
                         return (
-                          <MobileDropdown key={link.title} link={link} />
+                          <MobileDropdown
+                            key={link.title}
+                            link={link}
+                            onLinkClick={closeSidebar}
+                          />
                         );
                       } else if ('items' in link && link.title === 'Links') {
                         return (
@@ -255,6 +265,7 @@ export default function Layout({
                               <Link
                                 href={item.href!}
                                 key={item.title}
+                                onClick={closeSidebar}
                                 className="flex items-center gap-2 text-lg font-bold"
                               >
                                 <span>{item.title}</span>
@@ -268,6 +279,7 @@ export default function Layout({
                                     <Link
                                       href={href}
                                       key={src}
+                                      onClick={closeSidebar}
                                       className="block bg-brand-1 rounded-full p-2"
                                     >
                                       <div className="w-4 h-4 relative">
@@ -290,6 +302,7 @@ export default function Layout({
                           <Link
                             href={link.href!}
                             key={link.title}
+                            onClick={closeSidebar}
                             className="flex items-center gap-2 text-lg font-bold"
                           >
                             <span>{link.title}</span>
