@@ -12,15 +12,12 @@ export default function Home() {
           <span className='text-brand-1'>sustainable growth</span>
         </h3>
         {/* <div className='fixed aspect-[695/692] md:max-w-2xl max-w-lg mx-auto w-full lg:top-1/2 top-3/4 left-1/2 -translate-x-1/2 -translate-y-3/4 lg:-translate-y-1/2'> */}
-        <div className='flex items-center justify-center'>
+        <div className="relative w-full h-full my-2">
           <Image
-            src='/images/hero.png'
+            src="/images/hero.png"
+            alt="safeyields character"
             fill
-            alt='safeyields character'
-            /* sizes='60vw' */
-            /* width={600}
-            height={600} */
-            className='object-contain py-40'
+            className="object-contain"
           />
         </div>
 

@@ -34,7 +34,7 @@ const PickNetwork = () => {
   const { switchChain } = useSwitchChain();
 
   return (
-    <div className='md:flex flex-row gap-2 hidden'>
+    <div className='flex md:flex-row flex-col gap-2'>
       {account.isConnected && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -93,7 +93,9 @@ const PickNetwork = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       )}
-      <ConnectButton />
+      <div className='md:flex hidden'>
+        <ConnectButton/>
+      </div>
     </div>
   );
 };
@@ -219,7 +221,9 @@ export default function Layout({
               <Navigation links={links} />
             </NavbarCenter>
             <NavbarRight>
-              <PickNetwork />
+              <div className='md:flex hidden'>
+                <PickNetwork />
+              </div>
               <Sheet>
                 <SheetTrigger asChild>
                   <Button
@@ -257,24 +261,27 @@ export default function Layout({
                               </Link>
                             ))}
                             {"social" in link && link.social && (
-                              <div className="flex flex-row gap-4 justify-center py-4 px-8">
-                                {link.social.map(({ src, href, alt }) => (
-                                  <Link
-                                    href={href}
-                                    key={src}
-                                    className="block bg-brand-1 rounded-full p-2"
-                                  >
-                                    <div className="w-4 h-4 relative">
-                                      <Image
-                                        src={src}
-                                        alt={alt}
-                                        fill
-                                        className="w-full h-full object-contain"
-                                      />
-                                    </div>
-                                  </Link>
-                                ))}
-                              </div>
+                              <>
+                                <PickNetwork />
+                                <div className="flex flex-row gap-4 justify-center py-4 px-8">
+                                  {link.social.map(({ src, href, alt }) => (
+                                    <Link
+                                      href={href}
+                                      key={src}
+                                      className="block bg-brand-1 rounded-full p-2"
+                                    >
+                                      <div className="w-4 h-4 relative">
+                                        <Image
+                                          src={src}
+                                          alt={alt}
+                                          fill
+                                          className="w-full h-full object-contain"
+                                        />
+                                      </div>
+                                    </Link>
+                                  ))}
+                                </div>
+                              </>
                             )}
                           </div>
                         );
