@@ -22,6 +22,7 @@ export type TLink =
       title: string;
       href?: string;
       items: TLink[];
+      disabled?: boolean;
       social?: { src: string; href: string; alt: string }[];
     };
 
