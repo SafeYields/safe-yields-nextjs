@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "prepare": "husky install",
     "typechain": "typechain --target ethers-v6 --out-dir services/blockchain/types/ 'services/blockchain/constants/abis/*.json'",
     "format": "prettier --check --ignore-path .gitignore .",
     "format:fix": "prettier --write --ignore-path .gitignore .",
@@ -104,6 +105,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.1.0",
     "eslint-config-prettier": "^10.0.1",
+    "husky": "^9.1.7",
     "postcss": "^8",
     "prettier": "3.5.1",
     "prettier-plugin-organize-imports": "^4.1.0",
@@ -112,5 +114,6 @@
     "tsx": "^4.19.2",
     "typechain": "^8.3.2",
     "typescript": "^5"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
