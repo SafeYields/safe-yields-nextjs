@@ -2,7 +2,7 @@ import { ConnectButton as RainbowKitConnectButton } from '@rainbow-me/rainbowkit
 import clsx from 'clsx';
 import { Button } from './ui/button';
 
-export default function ConnectButton({ className }: { className?: string }) {
+export default function ConnectButton({ className, connectedClassName }: { className?: string, connectedClassName?: string }) {
   return (
     <>
       <RainbowKitConnectButton.Custom>
@@ -30,7 +30,10 @@ export default function ConnectButton({ className }: { className?: string }) {
                 onClick={openAccountModal}
                 type='button'
                 variant='ghost'
-                className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 border-2 border-brand-1'
+                className={clsx(
+                  'transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 border-2 border-brand-1',
+                  connectedClassName,
+                )}
               >
                 {account.displayName}
               </Button>

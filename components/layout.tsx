@@ -38,7 +38,7 @@ const PickNetwork = () => {
       {account.isConnected && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className='transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 bg-brand-1 gap-4'>
+            <Button className='min-w-fit w-48 transform rounded-full text-base font-bold transition-transform duration-200 hover:scale-105 bg-brand-1 gap-4'>
               {data ? (
                 <>
                   <Image
@@ -93,9 +93,7 @@ const PickNetwork = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       )}
-      <div className='md:flex hidden'>
-        <ConnectButton />
-      </div>
+      <ConnectButton connectedClassName='w-48'/>
     </div>
   );
 };
