@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 import { chainData } from '@/app/dashboard/util';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,10 +7,11 @@ import {
   NavbarLeft,
   NavbarRight,
 } from '@/components/ui/navbar';
-import { ChevronRight, Menu, ChevronDown } from 'lucide-react';
+import clsx from 'clsx';
+import { ChevronDown, ChevronRight, Clock, Menu } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { useAccount, useSwitchChain } from 'wagmi';
 import { arbitrum, flowMainnet } from 'wagmi/chains';
 import ConnectButton from './connect-button';
@@ -26,7 +26,6 @@ import {
 } from './ui/dropdown-menu';
 import Navigation, { TLink } from './ui/navigation';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
-import clsx from 'clsx';
 
 const PickNetwork = () => {
   const account = useAccount();
@@ -93,40 +92,53 @@ const PickNetwork = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       )}
-      <ConnectButton connectedClassName='w-48'/>
+      <ConnectButton connectedClassName='w-48' />
     </div>
   );
 };
 
-const MobileDropdown = ({ link, onLinkClick }: { link: TLink; onLinkClick: () => void }) => {
+const MobileDropdown = ({
+  link,
+  onLinkClick,
+}: {
+  link: TLink;
+  onLinkClick: () => void;
+}) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="w-full">
+    <div className='w-full'>
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex gap-4 justify-center items-center text-lg font-bold"
+        className='w-full flex gap-4 justify-center items-center text-lg font-bold'
       >
         <span>{link.title}</span>
         <ChevronDown
           className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
         />
       </button>
-      {open && (
-        <div className="flex flex-col items-center justify-center pt-3">
-          {"items" in link &&
-            link.items?.map((item) => (
-              <Link
-                href={item.href!}
-                key={item.title}
-                onClick={onLinkClick}
-                className="p-2 text-base font-medium"
-              >
-                {item.title}
-              </Link>
-            ))
-          }
-        </div>
-      )}
+      <div
+        className={`${
+          open ? 'h-32' : 'h-0'
+        } transition-all delay-150 duration-300 overflow-hidden w-full flex flex-col items-center justify-center`}
+      >
+        {'items' in link &&
+          link.items?.map((item) => (
+            <Link
+              href={item.href!}
+              aria-disabled={item?.disabled}
+              key={item.title}
+              onClick={() => {
+                if (!item?.disabled) onLinkClick();
+              }}
+              className={`${'disabled' in item ? 'text-gray-400' : ''} p-2 text-base font-medium`}
+            >
+              {item.title}
+              {item?.disabled && (
+                <Clock className='inline-block ml-2 text-gray-400' size={16} />
+              )}
+            </Link>
+          ))}
+      </div>
     </div>
   );
 };
@@ -239,8 +251,8 @@ export default function Layout({
                     <span className='sr-only'>Toggle navigation menu</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="bg-sidebar">
-                  <nav className="mt-8 flex flex-col items-center gap-8 text-lg font-medium h-full mb-10 overflow-y-auto">
+                <SheetContent side='right' className='bg-sidebar'>
+                  <nav className='mt-8 flex flex-col items-center gap-8 text-lg font-medium h-full mb-10 overflow-y-auto'>
                     {links.map((link) => {
                       if ('items' in link && link.title !== 'Links') {
                         return (
@@ -255,8 +267,8 @@ export default function Layout({
                           <div
                             key={link.title}
                             className={clsx(
-                              "flex flex-col items-center justify-center gap-8",
-                              'mt-auto mb-10'
+                              'flex flex-col items-center justify-center gap-8',
+                              'mt-auto mb-10',
                             )}
                           >
                             {link.items.map((item) => (
@@ -264,28 +276,28 @@ export default function Layout({
                                 href={item.href!}
                                 key={item.title}
                                 onClick={closeSidebar}
-                                className="flex items-center gap-2 text-lg font-bold"
+                                className='flex items-center gap-2 text-lg font-bold'
                               >
                                 <span>{item.title}</span>
                               </Link>
                             ))}
-                            {"social" in link && link.social && (
+                            {'social' in link && link.social && (
                               <>
                                 <PickNetwork />
-                                <div className="flex flex-row gap-4 justify-center py-4 px-8">
+                                <div className='flex flex-row gap-4 justify-center py-4 px-8'>
                                   {link.social.map(({ src, href, alt }) => (
                                     <Link
                                       href={href}
                                       key={src}
                                       onClick={closeSidebar}
-                                      className="block bg-brand-1 rounded-full p-2"
+                                      className='block bg-brand-1 rounded-full p-2'
                                     >
-                                      <div className="w-4 h-4 relative">
+                                      <div className='w-4 h-4 relative'>
                                         <Image
                                           src={src}
                                           alt={alt}
                                           fill
-                                          className="w-full h-full object-contain"
+                                          className='w-full h-full object-contain'
                                         />
                                       </div>
                                     </Link>
@@ -301,7 +313,7 @@ export default function Layout({
                             href={link.href!}
                             key={link.title}
                             onClick={closeSidebar}
-                            className="flex items-center gap-2 text-lg font-bold"
+                            className='flex items-center gap-2 text-lg font-bold'
                           >
                             <span>{link.title}</span>
                           </Link>

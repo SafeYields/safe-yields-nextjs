@@ -305,7 +305,7 @@ export default function Vaults() {
                   <Button
                     onClick={handleEmmaVaultDeposit}
                     className='w-full rounded-full bg-brand-2 text-white'
-                    disabled={true/* depositLoader || !isConnected */}
+                    disabled={true /* depositLoader || !isConnected */}
                   >
                     {depositLoader && <Loader2 className='animate-spin' />}
                     {isConnected ? 'Deposit' : 'Connect Wallet'}
@@ -342,22 +342,22 @@ export default function Vaults() {
         </div>
       </div>
       <Tabs className='w-full max-w-2xl mx-auto' defaultValue='info'>
-        <TabsList className='bg-transparent w-full items-center flex md:flex-row flex-col md:gap-16 gap-1'>
+        <TabsList className='bg-transparent w-full items-center flex flex-row lg:gap-16 gap-1'>
           <TabsTrigger
             value='info'
-            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold font-normal text-xl'
+            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold font-normal text-sm px-1 md:text-xl md:px-3'
           >
             Vault info
           </TabsTrigger>
           <TabsTrigger
             value='chart'
-            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold font-normal text-xl'
+            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold font-normal text-sm px-1 md:text-xl md:px-3'
           >
             Performance Chart
           </TabsTrigger>
           <TabsTrigger
             value='position'
-            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold font-normal text-xl'
+            className='data-[state=active]:text-brand-1 data-[state=active]:font-bold font-normal text-sm px-1 md:text-xl md:px-3'
           >
             Open Positions
           </TabsTrigger>
