@@ -121,7 +121,7 @@ export default function Info() {
                 time historical data.
               </HoverCardContent>
             </HoverCard>
-            <Popover openDelay={0}>
+            <Popover>
               <PopoverTrigger
                 asChild
                 className='flex md:hidden absolute -right-5 bottom-3'
@@ -182,7 +182,10 @@ export default function Info() {
               Historical Max. Drawdown
             </span>
             <HoverCard openDelay={0}>
-              <HoverCardTrigger asChild className='hidden md:flex absolute -right-5 bottom-3'>
+              <HoverCardTrigger
+                asChild
+                className='hidden md:flex absolute -right-5 bottom-3'
+              >
                 <svg
                   width='11'
                   height='11'
@@ -208,8 +211,11 @@ export default function Info() {
                 indicating the highest potential loss.
               </HoverCardContent>
             </HoverCard>
-            <Popover openDelay={0}>
-              <PopoverTrigger asChild className='flex md:hidden absolute -right-5 bottom-3'>
+            <Popover>
+              <PopoverTrigger
+                asChild
+                className='flex md:hidden absolute -right-5 bottom-3'
+              >
                 <svg
                   width='11'
                   height='11'
