@@ -439,12 +439,12 @@ function Dashboard() {
             width='500'
             height='500'
             alt='info'
-            className='py-16'
+            className='md:py-16 py-8 px-16 object-contain'
           />
           <span className='font-semibold'>
             Please connect your wallet to continue
           </span>
-          <div className='flex flex-row gap-4 mb-20'>
+          <div className='flex md:flex-row flex-col gap-4 mb-8'>
             {/* !bg-gradient-to-r !from-[hsl(240,43%,37%)] !to-[hsl(162,81%,32%)] */}
             <ConnectButton className='px-12 text-black bg-brand-1' />
             <a href="https://www.safeyields.io/_files/ugd/56bef1_808fc263b7d04a4bb420be7b40262e80.pdf" target="_blank" rel="noopener noreferrer">

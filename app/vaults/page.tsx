@@ -342,7 +342,7 @@ export default function Vaults() {
         </div>
       </div>
       <Tabs className='w-full max-w-2xl mx-auto' defaultValue='info'>
-        <TabsList className='bg-transparent w-full items-center flex gap-16'>
+        <TabsList className='bg-transparent w-full items-center flex md:flex-row flex-col md:gap-16 gap-1'>
           <TabsTrigger
             value='info'
             className='data-[state=active]:text-brand-1 data-[state=active]:font-bold font-normal text-xl'
@@ -362,7 +362,7 @@ export default function Vaults() {
             Open Positions
           </TabsTrigger>
         </TabsList>
-        <TabsContent value='info' className='mt-12'>
+        <TabsContent value='info' className='mt-20'>
           <Info />
         </TabsContent>
         <TabsContent value='chart' className='mt-12'>
