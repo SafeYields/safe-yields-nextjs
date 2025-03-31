@@ -243,7 +243,7 @@ export default function Vaults() {
   }, [data, daysCount]);
 
   return (
-    <div className='mt-8 mb-12 py-4 grid grid-cols-1 gap-16 md:grid-cols-[28rem_2fr] justify-center items-start px-8 md:px-20'>
+    <div className='mt-8 mb-12 py-4 grid grid-cols-1 gap-16 md:grid-cols-[28rem_2fr] justify-center items-start px-8 md:px-20 overflow-y-auto'>
       <div className='flex min-w-md flex-grow flex-col gap-12'>
         <Alert className='bg-brand-2'>
           <AlertCircle className='h-4 w-4' />
