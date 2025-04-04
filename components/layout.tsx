@@ -254,58 +254,49 @@ export default function Layout({
                 <SheetContent side='right' className='bg-sidebar'>
                   <nav className='mt-8 flex flex-col items-center gap-8 text-lg font-medium h-full mb-10 overflow-y-auto'>
                     {links.map((link) => {
-                      if ('items' in link && link.title !== 'Links') {
+                      if ('social' in link && link.social) {
+                        return (
+                          <div
+                            key={link.title}
+                            className={clsx(
+                              'flex flex-col items-center justify-center gap-8',
+                              ' mb-10',
+                            )}
+                          >
+                            <MobileDropdown
+                              key={link.title}
+                              link={link}
+                              onLinkClick={closeSidebar}
+                            />
+                            <PickNetwork />
+                            <div className='flex flex-row gap-4 justify-center py-4 px-8'>
+                              {link.social.map(({ src, href, alt }) => (
+                                <Link
+                                  href={href}
+                                  key={src}
+                                  onClick={closeSidebar}
+                                  className='block bg-brand-1 rounded-full p-2'
+                                >
+                                  <div className='w-4 h-4 relative'>
+                                    <Image
+                                      src={src}
+                                      alt={alt}
+                                      fill
+                                      className='w-full h-full object-contain'
+                                    />
+                                  </div>
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      } else if ('items' in link) {
                         return (
                           <MobileDropdown
                             key={link.title}
                             link={link}
                             onLinkClick={closeSidebar}
                           />
-                        );
-                      } else if ('items' in link && link.title === 'Links') {
-                        return (
-                          <div
-                            key={link.title}
-                            className={clsx(
-                              'flex flex-col items-center justify-center gap-8',
-                              'mt-auto mb-10',
-                            )}
-                          >
-                            {link.items.map((item) => (
-                              <Link
-                                href={item.href!}
-                                key={item.title}
-                                onClick={closeSidebar}
-                                className='flex items-center gap-2 text-lg font-bold'
-                              >
-                                <span>{item.title}</span>
-                              </Link>
-                            ))}
-                            {'social' in link && link.social && (
-                              <>
-                                <PickNetwork />
-                                <div className='flex flex-row gap-4 justify-center py-4 px-8'>
-                                  {link.social.map(({ src, href, alt }) => (
-                                    <Link
-                                      href={href}
-                                      key={src}
-                                      onClick={closeSidebar}
-                                      className='block bg-brand-1 rounded-full p-2'
-                                    >
-                                      <div className='w-4 h-4 relative'>
-                                        <Image
-                                          src={src}
-                                          alt={alt}
-                                          fill
-                                          className='w-full h-full object-contain'
-                                        />
-                                      </div>
-                                    </Link>
-                                  ))}
-                                </div>
-                              </>
-                            )}
-                          </div>
                         );
                       } else {
                         return (

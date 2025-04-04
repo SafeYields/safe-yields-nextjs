@@ -243,7 +243,7 @@ export default function Vaults() {
   }, [data, daysCount]);
 
   return (
-    <div className='mt-8 mb-12 py-4 grid grid-cols-1 gap-16 md:grid-cols-[28rem_2fr] justify-center items-start px-8 md:px-20 overflow-y-auto'>
+    <div className='mt-8 mb-16 py-4 grid grid-cols-1 gap-16 md:grid-cols-[28rem_2fr] justify-center items-start px-8 md:px-20 overflow-y-auto'>
       <div className='flex min-w-md flex-grow flex-col gap-12'>
         <Alert className='bg-brand-2'>
           <AlertCircle className='h-4 w-4' />
@@ -290,7 +290,7 @@ export default function Vaults() {
                       USDC
                     </span>
                   </div>
-                  <div className='flex justify-between text-xs px-4'>
+                  <div className='flex justify-between text-xs px-3'>
                     <span>Your current position</span>
                     <Show ifReady={balance}>
                       {() =>
@@ -299,6 +299,9 @@ export default function Vaults() {
                         ).toFixed(2)
                       }
                     </Show>{' '}
+                    <span className='text-xs text-white/50'>
+                      USDC
+                    </span>
                   </div>
                 </CardContent>
                 <CardFooter>
@@ -362,7 +365,7 @@ export default function Vaults() {
             Open Positions
           </TabsTrigger>
         </TabsList>
-        <TabsContent value='info' className='mt-20'>
+        <TabsContent value='info' className='mt-6'>
           <Info />
         </TabsContent>
         <TabsContent value='chart' className='mt-12'>
