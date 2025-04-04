@@ -368,7 +368,7 @@ export default function Vaults() {
         <TabsContent value='info' className='mt-6'>
           <Info />
         </TabsContent>
-        <TabsContent value='chart' className='mt-12'>
+        <TabsContent value='chart' className='mt-6'>
           <div className='text-primary flex flex-col mx-auto'>
             <NavigationMenu>
               <NavigationMenuList>
@@ -495,7 +495,7 @@ export default function Vaults() {
             </Show>
           </div>
         </TabsContent>
-        <TabsContent value='position' className='mt-12'>
+        <TabsContent value='position' className='mt-6'>
           <OpenPosition />
         </TabsContent>
       </Tabs>
