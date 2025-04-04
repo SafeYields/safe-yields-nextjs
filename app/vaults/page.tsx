@@ -248,7 +248,7 @@ export default function Vaults() {
         <Alert className='bg-brand-2'>
           <AlertCircle className='h-4 w-4' />
           <AlertDescription>
-            Deposits and Withdrawals paused until Epoch ends on April 1st 12:00
+            Deposits and Withdrawals paused until Epoch ends on May 1st 12:00
             UTC.
           </AlertDescription>
         </Alert>
@@ -292,16 +292,16 @@ export default function Vaults() {
                   </div>
                   <div className='flex justify-between text-xs px-3'>
                     <span>Your current position</span>
-                    <Show ifReady={balance}>
-                      {() =>
-                        Number(
-                          balance!.available_balance * userShares.get(),
-                        ).toFixed(2)
-                      }
-                    </Show>{' '}
-                    <span className='text-xs text-white/50'>
-                      USDC
-                    </span>
+                    <div className='flex items-center gap-1'>
+                      <Show ifReady={balance}>
+                        {() =>
+                          Number(
+                            balance!.available_balance * userShares.get(),
+                          ).toFixed(2)
+                        }
+                      </Show>{' '}
+                      <span className='text-xs text-white/50'>USDC</span>
+                    </div>
                   </div>
                 </CardContent>
                 <CardFooter>
