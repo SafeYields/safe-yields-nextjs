@@ -87,7 +87,7 @@ export const plutoTradingHistroy$ = observable(
       queryKey: ['pluto:trading:histroy'],
       queryFn: async () => {
         return ky<TradingHistory>(
-          'https://trading-data.alphacube.io:8084/api/v1/history',
+          'https://trading-data.alphacube.io:8086/api/v1/history',
         ).json();
       },
     },
