@@ -248,7 +248,7 @@ export default function Vaults() {
         <Alert className='bg-brand-2'>
           <AlertCircle className='h-4 w-4' />
           <AlertDescription>
-            Deposits and Withdrawals paused until Epoch ends on May 1st 12:00
+            Deposits and Withdrawals paused until Epoch ends on July 1st 12:00
             UTC.
           </AlertDescription>
         </Alert>
